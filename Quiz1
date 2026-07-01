@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Masterclass Grading Quizzes</title>
+    <style>
+        :root {
+            --primary-navy: #0f172a;       /* Deep Navy */
+            --accent-red: #dc2626;         /* Crimson Red */
+            --accent-red-hover: #b91c1c;   /* Darker Red */
+            --bg-white: #ffffff;           /* Clean White */
+            --bg-light: #f8fafc;           /* Soft Light Gray for page contrast */
+            --text-dark: #1e293b;          /* Dark Charcoal Text */
+            --text-muted: #64748b;         /* Muted Gray Text */
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--primary-navy);
+            color: var(--bg-white);
+            padding: 2.5rem 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            border-bottom: 5px solid var(--accent-red);
+        }
+
+        .header-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .header-text h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        .header-text p {
+            margin: 0.5rem 0 0 0;
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        /* Hosted Logo Styling */
+        .clinic-logo {
+            background-color: var(--bg-white);
+            padding: 0.75rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 140px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .module-nav {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .module-btn {
+            background-color: var(--bg-white);
+            border: 2px solid var(--primary-navy);
+            color: var(--primary-navy);
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .module-btn.active {
+            background-color: var(--accent-red);
+            border-color: var(--accent-red);
+            color: var(--bg-white);
+        }
+
+        .module-btn:hover:not(.active) {
+            background-color: #f1f5f9;
+        }
+
+        .quiz-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e2e8f0;
+        }
+
+        .quiz-card h2 {
+            margin-top: 0;
+            color: var(--primary-navy);
+            font-size: 1.5rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .user-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .user-info-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .user-info-field label {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--primary-navy);
+        }
+
+        .user-info input {
+            padding: 0.75rem 1rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .user-info input:focus {
+            border-color: var(--primary-navy);
+        }
+
+        .question {
+            margin-bottom: 2.5rem;
+            padding: 1.25rem;
+            border-radius: 8px;
+            background-color: #fafafa;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .question p {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-top: 0;
+            color: var(--primary-navy);
+        }
+
+        .options label {
+            display: flex;
+            align-items: center;
+            background: var(--bg-white);
+            padding: 0.85rem 1.2rem;
+            margin: 0.6rem 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.15s ease;
+        }
+
+        .options label:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .options input {
+            margin-right: 1rem;
+            transform: scale(1.15);
+            accent-color: var(--primary-navy);
+        }
+
+        button.submit-btn {
+            background-color: var(--accent-red);
+            color: var(--bg-white);
+            border: none;
+            padding: 1.2rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+            box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);
+        }
+
+        button.submit-btn:hover {
+            background-color: var(--accent-red-hover);
+        }
+
+        #results-box {
+            display: none;
+            margin-top: 2.5rem;
+            padding: 2.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #bbf7d0;
+        }
+
+        .success { 
+            background-color: #f0fdf4; 
+            color: #166534; 
+        }
+
+        /* Evaluation UI Highlighting */
+        .correct-ans { 
+            background-color: #f0fdf4 !important; 
+            border: 1px solid #bbf7d0 !important;
+            border-left: 6px solid #22c55e !important; 
+        }
+        
+        .wrong-ans { 
+            background-color: #fef2f2 !important; 
+            border: 1px solid #fca5a5 !important;
+            border-left: 6px solid #ef4444 !important; 
+        }
+
+        @media (max-width: 640px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .user-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="header-text">
+            <h1>RESEARCH MASTERCLASS</h1>
+            <p>Grading Dashboard & Evaluations</p>
+        </div>
+        <img class="clinic-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbAAAAEsCAMAAAD9gC7cAAAAe1BMVEX///8AAAD8/PwQEBD5+fnd3d3u7u709PTz8/P19fX4+Pjo6Ojm5ubk5OTY2Njq6up6enp0dHRgYGBwcHBqampmZmZkZGRsbGxycnJ4eHh+fn6AgICA8PDw8fHx8vLy8/Pz9PT09fX19vX29vb39/f5+fn6+vr7+/v8/Pz9/f0eMbyUAAAInklEQVR42u3dbUPaRhQG8BsChAChgYIKorW2atvWbe///49b7gQCgbywXN6TOnM9X+pWh9ybOeeGgZByHwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgXyEitP/Kz/gI6+wT690v1rfvWJ++Y738gfXrB6vXv1gP/rO69m/W8X9Wp79Ybf/S/y9O9Xv7v9TzI9VbVbs/qf/eDaqNqt6b2lD993eq9qp+1KpV/e8PrD8esX57wPr7AevvB6w/H6y96T8v37C+P7XetLHeuLHevN5b/X23pdp1fVftW7e276fD6u7P2u7Pqu7P2v6sbp/V/VndP6sHMfU0pB7b9P/S/1p6WvTfF9Ni8bO9f6/XwGptvV0P9S6Iu9XbeZ/S2+C9mK3pfeA2pLeReS7Z+ZReh6GndXpe9G/28m+vpt6Hda33IdwG4XnoPZt6z6bec6/3bN6XvK+n9/w/p95Zz72znntn72607u7m3t38v92v7vS2un9We6f++3pq/Pff96ZfV2v7U3reG9vX9rbeG9vX87W6ZzXfP9W1eq7WfX9U1/77vL9W67n396/12v/487Xaqf87Z1O9m+rD9P+pvtP/Z3Xorv48D7vT8zAcz9Vf6W9NfXb3q2g8P6unK6K/1tXq78fT63S8rP7W7mNre/9Zbe//96P975zVb7/GZpE0i3Vsm+6b2f4fP/P9V987q9vfqp199X7u1H6uXp9Gf67+XNfT7/U69O6IuzfGveF5I65f+zft7Y8R67Hw3pW9vP/b6reH1W/fWf36WdfD0/PAnv4Eezn/fX+7Wv3dG9Xq7d+pVnv3p++9UbXeveEw9Wb96WfXqf3ss+vUu+l8b9Yf6/Xf2/V+un+q1737vG9Vq/eH7/3tD9N5f6jWveVv9XdfZ/WfveGffbW290LVe/f1ev9Wb++Dqvfm7n+9f/+1vRfD3vS++P789fX/y639/f9fP6v//G9689fX3Vv+yK4X/71b2xv9XvS2e6vXz2+v76Z3F8PZ9DWeTV9717+z6e+s7Z7V6W//T2fv7tN/wLXeH77vT2evD3bvaV793dvZ3vS/P79b29v33V39/d/Z3vRv2veX6d/U9/bX9m7v1p++T2fv5q0//ZvN8P9XW/86m2re9G8Oezb3Rrfpt9vU9q8Pq//7+Uv/P7z++zP9727T3xv95Yfo88ffZ9N5ft6m9vPz6N/Vn7f/t03tffD57Zp9/pU+L4ZPp6ev72VqW/vHff/U9mZv16nvPez9ffoH27unw8v1bLg8ffl970Xv0uE8PB+el8P0mR724Xw6PB/b9D6d5+E8X97b/m6ffn+d3k/3wYfDw+Ww6W8enobDw+VyefjwcBi++pbe++FwOBz+DofpczicDpdL++VyuVxenl+9uVyu9uUve/v6XPr6+qZfDNP39E38nC9vhsPDML3tX71/eXl++eXp5Xm7n06fn/fpbH++X+9p9enpf9Pl4fvLpff05beX9p9X++V8Pj/byzzfH+9tnubzYp7fvvR6fW1fD9vr6/WpX9qf3l5/b29ff2+X5+vX9XU+j1f/W963g/V1PF7b9by+2l6fx2F7PB63T6/T4Xg9zofD/rA/jof9fX/Yv+9vv/R6mN7b+9vX/XB4v799be/b/u/X23Y8bPvD/gfb/XDvFf/G7Vbve8TdxZzuxpzu4pzubp/ubrfGfN3bmdOen7XtzNfO3N27NdfuBve2N9feurGvXWd+tnbuR2u66/5m09vszT/bmvvew7u1u3vr7b3p3b01vdW/s5f/2vNfG/7u9G9N/+7v9u7emzvdN3fvXUfTf/f27p8tzf3vL37/7eZfvbtfvv9V/O/F6K0Yff7Yp+Ovn/Y0+vzx75+Oz36K0S8fj3/52fjpZ2P099/2L/8ef/t0/P3T36Pvfv98/PPf46ef/zn++e/6O/L7d+T/I0Z///H+b/8c//797/8vI8YvI0Z/vYwYvbyYI8bvv4wYvfvZ7MffZz+ffv/5bPrP6Z9/Xv/68zpG3/7eGP3/P2P0t7cx+q2NGf29jRl//OOM/p7Gv88fN2b8p8b4D6Xx906Yf2fE/N79n3fv/M6f+pPvf/792WfN/6Nf/fP989Z81nz2p5/Pms97u9n796v3vWd+79as+f7q2m2/WvPdbVfz3a/WdD9b03unZq2etWrO90bNTjVrzn7G7M509g9md9rNdrNf6X70H7NbaZ8xf7Vf6f7Wfq17Z8zX7K1b8w279WrW6u17+6P/mP1YmX+k9Y/ZndZ+rPWP2U/6m3XrP2b/vFsz08fMzOizv++Ff/96p/0t/vF7XvhZ5p12Svxj5p12v/B32D+mD/Yh/mZ90g572X60P9v5f8v8zf4/1v3Wvq96b6b77X7V377b+b2Z/tfeXftXb6v/f69Xg/vX7le739p/7TzX19NrdU9/O7tX5+pZ/Y3eWe0e1Kz7YOfu3unefehZ7R/03FvN6b3W7wLvdYHeS7/Xe+m3eq/+b2r9vL269u7Xas0f/U/XfVvtW38U6H6S/kbt/3T/+PZ/Z/u6+p9Z7ftv59X9pPr/Xl9H7/8y+v4Z/fvG/r9P7N2f3e8P2++v7ffv9f09+/1j+v/vWfXvt1P/99X7p1v//XbV/7H+P0/9rftn77/3t9T/Svv7S+9/+9X7X8V0H4+vvfV3/7V9rZ56997fW3unZ7V7Y/b/+9YfVv/tU/f3v61ee6b+Z9U6GzUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADA/fIXLgS8Fp4KOfIAAAAASUVORK5CYII=" alt="Newlands Clinic Logo">
+    </div>
+</header>
+
+<div class="container">
+    <div class="module-nav">
+        <button class="module-btn active">Topic 1: Epidemiology Fundamentals</button>
+        <button class="module-btn" onclick="alert('Topic 2 modules are currently being finalized.')">Topic 2</button>
+        <button class="module-btn" onclick="alert('Topic 3 modules are currently being finalized.')">Topic 3</button>
+    </div>
+
+    <div class="quiz-card">
+        <h2>Topic 1: Introduction to Fundamentals of Epidemiology</h2>
+        
+        <form id="quizForm">
+            <div class="user-info">
+                <div class="user-info-field">
+                    <label for="studentName">Student Full Name</label>
+                    <input type="text" id="studentName" placeholder="e.g. John Doe" required>
+                </div>
+                <div class="user-info-field">
+                    <label for="studentEmail">Email Address</label>
+                    <input type="email" id="studentEmail" placeholder="e.g. john@domain.com" required>
+                </div>
+            </div>
