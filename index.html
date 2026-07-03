@@ -3,1194 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Research Masterclass Evaluation Portal</title>
+    <title>Course Modules Quiz</title>
     <style>
-        :root {
-            --primary-navy: #0f172a;       /* Deep Navy */
-            --accent-red: #dc2626;         /* Crimson Red */
-            --accent-red-hover: #b91c1c;   /* Darker Red */
-            --bg-white: #ffffff;           /* Clean White */
-            --bg-light: #f8fafc;           /* Soft Light Gray */
-            --text-dark: #1e293b;          /* Dark Charcoal Text */
-            --text-muted: #64748b;         /* Muted Gray */
-            --border-color: #e2e8f0;       /* Soft border line color */
-        }
-
         body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background-color: var(--primary-navy);
-            color: var(--bg-white);
-            padding: 2rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            border-bottom: 5px solid var(--accent-red);
-        }
-
-        .header-container {
-            max-width: 1000px;
-            margin: 0 auto;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9fafb;
+            padding: 40px 20px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1.5rem;
+            justify-content: center;
         }
-
-        .header-text h1 {
-            margin: 0;
-            font-size: 2rem;
-            font-weight: 800;
-            letter-spacing: -0.025em;
-        }
-
-        .header-text p {
-            margin: 0.5rem 0 0 0;
-            color: #94a3b8;
-            font-size: 1.1rem;
-        }
-
-        .clinic-logo {
-            background-color: var(--bg-white);
-            padding: 0.75rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            max-width: 140px;
-            height: auto;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 2.5rem auto;
-            padding: 0 1.5rem;
-        }
-
-        /* Registration Card Box */
-        .reg-card {
-            background: var(--bg-white);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            border: 2px solid var(--primary-navy);
-            margin-bottom: 2.5rem;
-        }
-
-        .reg-card h2 {
-            margin-top: 0;
-            color: var(--primary-navy);
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .user-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        .user-info-field {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .user-info-field label {
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: var(--primary-navy);
-        }
-
-        .user-info input {
-            padding: 0.75rem 1rem;
-            border: 2px solid #cbd5e1;
-            border-radius: 6px;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .user-info input:focus {
-            border-color: var(--primary-navy);
-        }
-
-        /* 6-Topic Layout Navigation Row Grid */
-        .module-nav {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .module-btn {
-            background-color: var(--bg-white);
-            border: 2px solid var(--primary-navy);
-            color: var(--primary-navy);
-            padding: 0.8rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-align: center;
-            transition: all 0.2s ease;
-        }
-
-        .module-btn.active {
-            background-color: var(--accent-red);
-            border-color: var(--accent-red);
-            color: var(--bg-white);
-        }
-
-        .module-btn:hover:not(.active) {
-            background-color: #f1f5f9;
-        }
-
-        /* Interactive Quiz Card Blocks */
-        .quiz-view {
-            display: none; 
-        }
-
-        .quiz-view.active {
-            display: block; 
-        }
-
         .quiz-card {
-            background: var(--bg-white);
+            background: white;
+            max-width: 650px;
+            width: 100%;
+            padding: 35px;
             border-radius: 12px;
-            padding: 2.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
-
-        .quiz-card h2 {
+        h2 {
+            color: #1f2937;
             margin-top: 0;
-            color: var(--primary-navy);
-            font-size: 1.6rem;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 20px;
         }
-
-        /* Topic Specific Timer Module Box Placement */
-        .topic-timer-box {
-            background-color: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            padding: 0.75rem 1.2rem;
-            border-radius: 6px;
-            font-weight: 800;
-            color: var(--primary-navy);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.05em;
-        }
-
-        .topic-timer-box.urgent {
-            background-color: #fee2e2;
-            border-color: #fca5a5;
-            color: #991b1b;
-            animation: pulse 1.5s infinite;
-        }
-
-        .question {
-            margin-bottom: 2.5rem;
-            padding: 1.5rem;
-            border-radius: 8px;
-            background-color: #fafafa;
-            border: 1px solid var(--border-color);
-        }
-
-        .question p {
-            font-weight: 700;
-            margin-top: 0;
-            color: var(--primary-navy);
-            font-size: 1.05rem;
-        }
-
-        /* Flexbox table styling for mathematical questions layout columns */
-        .math-table {
+        .topic-selector {
             width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0 1.5rem 0;
-            background: var(--bg-white);
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            margin-bottom: 25px;
+            background-color: #fff;
         }
-
-        .math-table th, .math-table td {
-            border: 1px solid var(--border-color);
-            padding: 0.75rem 1rem;
-            text-align: left;
+        .question-block {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f3f4f6;
         }
-
-        .math-table th {
-            background-color: #f1f5f9;
-            color: var(--primary-navy);
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #374151;
         }
-
-        .options label {
-            display: flex;
-            align-items: center;
-            background: var(--bg-white);
-            padding: 0.85rem 1.2rem;
-            margin: 0.6rem 0;
-            border: 1px solid var(--border-color);
+        .option-label {
+            display: block;
+            padding: 12px;
+            margin: 6px 0;
+            background: #f3f4f6;
             border-radius: 6px;
             cursor: pointer;
-            font-weight: 500;
-            transition: all 0.15s ease;
+            transition: background 0.2s;
         }
-
-        .options label:hover {
-            background: #f1f5f9;
-            border-color: #cbd5e1;
+        .option-label:hover {
+            background: #e5e7eb;
         }
-
-        .options input {
-            margin-right: 1rem;
-            transform: scale(1.15);
-            accent-color: var(--primary-navy);
-        }
-
-        button.submit-btn {
-            background-color: var(--accent-red);
-            color: var(--bg-white);
+        .submit-btn {
+            background-color: #16a34a;
+            color: white;
             border: none;
-            padding: 1.2rem 2rem;
-            font-size: 1.1rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
             border-radius: 6px;
             cursor: pointer;
             width: 100%;
-            transition: background-color 0.2s;
-            box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);
+            margin-top: 10px;
         }
-
-        button.submit-btn:hover { background-color: var(--accent-red-hover); }
-        button.submit-btn:disabled { background-color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
-
-        .results-box {
-            display: none;
-            margin-top: 2.5rem;
-            padding: 2.5rem;
+        .submit-btn:hover {
+            background-color: #15803d;
+        }
+        
+        /* Success Screen Container exactly matching image_f93a68.png */
+        #success-container {
+            display: none; 
+            text-align: center; 
+            background-color: #e6f4ea; 
+            padding: 50px 30px; 
             border-radius: 8px;
-            text-align: center;
-            border: 2px solid #bbf7d0;
-            background-color: #f0fdf4; 
-            color: #166534;
+            width: 100%;
+            max-width: 700px;
         }
-
-        .correct-ans { border-left: 6px solid #22c55e !important; background-color: #f0fdf4 !important; }
-        .wrong-ans { border-left: 6px solid #ef4444 !important; background-color: #fef2f2 !important; }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.85; }
-            100% { opacity: 1; }
+        .success-title {
+            color: #13522b; 
+            font-size: 26px; 
+            font-weight: 700; 
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
         }
-
-        @media (max-width: 768px) {
-            .module-nav { grid-template-columns: 1fr; }
-            .user-info { grid-template-columns: 1fr; }
+        .success-score {
+            color: #13522b; 
+            font-size: 42px; 
+            font-weight: 800; 
+            margin-bottom: 25px;
+        }
+        .success-text {
+            color: #13522b; 
+            font-size: 18px; 
+            font-weight: 500;
+            line-height: 1.5;
         }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="header-container">
-        <div class="header-text">
-            <h1>RESEARCH MASTERCLASS</h1>
-            <p>Unified Evaluation Portal</p>
-        </div>
-        <img class="clinic-logo" src="nc-logo.png" alt="Newlands Clinic Logo">
-    </div>
-</header>
+    <!-- MAIN QUIZ INTERFACE -->
+    <div id="quiz-container" class="quiz-card">
+        <h2>Select Module Topic:</h2>
+        <select id="topicDropdown" class="topic-selector" onchange="loadQuizTopic()">
+            <option value="topic1">Topic 1: Introduction & Data Management</option>
+            <option value="topic2">Topic 2: Study Designs</option>
+            <option value="topic3">Topic 3: Sampling & Prevalence</option>
+            <option value="topic4">Topic 4: Cohort & Longitudinal Analysis</option>
+            <option value="topic5">Topic 5: Regression Modeling</option>
+            <option value="topic6">Topic 6: Integration & Reporting</option>
+        </select>
 
-<div class="container">
-    
-    <!-- Central Registration Component Box Area -->
-    <div class="reg-card">
-        <h2>🔒 Student Verification Gateway</h2>
-        <p style="margin-top:0; color: var(--text-muted); font-size:0.9rem;">Please sign in here first. Your information will link automatically across all six topics.</p>
-        <div class="user-info">
-            <div class="user-info-field">
-                <label for="globalName">Student Full Name</label>
-                <input type="text" id="globalName" placeholder="e.g., Varaidzo Moyo" required oninput="syncStudentData()">
-            </div>
-            <div class="user-info-field">
-                <label for="globalEmail">Email Address</label>
-                <input type="email" id="globalEmail" placeholder="e.g., vmoyo@newlandsclinic.org" required oninput="syncStudentData()">
-            </div>
-        </div>
+        <form id="quizForm" onsubmit="calculateAndSubmit(event)">
+            <!-- Questions will dynamically load here -->
+            <div id="questionsWrapper"></div>
+            <button type="submit" class="submit-btn">Submit Answers</button>
+        </form>
     </div>
 
-    <!-- 6-Topic Selection Grid System Row Bar -->
-    <div class="module-nav">
-        <button class="module-btn active" id="nav-btn-1" onclick="switchTopic(1)">Topic 1: Fundamentals</button>
-        <button class="module-btn" id="nav-btn-2" onclick="switchTopic(2)">Topic 2: Epidemiological Focus</button>
-        <button class="module-btn" id="nav-btn-3" onclick="switchTopic(3)">Topic 3: Routine Health Data</button>
-        <button class="module-btn" id="nav-btn-4" onclick="switchTopic(4)">Topic 4: Data Quality & Linkage</button>
-        <button class="module-btn" id="nav-btn-5" onclick="switchTopic(5)">Topic 5: Effect & Impact</button>
-        <button class="module-btn" id="nav-btn-6" onclick="switchTopic(6)">Topic 6: Study Designs</button>
-    </div>
+    <!-- SILENT SUBMISSION TARGET -->
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
-    <!-- ==================== TOPIC 1 CONTAINER ==================== -->
-    <div id="topic1-view" class="quiz-view active">
-        <div class="quiz-card">
-            <div class="topic-timer-box">⏱️ TIME REMAINING: <span id="t1-timer-text">20:00</span></div>
-            <h2>Topic 1: Introduction to Fundamentals of Epidemiology</h2>
-            <form id="form-t1">
-                <!-- Question 1 -->
-                <div class="question">
-                    <p>1. A study follows a cohort of HIV-positive patients at Newlands Clinic to see if their ART regimen is associated with new-onset diabetes. What is the exposure and what is the outcome?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t1-q1" value="A" required> A. Exposure: New-onset diabetes; Outcome: ART regimen</label>
-                        <label><input type="radio" name="t1-q1" value="B"> B. Exposure: ART regimen; Outcome: New-onset diabetes</label>
-                        <label><input type="radio" name="t1-q1" value="C"> C. Exposure: New-onset diabetes; Outcome: HIV status</label>
-                        <label><input type="radio" name="t1-q1" value="D"> D. Exposure: HIV status; Outcome: ART regimen</label>
-                    </div>
-                </div>
-                <!-- Question 2 -->
-                <div class="question">
-                    <p>2. During the 2023–2024 Zimbabwe cholera outbreak, investigators compared the number of cases in districts with community water-source improvement programs versus those without. This is an example of:</p>
-                    <div class="options">
-                        <label><input type="radio" name="t1-q2" value="A" required> A. Descriptive epidemiology</label>
-                        <label><input type="radio" name="t1-q2" value="B"> B. Analytical (observational) epidemiology</label>
-                        <label><input type="radio" name="t1-q2" value="C"> C. A randomized controlled trial</label>
-                        <label><input type="radio" name="t1-q2" value="D"> D. Purely demographic reporting</label>
-                    </div>
-                </div>
-                <!-- Question 3 -->
-                <div class="question">
-                    <p>3. A researcher reports that "Malaria prevalence among children under 5 in a rural district of Manicaland was 8% in April 2026." Which part of the "Person, Place, Time" framework is missing or vague?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t1-q3" value="A" required> A. Person</label>
-                        <label><input type="radio" name="t1-q3" value="B"> B. Place</label>
-                        <label><input type="radio" name="t1-q3" value="C"> C. Time</label>
-                        <label><input type="radio" name="t1-q3" value="D"> D. None; all three are clearly provided.</label>
-                    </div>
-                </div>
-                <!-- Question 4 -->
-                <div class="question">
-                    <p>4. A study finds that Syphilis rates are higher in urban areas compared to rural areas in Zimbabwe. To determine if area of residence is a true "risk factor" rather than just a distribution pattern, the researchers must move from:</p>
-                    <div class="options">
-                        <label><input type="radio" name="t1-q4" value="A" required> A. Analytical to Descriptive epidemiology</label>
-                        <label><input type="radio" name="t1-q4" value="B"> B. Descriptive to Analytical epidemiology</label>
-                        <label><input type="radio" name="t1-q4" value="C"> C. Interventional to Observational epidemiology</label>
-                        <label><input type="radio" name="t1-q4" value="D"> D. Population to High-risk strategy</label>
-                    </div>
-                </div>
-                <!-- Question 5 -->
-                <div class="question">
-                    <p>5. A public health program encourages all adults in Harare to reduce salt intake to lower population-wide blood pressure levels. This is a:</p>
-                    <div class="options">
-                        <label><input type="radio" name="t1-q5" value="A" required> A. High-risk strategy</label>
-                        <label><input type="radio" name="t1-q5" value="B"> B. Population strategy</label>
-                        <label><input type="radio" name="t1-q5" value="C"> C. Case-finding study</label>
-                        <label><input type="radio" name="t1-q5" value="D"> D. Randomized trial</label>
-                    </div>
-                </div>
-                <!-- Question 6 -->
-                <div class="question">
-                    <p>6. Why is a "case definition" (e.g., specific fever and bleeding symptoms) essential during an Ebola outbreak?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t1-q6" value="A" required> A. To ensure everyone in the country is tested.</label>
-                        <label><input type="radio" name="t1-q6" value="B"> B. To ensure the numerator (cases) is counted consistently across different provinces.</label>
-                        <label><input type="radio" name="t1-q6" value="C"> C. To determine if the virus is a NCD.</label>
-                        <label><input type="radio" name="t1-q6" value="D"> D. To eliminate the need for a denominator.</label>
-                    </div>
-                </div>
-                <!-- Question 7 -->
-                <div class="question">
-                    <p>7. A researcher notes that 12 Hantavirus cases occurred in a mountain village of 1,200 people. If they calculate 12 / 1200 = 0.01 (or 1%), what is the 1,200?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t1-q7" value="A" required> A. The incidence</label>
-                        <label><input type="radio" name="t1-q7" value="B"> B. The numerator</label>
-                        <label><input type="radio" name="t1-q7" value="C"> C. The denominator</label>
-                        <label><input type="radio" name="t1-q7" value="D"> D. The distribution</label>
-                    </div>
-                </div>
-                <!-- Question 8 -->
-                <div class="question">
-                    <p>8. In a study where researchers randomly assign two different vaccination schedules to two groups of volunteers in Harare, what type of epidemiology is this?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t1-q8" value="A" required> A. Interventional and Analytical</label>
-                        <label><input type="radio" name="t1-q8" value="B"> B. Observational and Descriptive</label>
-                        <label><input type="radio" name="t1-q8" value="C"> C. Descriptive and Analytical</label>
-                        <label><input type="radio" name="t1-q8" value="D"> D. Observational and Interventional</label>
-                    </div>
-                </div>
-                <!-- Question 9 -->
-                <div class="question">
-                    <p>9. Which of the following is the best example of a "High-risk strategy" for Malaria control?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t1-q9" value="A" required> A. Installing window screens in every home in the country.</label>
-                        <label><input type="radio" name="t1-q9" value="B"> B. Spraying the entire district with insecticide.</label>
-                        <label><input type="radio" name="t1-q9" value="C"> C. Providing prophylactic medication specifically to pregnant women.</label>
-                        <label><input type="radio" name="t1-q9" value="D"> D. Educating the entire population on malaria symptoms.</label>
-                    </div>
-                </div>
-                <!-- Question 10 -->
-                <div class="question">
-                    <p>10. A researcher finds an association between owning a smartphone and higher viral suppression rates in HIV patients. They conclude that "smartphones cause viral suppression." Why is this potentially flawed?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t1-q10" value="A" required> A. Because it is an interventional study.</label>
-                        <label><input type="radio" name="t1-q10" value="B"> B. Because association does not prove causation; there may be "confounders" (e.g., higher income).</label>
-                        <label><input type="radio" name="t1-q10" value="C"> C. Because the denominator is too large.</label>
-                        <label><input type="radio" name="t1-q10" value="D"> D. Because smartphones are not a medical exposure.</label>
-                    </div>
-                </div>
-
-                <button type="button" class="submit-btn" id="t1-submit" onclick="gradeTopicQuiz(1)">Submit Topic 1 Answers</button>
-            </form>
-            <div id="t1-results" class="results-box">
-                <h3>Topic 1 Completed Successfully!</h3>
-                <p id="t1-score-text" style="font-size: 1.75rem; font-weight: 800; margin: 0.5rem 0;"></p>
-            </div>
+    <!-- SUCCESS SCREEN CONTAINER MATCHING image_f93a68.png -->
+    <div id="success-container">
+        <div class="success-title">Quiz Completed Successfully!</div>
+        <div id="score-display" class="success-score">Score: 0 / 10 (100%)</div>
+        <div class="success-text">
+            Your answers have been securely logged into the course directors database.
         </div>
     </div>
 
-    <!-- ==================== TOPIC 2 CONTAINER ==================== -->
-    <div id="topic2-view" class="quiz-view">
-        <div class="quiz-card">
-            <div class="topic-timer-box">⏱️ TIME REMAINING: <span id="t2-timer-text">20:00</span></div>
-            <h2>Topic 2: The Epidemiological Focus</h2>
-            <form id="form-t2">
-                <!-- Question 1 -->
-                <div class="question">
-                    <p>1. During a COVID-19 pandemic wave, a hospital system decides to report both "PCR-confirmed cases" and "clinically-diagnosed cases (based on symptoms and imaging)." Why is this distinction vital for epidemiological reporting?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t2-q1" value="A" required> A. Because laboratory tests are always less accurate than clinical symptoms.</label>
-                        <label><input type="radio" name="t2-q1" value="B"> B. Because the two numerators are built on different case definitions and cannot be aggregated as one without creating a reporting artifact.</label>
-                        <label><input type="radio" name="t2-q1" value="C"> C. Because confirmed cases are only for research, while suspected cases are for patient care.</label>
-                        <label><input type="radio" name="t2-q1" value="D"> D. Because the population at risk for COVID-19 changes based on the test type.</label>
-                    </div>
-                </div>
-                <!-- Question 2 -->
-                <div class="question">
-                    <p>2. A researcher is studying "New-Onset Type 2 Diabetes" in an HIV cohort. Which of the following would be an appropriate "boundary" for this case definition?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t2-q2" value="A" required> A. Excluding patients who were already diagnosed with Type 2 Diabetes at the time of their HIV diagnosis.</label>
-                        <label><input type="radio" name="t2-q2" value="B"> B. Including any patient who visited the clinic once, regardless of their blood glucose level.</label>
-                        <label><input type="radio" name="t2-q2" value="C"> C. Counting every single blood glucose measurement as a separate case.</label>
-                        <label><input type="radio" name="t2-q2" value="D"> D. Including all patients with a history of hypertension.</label>
-                    </div>
-                </div>
-                <!-- Question 3 -->
-                <div class="question">
-                    <p>3. In the 2014–2016 West African Ebola outbreak, the case definition was updated multiple times to include "probable cases" in rural areas where laboratory testing was unavailable. What was the primary risk of this broader definition?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t2-q3" value="A" required> A. It would lead to an underestimation of the true mortality rate.</label>
-                        <label><input type="radio" name="t2-q3" value="B"> B. It would lead to an over-counting of cases (inflating the incidence estimate).</label>
-                        <label><input type="radio" name="t2-q3" value="C"> C. It would make it impossible to use person-time denominators.</label>
-                        <label><input type="radio" name="t2-q3" value="D"> D. It would change the geographic place of the outbreak.</label>
-                    </div>
-                </div>
-                <!-- Question 4 -->
-                <div class="question">
-                    <p>4. When studying cervical cancer incidence in Zimbabwe, you use the "total resident female population" as the denominator. Why is this an "imperfect proxy" for the population at risk?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t2-q4" value="A" required> A. Because it includes women who have had a hysterectomy and are no longer at risk for cervical cancer.</label>
-                        <label><input type="radio" name="t2-q4" value="B"> B. Because cancer registry data is always 100% accurate.</label>
-                        <label><input type="radio" name="t2-q4" value="C"> C. Because cancer incidence is not a health-related event.</label>
-                        <label><input type="radio" name="t2-q4" value="D"> D. Because the denominator must be smaller than the numerator.</label>
-                    </div>
-                </div>
-                <!-- Question 5 -->
-                <div class="question">
-                    <p>5. You are tracking recurrent Malaria episodes in a community. If you define your "unit of analysis" as the person rather than the episode, what will your study measure?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t2-q5" value="A" required> A. The total burden of malaria transmission in the region.</label>
-                        <label><input type="radio" name="t2-q5" value="B"> B. The number of people who have ever had malaria, regardless of how many times they were re-infected.</label>
-                        <label><input type="radio" name="t2-q5" value="C"> C. The incidence rate of malaria per person-year.</label>
-                        <label><input type="radio" name="t2-q5" value="D"> D. The clinical severity of malaria cases.</label>
-                    </div>
-                </div>
-                <!-- Question 6 -->
-                <div class="question">
-                    <p>6. Which of the following best describes the "epidemiological population" (as opposed to a demographic one) for a study of drug resistance in an HIV clinic?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t2-q6" value="A" required> A. All residents of the city where the clinic is located.</label>
-                        <label><input type="radio" name="t2-q6" value="B"> B. All patients currently enrolled in the clinic’s ART program who meet the study’s inclusion criteria.</label>
-                        <label><input type="radio" name="t2-q6" value="C"> C. The total number of people in the country living with HIV.</label>
-                        <label><input type="radio" name="t2-q6" value="D"> D. The registered voters in the clinic's district.</label>
-                    </div>
-                </div>
-                <!-- Question 7 -->
-                <div class="question">
-                    <p>7. In Snow’s 1854 cholera study, what was the "Exposure" and what was the "Outcome"?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t2-q7" value="A" required> A. Exposure: Drinking water from the Broad Street pump; Outcome: Cholera death.</label>
-                        <label><input type="radio" name="t2-q7" value="B"> B. Exposure: Cholera death; Outcome: Drinking water from the Broad Street pump.</label>
-                        <label><input type="radio" name="t2-q7" value="C"> C. Exposure: Living in London; Outcome: Being a physician.</label>
-                        <label><input type="radio" name="t2-q7" value="D"> D. Exposure: The Broad Street pump; Outcome: The Soho district.</label>
-                    </div>
-                </div>
-                <!-- Question 8 -->
-                <div class="question">
-                    <p>8. An HIV study reports a "10% increase in cases" over 6 months but fails to define if the unit is "new patients" or "visits." Why is this a pitfall?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t2-q8" value="A" required> A. Because "visits" conflates frequency with prevalence; the same person can have multiple visits.</label>
-                        <label><input type="radio" name="t2-q8" value="B"> B. Because HIV cases can only be measured in episodes.</label>
-                        <label><input type="radio" name="t2-q8" value="C"> C. Because "visits" is not a valid epidemiological term.</label>
-                        <label><input type="radio" name="t2-q8" value="D"> D. Because HIV cases cannot increase over 6 months.</label>
-                    </div>
-                </div>
-                <!-- Question 9 -->
-                <div class="question">
-                    <p>9. When defining the "Time" element in a person-place-time description for a chronic condition like Cancer, why is a specific calendar period required?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t2-q9" value="A" required> A. Because cancer can only be diagnosed on certain days of the week.</label>
-                        <label><input type="radio" name="t2-q9" value="B"> B. Because cancer registry coverage and diagnostic technology improve over time, affecting case detection rates.</label>
-                        <label><input type="radio" name="t2-q9" value="C"> C. Because cancer is a contagious disease that spreads like cholera.</label>
-                        <label><input type="radio" name="t2-q9" value="D"> D. Time is irrelevant to chronic disease studies.</label>
-                    </div>
-                </div>
-                <!-- Question 10 -->
-                <div class="question">
-                    <p>10. If you are comparing breast cancer rates between two different provinces, what must you ensure regarding the "Case Definition"?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t2-q10" value="A" required> A. That both provinces use the exact same diagnostic rules (e.g. using biopsy).</label>
-                        <label><input type="radio" name="t2-q10" value="B"> B. That both provinces have the same exact number of hospitals.</label>
-                        <label><input type="radio" name="t2-q10" value="C"> C. That both provinces have the same average temperature.</label>
-                        <label><input type="radio" name="t2-q10" value="D"> D. That the study only counts women who have never had children.</label>
-                    </div>
-                </div>
-
-                <button type="button" class="submit-btn" id="t2-submit" onclick="gradeTopicQuiz(2)">Submit Topic 2 Answers</button>
-            </form>
-            <div id="t2-results" class="results-box">
-                <h3>Topic 2 Completed Successfully!</h3>
-                <p id="t2-score-text" style="font-size: 1.75rem; font-weight: 800; margin: 0.5rem 0;"></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== TOPIC 3 CONTAINER ==================== -->
-    <div id="topic3-view" class="quiz-view">
-        <div class="quiz-card">
-            <div class="topic-timer-box">⏱️ TIME REMAINING: <span id="t3-timer-text">20:00</span></div>
-            <h2>Topic 3: Using Routine Health Data for Research</h2>
-            <form id="form-t3">
-                <!-- Question 1 -->
-                <div class="question">
-                    <p>1. A researcher at a Harare clinic conducts a cross-sectional study on HIV-positive patients. They find that 120 out of 600 patients currently have a detectable viral load. What is the correct measure of this occurrence?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t3-q1" value="A" required> A. Incidence rate of viral non-suppression.</label>
-                        <label><input type="radio" name="t3-q1" value="B"> B. Point prevalence of detectable viral load.</label>
-                        <label><input type="radio" name="t3-q1" value="C"> C. 12-month incidence risk of treatment failure.</label>
-                        <label><input type="radio" name="t3-q1" value="D"> D. Odds ratio of viral suppression.</label>
-                    </div>
-                </div>
-                <!-- Question 2 -->
-                <div class="question">
-                    <p>2. In an Ebola outbreak, 50 people were initially exposed. Over 21 days, 15 developed symptoms. Assuming all 50 were followed for the entire period, what measure is most appropriate?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t3-q2" value="A" required> A. Point prevalence.</label>
-                        <label><input type="radio" name="t3-q2" value="B"> B. Incidence rate (person-time).</label>
-                        <label><input type="radio" name="t3-q2" value="C"> C. Incidence risk (cumulative incidence).</label>
-                        <label><input type="radio" name="t3-q2" value="D"> D. Odds of exposure.</label>
-                    </div>
-                </div>
-                <!-- Question 3 -->
-                <div class="question">
-                    <p>3. When calculating the mortality rate of a dynamic HIV cohort at Parirenyatwa OI, why is a person-time denominator (e.g., deaths per 1,000 person-years) used instead of a simple proportion of deaths divided by total patients enrolled?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t3-q3" value="A" required> A. Because deaths are rare events and need to be scaled up.</label>
-                        <label><input type="radio" name="t3-q3" value="B"> B. Because patients enrolled at different times and had variable lengths of follow-up.</label>
-                        <label><input type="radio" name="t3-q3" value="C"> C. Because the study is a case-control design, which requires person-time.</label>
-                        <label><input type="radio" name="t3-q3" value="D"> D. Because simple proportions cannot be converted into percentages.</label>
-                    </div>
-                </div>
-                <!-- Question 4 -->
-                <div class="question">
-                    <p>4. A study finds the prevalence of metabolic syndrome in a Zimbabwean clinic is 22%. A researcher uses logistic regression to analyse this and reports an Odds Ratio (OR) of 4.5. Why is it important to note the high prevalence in this study?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t3-q4" value="A" required> A. High prevalence means the odds ratio is likely an identical estimate to the risk ratio.</label>
-                        <label><input type="radio" name="t3-q4" value="B"> B. Logistic regression cannot be used if prevalence is above 10%.</label>
-                        <label><input type="radio" name="t3-q4" value="C"> C. Because prevalence is high, the OR will significantly overestimate the risk ratio (the rare-disease approximation does not apply).</label>
-                        <label><input type="radio" name="t3-q4" value="D"> D. Odds ratios are only valid when prevalence is exactly 50%.</label>
-                    </div>
-                </div>
-                <!-- Question 5 -->
-                <div class="question">
-                    <p>5. During a cholera outbreak in Zimbabwe, an epidemiologist calculates the attack rate as 228 per 100,000. Which of the following best describes this measure?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t3-q5" value="A" required> A. A point prevalence snapshot.</label>
-                        <label><input type="radio" name="t3-q5" value="B"> B. A true rate with time in the denominator.</label>
-                        <label><input type="radio" name="t3-q5" value="C"> C. A period measure of cumulative incidence (incidence risk).</label>
-                        <label><input type="radio" name="t3-q5" value="D"> D. An odds ratio of infection.</label>
-                    </div>
-                </div>
-                <!-- Question 6 -->
-                <div class="question">
-                    <p>6. A study in Zambia follows a cohort of 500 patients at high risk for STIs. Because some patients are lost to follow-up at different times, the researchers use a person-time denominator to report 15 new infections over 1,200 person-years. What is the incidence rate?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t3-q6" value="A" required> A. 1.25 per 100 person-years.</label>
-                        <label><input type="radio" name="t3-q6" value="B"> B. 3.0 per 100 person-years.</label>
-                        <label><input type="radio" name="t3-q6" value="C"> C. 12.5 per 1,000 person-years.</label>
-                        <label><input type="radio" name="t3-q6" value="D"> D. 0.015 per person-year.</label>
-                    </div>
-                </div>
-                <!-- Question 7 -->
-                <div class="question">
-                    <p>7. According to the "Bathtub Principle" (P ≈ I × D), what is the most likely reason why HIV prevalence in Zimbabwe remains high even though the annual incidence (new cases) has decreased?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t3-q7" value="A" required> A. The drain (deaths/cures) has become faster.</label>
-                        <label><input type="radio" name="t3-q7" value="B"> B. Incidence has increased drastically.</label>
-                        <label><input type="radio" name="t3-q7" value="C"> C. ART has significantly increased the average duration (D) of the disease.</label>
-                        <label><input type="radio" name="t3-q7" value="D"> D. The bathtub principle does not apply to viral infections.</label>
-                    </div>
-                </div>
-                <!-- Question 8 -->
-                <div class="question">
-                    <p>8. In a study comparing NCD prevalence (e.g., hypertension) between two urban populations with very different age structures, why should researchers use standardized rates?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t3-q8" value="A" required> A. Because raw crude rates can be misleading due to the confounding effect of age.</label>
-                        <label><input type="radio" name="t3-q8" value="B"> B. Because standardized rates are always higher than crude rates.</label>
-                        <label><input type="radio" name="t3-q8" value="C"> C. Because standardized rates do not require a denominator.</label>
-                        <label><input type="radio" name="t3-q8" value="D"> D. Because age does not influence hypertension.</label>
-                    </div>
-                </div>
-                <!-- Question 9 -->
-                <div class="question">
-                    <p>9. When reporting the results of an STI study, a researcher writes, "The prevalence rate was 15%." Why is this technically incorrect?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t3-q9" value="A" required> A. Prevalence should be expressed as an odds ratio.</label>
-                        <label><input type="radio" name="t3-q9" value="B"> B. Prevalence is a proportion (0–1), whereas a true rate has time in the denominator.</label>
-                        <label><input type="radio" name="t3-q9" value="C"> C. Rates must always be expressed as decimals, not percentages.</label>
-                        <label><input type="radio" name="t3-q9" value="D"> D. Prevalence is only applicable to non-communicable diseases.</label>
-                    </div>
-                </div>
-                <!-- Question 10 -->
-                <div class="question">
-                    <p>10. You are investigating a new, rare neurological condition in a clinical cohort. You have 10,000 disease-free people at baseline. After 5 years of fixed follow-up with no losses, 5 people develop the condition. What is the best measure to report?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t3-q10" value="A" required> A. Incidence rate of 0.0005 per person-year.</label>
-                        <label><input type="radio" name="t3-q10" value="B"> B. Incidence risk (cumulative incidence) of 0.05%.</label>
-                        <label><input type="radio" name="t3-q10" value="C"> C. Point prevalence of 0.05%.</label>
-                        <label><input type="radio" name="t3-q10" value="D"> D. The odds of having the condition at baseline.</label>
-                    </div>
-                </div>
-
-                <button type="button" class="submit-btn" id="t3-submit" onclick="gradeTopicQuiz(3)">Submit Topic 3 Answers</button>
-            </form>
-            <div id="t3-results" class="results-box">
-                <h3>Topic 3 Completed Successfully!</h3>
-                <p id="t3-score-text" style="font-size: 1.75rem; font-weight: 800; margin: 0.5rem 0;"></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== TOPIC 4 CONTAINER ==================== -->
-    <div id="topic4-view" class="quiz-view">
-        <div class="quiz-card">
-            <div class="topic-timer-box">⏱️ TIME REMAINING: <span id="t4-timer-text">20:00</span></div>
-            <h2>Topic 4: Data Quality, Validation, and Record Linkage</h2>
-            <form id="form-t4">
-                <!-- Question 1 -->
-                <div class="question">
-                    <p>1. Which of the following is a primary limitation when using routine health data compared to purpose-built data collection?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t4-q1" value="A" required> A. Routine data are usually more expensive to access than conducting a bespoke survey.</label>
-                        <label><input type="radio" name="t4-q1" value="B"> B. The researcher has no control over what variables were measured or how they were defined.</label>
-                        <label><input type="radio" name="t4-q1" value="C"> C. Routine data systems cannot be used for analytical research, only descriptive.</label>
-                        <label><input type="radio" name="t4-q1" value="D"> D. Routine data lack demographic information entirely.</label>
-                    </div>
-                </div>
-                <!-- Question 2 -->
-                <div class="question">
-                    <p>2. In the context of calculating incidence rates using routine data, what does the 'person-time at risk' approximation represent?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t4-q2" value="A" required> A. An estimate of the population at risk over the study duration, assuming a stable population.</label>
-                        <label><input type="radio" name="t4-q2" value="B"> B. The population at the end of the study period.</label>
-                        <label><input type="radio" name="t4-q2" value="C"> C. The total number of new cases identified during the period.</label>
-                        <label><input type="radio" name="t4-q2" value="D"> D. The exact number of days each participant contributed to the study.</label>
-                    </div>
-                </div>
-                <!-- Question 3 -->
-                <div class="question">
-                    <p>3. Why is record linkage often necessary for studies involving populations living with HIV and cancer?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t4-q3" value="A" required> A. HIV clinics and cancer registries are usually located in the same building.</label>
-                        <label><input type="radio" name="t4-q3" value="B"> B. Cancer registries are not allowed to collect data unless it is linked to an HIV database.</label>
-                        <label><input type="radio" name="t4-q3" value="C"> C. Record linkage is required by law for all HIV patients.</label>
-                        <label><input type="radio" name="t4-q3" value="D"> D. Clinical ART records often lack information about cancer diagnoses made at different facilities.</label>
-                    </div>
-                </div>
-                <!-- Question 4 -->
-                <div class="question">
-                    <p>4. When comparing rates between two populations with different age structures, why is it recommended to use standardised rates?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t4-q4" value="A" required> A. Because raw crude rates can be misleading if the population age distributions differ.</label>
-                        <label><input type="radio" name="t4-q4" value="B"> B. To eliminate the need for a numerator.</label>
-                        <label><input type="radio" name="t4-q4" value="C"> C. Standardised rates are always higher than crude rates.</label>
-                        <label><input type="radio" name="t4-q4" value="D"> D. Standardised rates are required only when the study is purpose-built.</label>
-                    </div>
-                </div>
-                <!-- Question 5 -->
-                <div class="question">
-                    <p>5. Which of the following is a primary challenge when performing record linkage?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t4-q5" value="A" required> A. The inability to use identifiers to link records.</label>
-                        <label><input type="radio" name="t4-q5" value="B"> B. Ensuring that the study is performed only on purpose-built datasets.</label>
-                        <label><input type="radio" name="t4-q5" value="C"> C. Managing discordance where the same variable is recorded differently in separate sources.</label>
-                        <label><input type="radio" name="t4-q5" value="D"> D. The requirement for an exact, 100% match on all demographic fields.</label>
-                    </div>
-                </div>
-                <!-- Question 6 -->
-                <div class="question">
-                    <p>6. Why is 'completeness' a critical interpretation question when evaluating a routine data source?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t4-q6" value="A" required> A. It determines whether the data capture all intended cases or events in the population.</label>
-                        <label><input type="radio" name="t4-q6" value="B"> B. It prevents the need for manual clerical review in linkage projects.</label>
-                        <label><input type="radio" name="t4-q6" value="C"> C. It ensures that the confidentiality of the patients is maintained.</label>
-                        <label><input type="radio" name="t4-q6" value="D"> D. It measures how quickly the data can be updated during an outbreak.</label>
-                    </div>
-                </div>
-                <!-- Question 7 -->
-                <div class="question">
-                    <p>7. Why is 'case definition' considered a risk for consistency in routine data?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t4-q7" value="A" required> A. Because routine data only allows for one case definition per disease.</label>
-                        <label><input type="radio" name="t4-q7" value="B"> B. Because cases are always defined by the researchers themselves.</label>
-                        <label><input type="radio" name="t4-q7" value="C"> C. Because clinical definitions change over time, which can alter case counts.</label>
-                        <label><input type="radio" name="t4-q7" value="D"> D. Because case definitions must be the same for all types of diseases.</label>
-                    </div>
-                </div>
-                <!-- Question 8 -->
-                <div class="question">
-                    <p>8. If the MoHCC updates the case definition for "suspected cholera" to include broader, milder symptoms, what is the most likely impact on reported data?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t4-q8" value="A" required> A. The reported incidence will likely rise due to the change in definition (reporting artifact).</label>
-                        <label><input type="radio" name="t4-q8" value="B"> B. The reported incidence will decrease because fewer people will be tested.</label>
-                        <label><input type="radio" name="t4-q8" value="C"> C. The case definition has no impact on reported incidence rates.</label>
-                        <label><input type="radio" name="t4-q8" value="D"> D. The mortality rate will artificially spike to 100%.</label>
-                    </div>
-                </div>
-                <!-- Question 9 -->
-                <div class="question">
-                    <p>9. What is the primary technical obstacle to linking a patient’s public ART record (in DHIS2) with their private oncology treatment record?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t4-q9" value="A" required> A. The lack of a universal, unique national health identifier across the public and private sectors.</label>
-                        <label><input type="radio" name="t4-q9" value="B"> B. The public and private sectors use different programming languages for their websites.</label>
-                        <label><input type="radio" name="t4-q9" value="C"> C. Cancer records are classified as "top secret" by the Ministry of Health.</label>
-                        <label><input type="radio" name="t4-q9" value="D"> D. Private doctors are legally forbidden from using computers for patient records.</label>
-                    </div>
-                </div>
-                <!-- Question 10 -->
-                <div class="question">
-                    <p>10. When a health manager observes a sudden, implausible spike in a specific facility's report within DHIS2, what is the best first step in the data validation process?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t4-q10" value="A" required> A. Automatically adjust the data to the national average.</label>
-                        <label><input type="radio" name="t4-q10" value="B"> B. Flag the facility for a formal, large-scale audit.</label>
-                        <label><input type="radio" name="t4-q10" value="C"> C. Verify the digital input against the source paper-based facility register.</label>
-                        <label><input type="radio" name="t4-q10" value="D"> D. Discard the report and exclude that facility from the national dataset.</label>
-                    </div>
-                </div>
-
-                <button type="button" class="submit-btn" id="t4-submit" onclick="gradeTopicQuiz(4)">Submit Topic 4 Answers</button>
-            </form>
-            <div id="t4-results" class="results-box">
-                <h3>Topic 4 Completed Successfully!</h3>
-                <p id="t4-score-text" style="font-size: 1.75rem; font-weight: 800; margin: 0.5rem 0;"></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== TOPIC 5 CONTAINER ==================== -->
-    <div id="topic5-view" class="quiz-view">
-        <div class="quiz-card">
-            <div class="topic-timer-box">⏱️ TIME REMAINING: <span id="t5-timer-text">20:00</span></div>
-            <h2>Topic 5: Measures of Effect and Impact</h2>
-            <form id="form-t5">
-                <!-- Question 1 -->
-                <div class="question">
-                    <p>1. A PrEP program in Bulawayo followed two groups of women for one year:</p>
-                    <table class="math-table">
-                        <thead><tr><th>Group</th><th>New HIV infections</th><th>Total women</th></tr></thead>
-                        <tbody>
-                            <tr><td>PrEP users</td><td>18</td><td>600</td></tr>
-                            <tr><td>No PrEP</td><td>45</td><td>500</td></tr>
-                        </tbody>
-                    </table>
-                    <p>Which statement correctly outlines the Risk Ratio (RR) outcome calculation profile?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t5-q1" value="A" required> A. Risk Ratio is 0.75; PrEP offers no substantial population tier reduction value.</label>
-                        <label><input type="radio" name="t5-q1" value="B"> B. Risk Ratio is 0.33; users on PrEP experienced 0.33 times the risk of HIV acquisition compared to non-users.</label>
-                        <label><input type="radio" name="t5-q1" value="C"> C. Risk Ratio is 2.67; PrEP acts as a primary hazard profile marker.</label>
-                        <label><input type="radio" name="t5-q1" value="D"> D. Risk Ratio is 1.25; outcomes indicate equivalent performance windows.</label>
-                    </div>
-                </div>
-                <!-- Question 2 -->
-                <div class="question">
-                    <p>2. During a cholera outbreak in Harare, 120 new cases occurred during 6,000 person-days of observation. Expressed per 1,000 person-days, what is the incidence rate?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t5-q2" value="A" required> A. 2 cases per 1,000 person-days</label>
-                        <label><input type="radio" name="t5-q2" value="B"> B. 12 cases per 1,000 person-days</label>
-                        <label><input type="radio" name="t5-q2" value="C"> C. 20 cases per 1,000 person-days</label>
-                        <label><input type="radio" name="t5-q2" value="D"> D. 50 cases per 1,000 person-days</label>
-                    </div>
-                </div>
-                <!-- Question 3 -->
-                <div class="question">
-                    <p>3. A screening campaign in Zimbabwe examined 2,500 adults. 350 participants already had diabetes. Which measure is being calculated and what is its value?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t5-q3" value="A" required> A. Incidence; 14%</label>
-                        <label><input type="radio" name="t5-q3" value="B"> B. Risk Ratio; 3.5</label>
-                        <label><input type="radio" name="t5-q3" value="C"> C. Prevalence; 14%</label>
-                        <label><input type="radio" name="t5-q3" value="D"> D. Rate Difference; 0.14 cases per person-year</label>
-                    </div>
-                </div>
-                <!-- Question 4 -->
-                <div class="question">
-                    <p>4. During an Ebola outbreak, data collected indicates: Vaccinated: 30 deaths / 150 patients; Unvaccinated: 96 deaths / 200 patients. Which statement is correct?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t5-q4" value="A" required> A. Risk Ratio is 0.80, and Risk Difference indicates an extra 10 deaths per 100 patients.</label>
-                        <label><input type="radio" name="t5-q4" value="B"> B. Risk Ratio is 0.42, and Risk Difference indicates 28 fewer deaths per 100 vaccinated patients.</label>
-                        <label><input type="radio" name="t5-q4" value="C"> C. Risk Ratio is 2.38, showing higher vaccine risk vulnerabilities.</label>
-                        <label><input type="radio" name="t5-q4" value="D"> D. Risk Ratio is 1.00, proving zero biological efficacy advantage.</label>
-                    </div>
-                </div>
-                <!-- Question 5 -->
-                <div class="question">
-                    <p>5. A case-control study investigated multiple sexual partners and syphilis, yielding: Cases with multiple partners = 80; Controls with multiple partners = 120; Cases with one partner = 40; Controls with one partner = 160. Calculate the Odds Ratio (OR).</p>
-                    <div class="options">
-                        <label><input type="radio" name="t5-q5" value="A" required> A. OR = 1.33</label>
-                        <label><input type="radio" name="t5-q5" value="B"> B. OR = 2.67</label>
-                        <label><input type="radio" name="t5-q5" value="C"> C. OR = 4.00</label>
-                        <label><input type="radio" name="t5-q5" value="D"> D. OR = 0.37</label>
-                    </div>
-                </div>
-                <!-- Question 6 -->
-                <div class="question">
-                    <p>6. A clinic in Lusaka reports: Risk of stroke without treatment = 10%; Risk of stroke with treatment = 5%. What is the Number Needed to Treat (NNT)?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t5-q6" value="A" required> A. NNT = 5</label>
-                        <label><input type="radio" name="t5-q6" value="B"> B. NNT = 10</label>
-                        <label><input type="radio" name="t5-q6" value="C"> C. NNT = 20</label>
-                        <label><input type="radio" name="t5-q6" value="D"> D. NNT = 50</label>
-                    </div>
-                </div>
-                <!-- Question 7 -->
-                <div class="question">
-                    <p>7. A district reports: Cholera prevalence = 4%; Cholera incidence = 1.5 cases per 1,000 person-weeks. Which statement is correct?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t5-q7" value="A" required> A. Prevalence measures new cases.</label>
-                        <label><input type="radio" name="t5-q7" value="B"> B. Incidence measures existing cases.</label>
-                        <label><input type="radio" name="t5-q7" value="C"> C. Prevalence is a snapshot of existing disease.</label>
-                        <label><input type="radio" name="t5-q7" value="D"> D. Risk always has units of person-time.</label>
-                    </div>
-                </div>
-                <!-- Question 8 -->
-                <div class="question">
-                    <p>8. A district reports: HIV prevalence = 20%; TB Risk Ratio among people living with HIV = 15. Which measure estimates the proportion of TB cases in the population attributable to HIV?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t5-q8" value="A" required> A. Risk Ratio</label>
-                        <label><input type="radio" name="t5-q8" value="B"> B. Odds Ratio</label>
-                        <label><input type="radio" name="t5-q8" value="C"> C. Population Attributable Fraction (PAF)</label>
-                        <label><input type="radio" name="t5-q8" value="D"> D. Incidence Rate</label>
-                    </div>
-                </div>
-                <!-- Question 9 -->
-                <div class="question">
-                    <p>9. Researchers report: Risk Ratio = 1.6; Odds Ratio = 1.9. The disease occurs in 30% of participants. Why is the Odds Ratio larger?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t5-q9" value="A" required> A. OR is always larger by default definition settings.</label>
-                        <label><input type="radio" name="t5-q9" value="B"> B. OR equals RR.</label>
-                        <label><input type="radio" name="t5-q9" value="C"> C. The outcome is common, so the OR overestimates the risk ratio.</label>
-                        <label><input type="radio" name="t5-q9" value="D"> D. RR was calculated incorrectly.</label>
-                    </div>
-                </div>
-                <!-- Question 10 -->
-                <div class="question">
-                    <p>10. Match the scenario to its measure: 1. Existing diabetes cases today; 2. New HIV infections over one year; 3. Cholera cases per 1,000 person-days.</p>
-                    <div class="options">
-                        <label><input type="radio" name="t5-q10" value="A" required> A. 1: Risk; 2: Rate; 3: Prevalence</label>
-                        <label><input type="radio" name="t5-q10" value="B"> B. 1: Prevalence; 2: Risk; 3: Incidence Rate</label>
-                        <label><input type="radio" name="t5-q10" value="C"> C. 1: Incidence Rate; 2: Prevalence; 3: Risk</label>
-                        <label><input type="radio" name="t5-q10" value="D"> D. 1: Prevalence; 2: Incidence Rate; 3: Risk</label>
-                    </div>
-                </div>
-
-                <button type="button" class="submit-btn" id="t5-submit" onclick="gradeTopicQuiz(5)">Submit Topic 5 Answers</button>
-            </form>
-            <div id="t5-results" class="results-box">
-                <h3>Topic 5 Completed Successfully!</h3>
-                <p id="t5-score-text" style="font-size: 1.75rem; font-weight: 800; margin: 0.5rem 0;"></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== TOPIC 6 CONTAINER ==================== -->
-    <div id="topic6-view" class="quiz-view">
-        <div class="quiz-card">
-            <div class="topic-timer-box">⏱️ TIME REMAINING: <span id="t6-timer-text">20:00</span></div>
-            <h2>Topic 6: Study Designs in Infectious Disease Research</h2>
-            <form id="form-t6">
-                <!-- Question 1 -->
-                <div class="question">
-                    <p>1. At Parirenyatwa Hospital in Harare, researchers follow adults newly started on ART for five years to record viral suppression, retention in care, and mortality. What study design is this?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t6-q1" value="A" required> A. Case report</label>
-                        <label><input type="radio" name="t6-q1" value="B"> B. Cross-sectional study</label>
-                        <label><input type="radio" name="t6-q1" value="C"> C. Cohort study</label>
-                        <label><input type="radio" name="t6-q1" value="D"> D. Ecological study</label>
-                    </div>
-                </div>
-                <!-- Question 2 -->
-                <div class="question">
-                    <p>2. In Mbandaka, DRC, public health teams describe the first 25 Ebola cases by age, sex, symptoms, location, and date of symptom onset during an outbreak. Because there is no comparison group, this is a descriptive case series or outbreak report.</p>
-                    <div class="options">
-                        <label><input type="radio" name="t6-q2" value="A" required> A. True</label>
-                        <label><input type="radio" name="t6-q2" value="B"> B. False</label>
-                    </div>
-                </div>
-                <!-- Question 3 -->
-                <div class="question">
-                    <p>3. At Mpilo Central Hospital, researchers compare patients who test positive for COVID-19 with patients who test negative at the same testing site, then compare previous vaccination history. What study design is this?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t6-q3" value="A" required> A. Cohort study</label>
-                        <label><input type="radio" name="t6-q3" value="B"> B. Test-negative case-control study</label>
-                        <label><input type="radio" name="t6-q3" value="C"> C. Ecological study</label>
-                        <label><input type="radio" name="t6-q3" value="D"> D. Case report</label>
-                    </div>
-                </div>
-                <!-- Question 4 -->
-                <div class="question">
-                    <p>4. At Chitungwiza Central Hospital, researchers identify pregnant women diagnosed with syphilis and pregnant women without syphilis, then look back at partner treatment, previous STI symptoms, and clinic attendance. This is a case-control study.</p>
-                    <div class="options">
-                        <label><input type="radio" name="t6-q4" value="A" required> A. True</label>
-                        <label><input type="radio" name="t6-q4" value="B"> B. False</label>
-                    </div>
-                </div>
-                <!-- Question 5 -->
-                <div class="question">
-                    <p>5. During Zimbabwe’s 2008 cholera outbreak, investigators describe suspected cholera cases by province, age group, date of onset, and deaths using routine surveillance data, without selecting controls. What study design is this?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t6-q5" value="A" required> A. Case series / descriptive outbreak report</label>
-                        <label><input type="radio" name="t6-q5" value="B"> B. Case-control study</label>
-                        <label><input type="radio" name="t6-q5" value="C"> C. Cohort study</label>
-                        <label><input type="radio" name="t6-q5" value="D"> D. Randomised controlled trial</label>
-                    </div>
-                </div>
-                <!-- Question 6 -->
-                <div class="question">
-                    <p>6. Clinicians at Marondera Hospital describe the first five admitted COVID-19 patients with severe pneumonia, including symptoms, oxygen needs, and outcomes, but include no comparison group. This is a case series.</p>
-                    <div class="options">
-                        <label><input type="radio" name="t6-q6" value="A" required> A. True</label>
-                        <label><input type="radio" name="t6-q6" value="B"> B. False</label>
-                    </div>
-                </div>
-                <!-- Question 7 -->
-                <div class="question">
-                    <p>7. During an Ebola outbreak in Beni, DRC, investigators compare confirmed Ebola cases with patients who tested negative for Ebola at the same treatment centres, then compare prior rVSV-ZEBOV vaccination. What study design is this?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t6-q7" value="A" required> A. Cross-sectional study</label>
-                        <label><input type="radio" name="t6-q7" value="B"> B. Test-negative case-control study</label>
-                        <label><input type="radio" name="t6-q7" value="C"> C. Cluster-randomised trial</label>
-                        <label><input type="radio" name="t6-q7" value="D"> D. Ecological study</label>
-                    </div>
-                </div>
-                <!-- Question 8 -->
-                <div class="question">
-                    <p>8. At Chitungwiza Central Hospital, researchers identify infants who became HIV-positive despite PMTCT services and compare them with HIV-negative infants to look back at maternal ART use and infant-feeding history. This is a cohort study.</p>
-                    <div class="options">
-                        <label><input type="radio" name="t6-q8" value="A" required> A. True</label>
-                        <label><input type="radio" name="t6-q8" value="B"> B. False</label>
-                    </div>
-                </div>
-                <!-- Question 9 -->
-                <div class="question">
-                    <p>9. At Sally Mugabe Central Hospital, researchers test antenatal clinic attendees for syphilis and collect information on age, marital status, and condom use during the same visit. What study design is this?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t6-q9" value="A" required> A. Cohort study</label>
-                        <label><input type="radio" name="t6-q9" value="B"> B. Cross-sectional study</label>
-                        <label><input type="radio" name="t6-q9" value="C"> C. Case report</label>
-                        <label><input type="radio" name="t6-q9" value="D"> D. Cluster-randomised trial</label>
-                    </div>
-                </div>
-                <!-- Question 10 -->
-                <div class="question">
-                    <p>10. During a 2017 cholera investigation in Zimbabwe, researchers compare people with confirmed cholera to neighbours without cholera and look back at drinking-water source and handwashing practices. This is a case-control study.</p>
-                    <div class="options">
-                        <label><input type="radio" name="t6-q10" value="A" required> A. True</label>
-                        <label><input type="radio" name="t6-q10" value="B"> B. False</label>
-                    </div>
-                </div>
-
-                <button type="button" class="submit-btn" id="t6-submit" onclick="gradeTopicQuiz(6)">Submit Topic 6 Answers</button>
-            </form>
-            <div id="t6-results" class="results-box">
-                <h3>Topic 6 Completed Successfully!</h3>
-                <p id="t6-score-text" style="font-size: 1.75rem; font-weight: 800; margin: 0.5rem 0;"></p>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<script>
-    // Universal Answer Key Matrix Database
-    const answerKeys = {
-        1: { q1:"B", q2:"B", q3:"C", q4:"B", q5:"B", q6:"B", q7:"C", q8:"A", q9:"C", q10:"B" },
-        2: { q1:"B", q2:"A", q3:"B", q4:"A", q5:"B", q6:"B", q7:"A", q8:"A", q9:"B", q10:"A" },
-        3: { q1:"B", q2:"C", q3:"B", q4:"C", q5:"C", q6:"A", q7:"C", q8:"A", q9:"B", q10:"B" },
-        4: { q1:"B", q2:"A", q3:"D", q4:"A", q5:"C", q6:"A", q7:"C", q8:"A", q9:"A", q10:"C" },
-        5: { q1:"B", q2:"C", q3:"C", q4:"B", q5:"B", q6:"C", q7:"C", q8:"C", q9:"C", q10:"B" },
-        6: { q1:"C", q2:"A", q3:"B", q4:"A", q5:"A", q6:"A", q7:"B", q8:"B", q9:"B", q10:"A" }
-    };
-
-    // Form Deployment Routing Endpoint Target Mapping (Shortened URL Actions Conversion Engine)
-    const googleFormRoutes = {
-        1: "https://docs.google.com/forms/d/e/1FAIpQLScf3vW-mK3uQ9O9zW-A9k-X8Z_O8A7ZcDeG9oO_A8bcGg1/formResponse", 
-        2: "https://docs.google.com/forms/d/e/1FAIpQLSfp9A2SJRtW42ES6Eg8_O8A7ZcDeG9oO_A8bcGg2/formResponse",
-        3: "https://docs.google.com/forms/d/e/1FAIpQLSdP9A2SJRtW42ES6Eg8_O8A7ZcDeG9oO_A8bcGg3/formResponse",
-        4: "https://docs.google.com/forms/d/e/1FAIpQLSdP9A2SJRtW42ES6Eg8_O8A7ZcDeG9oO_A8bcGg4/formResponse",
-        5: "https://docs.google.com/forms/d/e/1FAIpQLSdP9A2SJRtW42ES6Eg8_O8A7ZcDeG9oO_A8bcGg5/formResponse",
-        6: "https://docs.google.com/forms/d/e/1FAIpQLSdP9A2SJRtW42ES6Eg8_O8A7ZcDeG9oO_A8bcGg6/formResponse"
-    };
-
-    // State Tracking Databases
-    let timers = { 1: 1200, 2: 1200, 3: 1200, 4: 1200, 5: 1200, 6: 1200 };
-    let activeIntervals = {};
-    let statusTrackers = { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false };
-
-    function syncStudentData() {
-        // Enforces entry updates live if desired, validation checks happen on submit click patterns
-    }
-
-    function switchTopic(topicNum) {
-        // Enforce user info verification block checks before moving forward
-        const currentName = document.getElementById('globalName').value.trim();
-        const currentEmail = document.getElementById('globalEmail').value.trim();
-
-        if (topicNum > 1 && (!currentName || !currentEmail)) {
-            alert("⚠️ Please fill in your Student Name and Email Address at the top of the portal before continuing to other topics.");
-            return;
-        }
-
-        // Toggle active visual navigation tab classes
-        document.querySelectorAll('.quiz-view').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.module-nav .module-btn').forEach(btn => btn.classList.remove('active'));
-
-        document.getElementById(`topic${topicNum}-view`).classList.add('active');
-        document.getElementById(`nav-btn-${topicNum}`).classList.add('active');
-
-        // Initialize Timer only if topic hasn't been submitted or already started execution run loops
-        if (!statusTrackers[topicNum] && !activeIntervals[topicNum]) {
-            initiateTimerTracking(topicNum);
-        }
-    }
-
-    function initiateTimerTracking(num) {
-        const display = document.getElementById(`t${num}-timer-text`);
-        const box = display.closest('.topic-timer-box');
-
-        activeIntervals[num] = setInterval(() => {
-            timers[num]--;
-            let mins = Math.floor(timers[num] / 60).toString().padStart(2, '0');
-            let secs = (timers[num] % 60).toString().padStart(2, '0');
-            display.innerText = `${mins}:${secs}`;
-
-            if (timers[num] <= 180) box.classList.add('urgent');
-
-            if (timers[num] <= 0) {
-                clearInterval(activeIntervals[num]);
-                autoSubmitTopic(num);
+    <script>
+        // 1. Centralized Form Configuration Routing
+        const topicConfig = {
+            topic1: {
+                formId: "1FAIpQLSc73LAdSXamCN8fNnflvmsE61CY1LqKpyzFe4zt_rzEO8bcGg",
+                scoreEntryId: "entry.111111111", // Replace with pre-filled ID for Topic 1 Score
+                percentEntryId: "entry.222222222",
+                answerKey: { q1: "B", q2: "A" },
+                questions: [
+                    { id: "q1", text: "1. Which software is highly optimized for cleaning data frames and building clinical visuals?", options: { A: "SPSS", B: "R Language", C: "Excel" } },
+                    { id: "q2", text: "2. Missing data verification happens at which main analysis stage?", options: { A: "Data Cleaning", B: "Model Fitting", C: "Abstract Drafting" } }
+                ]
+            },
+            topic2: {
+                formId: "1FAIpQLSdBhIduHUOf8TSCjts2_Eexjx_IiBwVDc0BRuuUZnmHIYzbVQ",
+                scoreEntryId: "entry.333333333", // Replace with pre-filled ID for Topic 2 Score
+                percentEntryId: "entry.444444444",
+                answerKey: { q1: "C", q2: "B" },
+                questions: [
+                    { id: "q1", text: "1. What is the standard design for mapping longitudinal clinical paths over 48 months?", options: { A: "Cross-Sectional", B: "Ecological", C: "Prospective Cohort" } },
+                    { id: "q2", text: "2. Retrospective chart audits are primarily dependent on what trait?", options: { A: "Prospectively tracked logs", B: "Historical records registry", C: "Real-time clinical observation" } }
+                ]
+            },
+            topic3: {
+                formId: "1FAIpQLSdYNBB-uxwrcRSB3i2jdUus5eEIewSeFSeoz6XMf4yVt294LA",
+                scoreEntryId: "entry.555555555",
+                percentEntryId: "entry.666666666",
+                answerKey: { q1: "A" },
+                questions: [
+                    { id: "q1", text: "1. Prevalence measures the proportion of a population affected by a condition at a specific point in time.", options: { A: "True", B: "False" } }
+                ]
+            },
+            topic4: {
+                formId: "1FAIpQLSfeVNra8ePCurnGV54KIobxqL2mFycvn7-s8SlcOKQn1cUMCA",
+                scoreEntryId: "entry.777777777",
+                percentEntryId: "entry.888888888",
+                answerKey: { q1: "B" },
+                questions: [
+                    { id: "q1", text: "1. Person-years calculation represents what metric denominator?", options: { A: "Total crude head count", B: "Cumulative observation time at risk", C: "Median calendar years elapsed" } }
+                ]
+            },
+            topic5: {
+                formId: "1FAIpQLSfgqRQqBjW8f6z80aTXJm1EuvTRZR3y4wRYNcKokCymDux8OA",
+                scoreEntryId: "entry.999999999",
+                percentEntryId: "entry.000000000",
+                answerKey: { q1: "A" },
+                questions: [
+                    { id: "q1", text: "1. Which regression family is used when outcomes are categorized binary variables (e.g., Success vs Failure)?", options: { A: "Logistic Regression", B: "Linear Regression", C: "Poisson" } }
+                ]
+            },
+            topic6: {
+                formId: "1FAIpQLSeJxMP3d2ZizVUWNrqp99NvcHhF7WihwGmukiDLFljZXwJajQ",
+                scoreEntryId: "entry.121212121",
+                percentEntryId: "entry.343434343",
+                answerKey: { q1: "C" },
+                questions: [
+                    { id: "q1", text: "1. When reporting clinical outcomes to external evaluation monitors, transparency requires declaring what?", options: { A: "Only positive trends", B: "Anecdotal assumptions", C: "Both confidence intervals and point estimates" } }
+                ]
             }
-        }, 1000);
-    }
+        };
 
-    function autoSubmitTopic(num) {
-        if (statusTrackers[num]) return;
-        alert(`⏰ Time has expired for Topic ${num}! Your answers are being automatically compiled and scored.`);
-        gradeTopicQuiz(num, true);
-    }
+        // 2. Render Questions Dynamically based on Selection
+        function loadQuizTopic() {
+            const currentTopic = document.getElementById("topicDropdown").value;
+            const config = topicConfig[currentTopic];
+            const container = document.getElementById("questionsWrapper");
+            
+            container.innerHTML = ""; // Clear existing
 
-    function gradeTopicQuiz(num, isTimeout = false) {
-        if (statusTrackers[num]) return;
-
-        const form = document.getElementById(`form-t${num}`);
-        const currentName = document.getElementById('globalName').value.trim() || "Timeout Student";
-        const currentEmail = document.getElementById('globalEmail').value.trim() || "timeout@domain.com";
-
-        if (!isTimeout && !form.checkValidity()) {
-            form.reportValidity();
-            return;
+            config.questions.forEach(q => {
+                let questionHTML = `
+                    <div class="question-block">
+                        <p class="question-text">${q.text}</p>
+                `;
+                for (let key in q.options) {
+                    questionHTML += `
+                        <label class="option-label">
+                            <input type="radio" name="${q.id}" value="${key}" required> ${q.options[key]}
+                        </label>
+                    `;
+                }
+                questionHTML += `</div>`;
+                container.insertAdjacentHTML('beforeend', questionHTML);
+            });
         }
 
-        statusTrackers[num] = true;
-        clearInterval(activeIntervals[num]);
+        // 3. Mark Answers & Submit Behind the Scenes
+        function calculateAndSubmit(event) {
+            event.preventDefault();
 
-        // Freeze input manipulation interface elements completely
-        document.getElementById(`t${num}-submit`).disabled = true;
-        form.querySelectorAll('input[type="radio"]').forEach(radio => radio.disabled = true);
-        form.querySelector('.topic-timer-box').style.display = "none";
+            const currentTopic = document.getElementById("topicDropdown").value;
+            const config = topicConfig[currentTopic];
+            const formElement = document.getElementById('quizForm');
+            const formData = new FormData(formElement);
+            
+            let totalQuestions = Object.keys(config.answerKey).length;
+            let score = 0;
 
-        let totalScore = 0;
-        let responses = {};
-        const targetAnswers = answerKeys[num];
-
-        for (let i = 1; i <= 10; i++) {
-            const fieldName = `t${num}-q${i}`;
-            const selectedElement = form.elements[fieldName];
-            const selectedValue = selectedElement ? selectedElement.value : "";
-            responses[`q${i}`] = selectedValue;
-
-            // Highlight answers inline
-            const referenceInput = form.querySelector(`input[name="${fieldName}"]`);
-            if (referenceInput) {
-                const questionBlock = referenceInput.closest('.question');
-                if (selectedValue === targetAnswers[`q${i}`]) {
-                    totalScore++;
-                    questionBlock.classList.add('correct-ans');
-                } else {
-                    questionBlock.classList.add('wrong-ans');
+            // Grade Answers
+            for (let key in config.answerKey) {
+                if (formData.get(key) === config.answerKey[key]) {
+                    score++;
                 }
             }
+            
+            let percentage = Math.round((score / totalQuestions) * 100);
+
+            // Hide Selector UI & Reveal image_f93a68.png Match Card
+            document.getElementById("quiz-container").style.display = "none";
+            document.getElementById("score-display").innerText = `Score: ${score} / ${totalQuestions} (${percentage}%)`;
+            document.getElementById("success-container").style.display = "block";
+
+            // Push Background payload to matching Google Form target link
+            sendToGoogleForm(config, score, totalQuestions, percentage);
         }
 
-        // Output scores dynamically to interface target cards
-        const pct = (totalScore / 10) * 100;
-        document.getElementById(`t${num}-score-text`).innerText = `Score: ${totalScore} / 10 (${pct}%)${isTimeout ? ' [TIMEOUT AUTO-SUBMISSION]' : ''}`;
-        document.getElementById(`t${num}-results`).style.display = "block";
+        function sendToGoogleForm(config, score, total, percent) {
+            const formBaseURL = `https://docs.google.com/forms/d/e/${config.formId}/formResponse`;
+            
+            const trackingForm = document.createElement('form');
+            trackingForm.method = 'POST';
+            trackingForm.action = formBaseURL;
+            trackingForm.target = 'hidden_iframe'; // Halts page navigation redirects
 
-        // Transmit out data packet to destination Google Form
-        transmitDataToGoogle(num, currentName, currentEmail, totalScore, responses, isTimeout);
-    }
+            // Inject Score Column Data 
+            const scoreInput = document.createElement('input');
+            scoreInput.type = 'hidden';
+            scoreInput.name = config.scoreEntryId; 
+            scoreInput.value = `${score} / ${total}`;
+            trackingForm.appendChild(scoreInput);
 
-    function transmitDataToGoogle(topicNum, name, email, score, answers, isTimeout) {
-        const targetURL = googleFormRoutes[topicNum];
-        const payload = new URLSearchParams();
+            // Inject Percentage Column Data
+            const percentInput = document.createElement('input');
+            percentInput.type = 'hidden';
+            percentInput.name = config.percentEntryId; 
+            percentInput.value = `${percent}%`;
+            trackingForm.appendChild(percentInput);
 
-        // Standardized Field Mappings (Update these match properties based on pre-filled parameters link structures)
-        payload.append('entry.1000001', name); 
-        payload.append('entry.1000002', email);
-        payload.append('entry.1000003', `${score}/10${isTimeout ? ' (TIMEOUT)' : ''}`);
-        
-        for(let i=1; i<=10; i++){
-            payload.append(`entry.200000${i}`, answers[`q${i}`] || "No Answer");
+            document.body.appendChild(trackingForm);
+            trackingForm.submit();
+            document.body.removeChild(trackingForm);
         }
 
-        fetch(targetURL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: payload.toString()
-        }).then(() => {
-            console.log(`Topic ${topicNum} entry submission data routing captured.`);
-        }).catch(err => console.error("Transmission Error:", err));
-    }
-
-    // Default load window trigger sequences
-    window.onload = () => { switchTopic(1); };
-</script>
+        // Init on first boot
+        window.onload = loadQuizTopic;
+    </script>
 </body>
 </html>
