@@ -531,7 +531,7 @@
                     <p>7. In Snow’s 1854 cholera study, what was the "Exposure" and what was the "Outcome"?</p>
                     <div class="options">
                         <label><input type="radio" name="t2-q7" value="A" required> A. Exposure: Drinking water from the Broad Street pump; Outcome: Cholera death.</label>
-                        <label><input type="radio" name="t2-7" value="B"> B. Exposure: Cholera death; Outcome: Drinking water from the Broad Street pump.</label>
+                        <label><input type="radio" name="t2-q7" value="B"> B. Exposure: Cholera death; Outcome: Drinking water from the Broad Street pump.</label>
                         <label><input type="radio" name="t2-q7" value="C"> C. Exposure: Living in London; Outcome: Being a physician.</label>
                         <label><input type="radio" name="t2-q7" value="D"> D. Exposure: The Broad Street pump; Outcome: The Soho district.</label>
                     </div>
@@ -912,7 +912,6 @@
     </div>
 
     <!-- ==================== TOPIC 6 CONTAINER ==================== -->
-    <div id="topic4-view" class="quiz-view"> <!-- Fixed internal structural mapping mapping block assignment tracking -->
     <div id="topic6-view" class="quiz-view">
         <div class="quiz-card">
             <div class="topic-timer-box">⏱️ TIME REMAINING: <span id="t6-timer-text">20:00</span></div>
@@ -1017,7 +1016,6 @@
             </div>
         </div>
     </div>
-    </div> <!-- Structural layout closing bracket parity block context -->
 
 </div>
 
@@ -1026,10 +1024,11 @@
 
 <script>
     // 1. Centralized Routing and Identification Configuration Block Map
+    // NOTE: You must update the four entry.XXXXXX values below for each topic form to match your form's field names.
     const portalConfig = {
         1: {
             formId: "1FAIpQLSc73LAdSXamCN8fNnflvmsE61CY1LqKpyzFe4zt_rzEO8bcGg",
-            entryIds: { name: "entry.1000001", email: "entry.1000002", score: "entry.1000003", percent: "entry.1000004" }, // Replace with real prefilled column tags
+            entryIds: { name: "entry.1000001", email: "entry.1000002", score: "entry.1000003", percent: "entry.1000004" }, 
             answerKey: { "t1-q1": "B", "t1-q2": "B", "t1-q3": "D", "t1-q4": "B", "t1-q5": "B", "t1-q6": "B", "t1-q7": "C", "t1-q8": "A", "t1-q9": "C", "t1-q10": "B" }
         },
         2: {
@@ -1145,7 +1144,6 @@
         }
 
         const config = portalConfig[topicNum];
-        const formEl = document.getElementById(`form-t1`); // Maps to correct target instance elements via structural lookup
         const activeForm = document.querySelector(`#topic${topicNum}-view form`);
         const formData = new FormData(activeForm);
 
@@ -1225,5 +1223,3 @@
 </script>
 </body>
 </html>
-
-```
