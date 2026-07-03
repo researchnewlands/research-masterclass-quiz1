@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Masterclass - Topic 2 Quiz</title>
+    <style>
+        :root {
+            --primary-navy: #0f172a;       /* Deep Navy */
+            --accent-red: #dc2626;         /* Crimson Red */
+            --accent-red-hover: #b91c1c;   /* Darker Red */
+            --bg-white: #ffffff;           /* Clean White */
+            --bg-light: #f8fafc;           /* Soft Light Gray for page contrast */
+            --text-dark: #1e293b;          /* Dark Charcoal Text */
+            --text-muted: #64748b;         /* Muted Gray Text */
+            --timer-bg: #fee2e2;           /* Light Red Alert background */
+            --timer-text: #991b1b;         /* Dark Red Alert text */
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Sticky Timer Bar */
+        .timer-bar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--primary-navy);
+            color: var(--bg-white);
+            padding: 0.75rem 1.5rem;
+            text-align: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .timer-bar.urgent {
+            background-color: var(--accent-red);
+            animation: pulse 1.5s infinite;
+        }
+
+        header {
+            background-color: var(--primary-navy);
+            color: var(--bg-white);
+            padding: 2.5rem 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            border-bottom: 5px solid var(--accent-red);
+        }
+
+        .header-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .header-text h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        .header-text p {
+            margin: 0.5rem 0 0 0;
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        .clinic-logo {
+            background-color: var(--bg-white);
+            padding: 0.75rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 140px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .module-nav {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .module-btn {
+            background-color: var(--bg-white);
+            border: 2px solid var(--primary-navy);
+            color: var(--primary-navy);
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .module-btn.active {
+            background-color: var(--accent-red);
+            border-color: var(--accent-red);
+            color: var(--bg-white);
+        }
+
+        .module-btn:hover:not(.active) {
+            background-color: #f1f5f9;
+        }
+
+        .quiz-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e2e8f0;
+        }
+
+        .quiz-card h2 {
+            margin-top: 0;
+            color: var(--primary-navy);
+            font-size: 1.5rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .user-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .user-info-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .user-info-field label {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--primary-navy);
+        }
+
+        .user-info input {
+            padding: 0.75rem 1rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .user-info input:focus {
+            border-color: var(--primary-navy);
+        }
+
+        .question {
+            margin-bottom: 2.5rem;
+            padding: 1.25rem;
+            border-radius: 8px;
+            background-color: #fafafa;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .question p {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-top: 0;
+            color: var(--primary-navy);
+        }
+
+        .options label {
+            display: flex;
+            align-items: center;
+            background: var(--bg-white);
+            padding: 0.85rem 1.2rem;
+            margin: 0.6rem 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.15s ease;
+        }
+
+        .options label:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .options input {
+            margin-right: 1rem;
+            transform: scale(1.15);
+            accent-color: var(--primary-navy);
+        }
+
+        button.submit-btn {
+            background-color: var(--accent-red);
+            color: var(--bg-white);
+            border: none;
+            padding: 1.2rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+            box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);
+        }
+
+        button.submit-btn:hover {
+            background-color: var(--accent-red-hover);
+        }
+
+        button.submit-btn:disabled {
+            background-color: var(--text-muted);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #results-box {
+            display: none;
+            margin-top: 2.5rem;
+            padding: 2.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #bbf7d0;
+        }
+
+        .success { 
+            background-color: #f0fdf4; 
+            color: #166534; 
+        }
+
+        .correct-ans { 
+            background-color: #f0fdf4 !important; 
+            border: 1px solid #bbf7d0 !important;
+            border-left: 6px solid #22c55e !important; 
+        }
+        
+        .wrong-ans { 
+            background-color: #fef2f2 !important; 
+            border: 1px solid #fca5a5 !important;
+            border-left: 6px solid #ef4444 !important; 
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.85; }
+            100% { opacity: 1; }
+        }
+
+        @media (max-width: 640px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .user-info {
+                grid-template-columns: 1fr;
+            }
+            .module-nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Dynamic Sticky Timer Element -->
+<div class="timer-bar" id="timerContainer">
+    ⏱️ TIME REMAINING: <span id="countdownDisplay">20:00</span>
+</div>
+
+<header>
+    <div class="header-container">
+        <div class="header-text">
+            <h1>RESEARCH MASTERCLASS</h1>
+            <p>Grading & Evaluations</p>
+        </div>
+        <img class="clinic-logo" src="nc-logo.png" alt="Newlands Clinic Logo">
+    </div>
+</header>
+
+<div class="container">
+    <div class="module-nav">
+        <a href="index.html" class="module-btn">Topic 1: Epidemiology Fundamentals</a>
+        <a href="#" class="module-btn active">Topic 2: The Epidemiological Focus</a>
+        <button class="module-btn" onclick="alert('Topic 3 is currently being finalized.')">Topic 3</button>
+    </div>
+
+    <div class="quiz-card">
+        <h2>Topic 2: The Epidemiological Focus</h2>
+        
+        <form id="quizForm">
+            <div class="user-info">
+                <div class="user-info-field">
+                    <label for="studentName">Student Full Name</label>
+                    <input type="text" id="studentName" placeholder="e.g. Rumbidzai Moyo" required>
+                </div>
+                <div class="user-info-field">
+                    <label for="studentEmail">Email Address</label>
+                    <input type="email" id="studentEmail" placeholder="e.g. rumbimoyo@domain.com" required>
+                </div>
+            </div>
+
+            <!-- Question 1 -->
+            <div class="question" id="q1-meta">
+                <p>1. During a COVID-19 pandemic wave, a hospital system decides to report both "PCR-confirmed cases" and "clinically-diagnosed cases (based on symptoms and imaging)." Why is this distinction vital for epidemiological reporting?</p>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="A" required> A. Because laboratory tests are always less accurate than clinical symptoms.</label>
+                    <label><input type="radio" name="q1" value="B"> B. Because the two numerators are built on different case definitions and cannot be aggregated as one without creating a reporting artifact.</label>
+                    <label><input type="radio" name="q1" value="C"> C. Because confirmed cases are only for research, while suspected cases are for patient care.</label>
+                    <label><input type="radio" name="q1" value="D"> D. Because the population at risk for COVID-19 changes based on the test type.</label>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question" id="q2-meta">
+                <p>2. A researcher is studying "New-Onset Type 2 Diabetes" in an HIV cohort. Which of the following would be an appropriate "boundary" for this case definition?</p>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="A" required> A. Excluding patients who were already diagnosed with Type 2 Diabetes at the time of their HIV diagnosis.</label>
+                    <label><input type="radio" name="q2" value="B"> B. Including any patient who visited the clinic once, regardless of their blood glucose level.</label>
+                    <label><input type="radio" name="q2" value="C"> C. Counting every single blood glucose measurement as a separate case.</label>
+                    <label><input type="radio" name="q2" value="D"> D. Including all patients with a history of hypertension.</label>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question" id="q3-meta">
+                <p>3. In the 2014–2016 West African Ebola outbreak, the case definition was updated multiple times to include "probable cases" in rural areas where laboratory testing was unavailable. What was the primary risk of this broader definition?</p>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="A" required> A. It would lead to an underestimation of the true mortality rate.</label>
+                    <label><input type="radio" name="q3" value="B"> B. It would lead to an over-counting of cases (inflating the incidence estimate).</label>
+                    <label><input type="radio" name="q3" value="C"> C. It would make it impossible to use person-time denominators.</label>
+                    <label><input type="radio" name="q3" value="D"> D. It would change the geographic place of the outbreak.</label>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question" id="q4-meta">
+                <p>4. When studying cervical cancer incidence in Zimbabwe, you use the "total resident female population" as the denominator. Why is this an "imperfect proxy" for the population at risk?</p>
+                <div class="options">
+                    <label><input type="radio" name="q4" value="A" required> A. Because it includes women who have had a hysterectomy and are no longer at risk for cervical cancer.</label>
+                    <label><input type="radio" name="q4" value="B"> B. Because cancer registry data is always 100% accurate.</label>
+                    <label><input type="radio" name="q4" value="C"> C. Because cancer incidence is not a health-related event.</label>
+                    <label><input type="radio" name="q4" value="D"> D. Because the denominator must be smaller than the numerator.</label>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question" id="q5-meta">
+                <p>5. You are tracking recurrent Malaria episodes in a community. If you define your "unit of analysis" as the person rather than the episode, what will your study measure?</p>
+                <div class="options">
+                    <label><input type="radio" name="q5" value="A" required> A. The total burden of malaria transmission in the region.</label>
+                    <label><input type="radio" name="q5" value="B"> B. The number of people who have ever had malaria, regardless of how many times they were re-infected.</label>
+                    <label><input type="radio" name="q5" value="C"> C. The incidence rate of malaria per person-year.</label>
+                    <label><input type="radio" name="q5" value="D"> D. The clinical severity of malaria cases.</label>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question" id="q6-meta">
+                <p>6. Which of the following best describes the "epidemiological population" (as opposed to a demographic one) for a study of drug resistance in an HIV clinic?</p>
+                <div class="options">
+                    <label><input type="radio" name="q6" value="A" required> A. All residents of the city where the clinic is located.</label>
+                    <label><input type="radio" name="q6" value="B"> B. All patients currently enrolled in the clinic’s ART program who meet the study’s inclusion criteria.</label>
+                    <label><input type="radio" name="q6" value="C"> C. The total number of people in the country living with HIV.</label>
+                    <label><input type="radio" name="q6" value="D"> D. The registered voters in the clinic's district.</label>
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="question" id="q7-meta">
+                <p>7. In Snow’s 1854 cholera study, what was the "Exposure" and what was the "Outcome"?</p>
+                <div class="options">
+                    <label><input type="radio" name="q7" value="A" required> A. Exposure: Drinking water from the Broad Street pump; Outcome: Cholera death.</label>
+                    <label><input type="radio" name="q7" value="B"> B. Exposure: Cholera death; Outcome: Drinking water from the Broad Street pump.</label>
+                    <label><input type="radio" name="q7" value="C"> C. Exposure: Living in London; Outcome: Being a physician.</label>
+                    <label><input type="radio" name="q7" value="D"> D. Exposure: The Broad Street pump; Outcome: The Soho district.</label>
+                </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="question" id="q8-meta">
+                <p>8. An HIV study reports a "10% increase in cases" over 6 months but fails to define if the unit is "new patients" or "visits." Why is this a pitfall?</p>
+                <div class="options">
+                    <label><input type="radio" name="q8" value="A" required> A. Because "visits" conflates frequency with prevalence; the same person can have multiple visits.</label>
+                    <label><input type="radio" name="q8" value="B"> B. Because HIV cases can only be measured in episodes.</label>
+                    <label><input type="radio" name="q8" value="C"> C. Because "visits" is not a valid epidemiological term.</label>
+                    <label><input type="radio" name="q8" value="D"> D. Because HIV cases cannot increase over 6 months.</label>
+                </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="question" id="q9-meta">
+                <p>9. When defining the "Time" element in a person-place-time description for a chronic condition like Cancer, why is a specific calendar period required?</p>
+                <div class="options">
+                    <label><input type="radio" name="q9" value="A" required> A. Because cancer can only be diagnosed on certain days of the week.</label>
+                    <label><input type="radio" name="q9" value="B"> B. Because cancer registry coverage and diagnostic technology improve over time, affecting case detection rates.</label>
+                    <label><input type="radio" name="q9" value="C"> C. Because cancer is a contagious disease that spreads like cholera.</label>
+                    <label><input type="radio" name="q9" value="D"> D. Time is irrelevant to chronic disease studies.</label>
+                </div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="question" id="q10-meta">
+                <p>10. If you are comparing breast cancer rates between two different provinces, what must you ensure regarding the "Case Definition"?</p>
+                <div class="options">
+                    <label><input type="radio" name="q10" value="A" required> A. That both provinces use the exact same diagnostic rules (e.g. using biopsy).</label>
+                    <label><input type="radio" name="q10" value="B"> B. That both provinces have the same exact number of hospitals.</label>
+                    <label><input type="radio" name="q10" value="C"> C. That both provinces have the same average temperature.</label>
+                    <label><input type="radio" name="q10" value="D"> D. That the study only counts women who have never had children.</label>
+                </div>
+            </div>
+
+            <button type="button" class="submit-btn" id="submitBtn" onclick="gradeQuiz(false)">Submit Answers & View Grade</button>
+        </form>
+
+        <div id="results-box" class="success">
+            <h3 id="results-title">Quiz Completed Successfully!</h3>
+            <p id="score-text" style="font-size: 1.75rem; font-weight: 800; margin: 0.5rem 0;"></p>
+            <p style="margin-top: 0; font-weight: 500;">Your answers have been securely recorded.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const targetAnswers = { q1: "B", q2: "A", q3: "B", q4: "A", q5: "B", q6: "B", q7: "A", q8: "A", q9: "B", q10: "A" };
+    
+    // Timer Configuration (20 minutes = 1200 seconds)
+    let totalTimeInSeconds = 20 * 60; 
+    let timerInterval = null;
+    let quizSubmitted = false;
+
+    // Start countdown immediately when page runs
+    function startQuizTimer() {
+        timerInterval = setInterval(() => {
+            totalTimeInSeconds--;
+            
+            let minutes = Math.floor(totalTimeInSeconds / 60);
+            let seconds = totalTimeInSeconds % 60;
+            
+            // Format time structure (e.g., 05:03)
+            let formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('countdownDisplay').innerText = formattedTime;
+
+            // Visual indicator when less than 3 minutes remain
+            if (totalTimeInSeconds <= 180) {
+                document.getElementById('timerContainer').classList.add('urgent');
+            }
+
+            // Expiration boundary check
+            if (totalTimeInSeconds <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById('countdownDisplay').innerText = "00:00";
+                forceAutoSubmit();
+            }
+        }, 1000);
+    }
+
+    function forceAutoSubmit() {
+        if (quizSubmitted) return;
+        
+        // Populate standard defaults if fields are left blank during timeout
+        if (!document.getElementById('studentName').value) {
+            document.getElementById('studentName').value = "Timeout Student";
+        }
+        if (!document.getElementById('studentEmail').value) {
+            document.getElementById('studentEmail').value = "timeout@domain.com";
+        }
+
+        document.getElementById('results-title').innerText = "⚠️ Time Expired! Automated Collection Triggered.";
+        gradeQuiz(true);
+    }
+
+    function gradeQuiz(isTimeout = false) {
+        if (quizSubmitted) return;
+
+        const form = document.getElementById('quizForm');
+        
+        // If it's a standard user click, validate form completion layout
+        if (!isTimeout && !form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        quizSubmitted = true;
+        clearInterval(timerInterval); // Terminate background processing execution
+        
+        // Disable submission controls and freeze selections
+        document.getElementById('submitBtn').disabled = true;
+        document.querySelectorAll('input[type="radio"]').forEach(radio => radio.disabled = true);
+        document.getElementById('timerContainer').style.display = "none";
+
+        let totalScore = 0;
+        const totalQuestions = 10;
+        let studentResponses = {};
+
+        for (let i = 1; i <= totalQuestions; i++) {
+            const fieldName = `q${i}`;
+            const selectedElement = form.elements[fieldName];
+            const selected = selectedElement ? selectedElement.value : "";
+            studentResponses[fieldName] = selected;
+
+            // Resolve nearest container block structure
+            const elementReference = form.querySelector(`input[name="${fieldName}"]`);
+            if (elementReference) {
+                const questionContainer = elementReference.closest('.question');
+                
+                if (selected === targetAnswers[fieldName]) {
+                    totalScore++;
+                    questionContainer.classList.add('correct-ans');
+                    questionContainer.classList.remove('wrong-ans');
+                } else {
+                    questionContainer.classList.add('wrong-ans');
+                    questionContainer.classList.remove('correct-ans');
+                }
+            }
+        }
+
+        document.getElementById('score-text').innerText = `Score: ${totalScore} / ${totalQuestions} (${(totalScore/totalQuestions)*100}%)`;
+        document.getElementById('results-box').style.display = 'block';
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+
+        sendDataToGoogleForm(
+            document.getElementById('studentName').value,
+            document.getElementById('studentEmail').value,
+            `${totalScore}/${totalQuestions}${isTimeout ? ' (TIMEOUT)' : ''}`,
+            studentResponses
+        );
+    }
+
+    function sendDataToGoogleForm(name, email, score, answers) {
+        const formID = "1FAIpQLSc73LAdSXamCN8fNnflvmsE61CY1LqKpyzFe4zt_rzEO8bcGg"; 
+        const formData = new URLSearchParams();
+        
+        formData.append('entry.1801781895', name);
+        formData.append('entry.884515740', email);
+        formData.append('entry.334207621', score);
+        formData.append('entry.1016544568', `Chosen: ${answers.q1 || 'None'} (Correct: ${targetAnswers.q1})`);
+        formData.append('entry.656783905',  `Chosen: ${answers.q2 || 'None'} (Correct: ${targetAnswers.q2})`);
+        formData.append('entry.565293679',  `Chosen: ${answers.q3 || 'None'} (Correct: ${targetAnswers.q3})`);
+        formData.append('entry.1543297465', `Chosen: ${answers.q4 || 'None'} (Correct: ${targetAnswers.q4})`);
+        formData.append('entry.1515290739', `Chosen: ${answers.q5 || 'None'} (Correct: ${targetAnswers.q5})`);
+        formData.append('entry.589365507',  `Chosen: ${answers.q6 || 'None'} (Correct: ${targetAnswers.q6})`);
+        formData.append('entry.1874149091', `Chosen: ${answers.q7 || 'None'} (Correct: ${targetAnswers.q7})`);
+        formData.append('entry.296423191',  `Chosen: ${answers.q8 || 'None'} (Correct: ${targetAnswers.q8})`);
+        formData.append('entry.118915032',  `Chosen: ${answers.q9 || 'None'} (Correct: ${targetAnswers.q9})`);
+        formData.append('entry.1857509370', `Chosen: ${answers.q10 || 'None'} (Correct: ${targetAnswers.q10})`);
+
+        fetch(`https://docs.google.com/forms/d/e/${formID}/formResponse`, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: formData.toString()
+        }).then(() => {
+            console.log("Transmission captured successfully.");
+        }).catch(err => console.error("Write error:", err));
+    }
+
+    // Initialize timer runtime entry execution loop
+    window.onload = startQuizTimer;
+</script>
+</body>
+</html>
