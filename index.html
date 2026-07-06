@@ -3,508 +3,1266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Research Masterclass Grading Dashboard</title>
+    <title>Research Masterclass Graded Quiz</title>
     <style>
         :root {
-            --primary: #1e3a8a;
-            --secondary: #0d9488;
-            --background: #f8fafc;
-            --text: #334155;
-            --card-bg: #ffffff;
+            --primary-navy: #0f172a;       /* Deep Navy */
+            --accent-red: #dc2626;         /* Crimson Red */
+            --accent-red-hover: #b91c1c;   /* Darker Red */
+            --bg-white: #ffffff;           /* Clean White */
+            --bg-light: #f8fafc;           /* Soft Light Gray */
+            --text-dark: #1e293b;          /* Dark Charcoal Text */
+            --text-muted: #64748b;         /* Muted Gray */
+            --border-color: #e2e8f0;       /* Soft border line color */
         }
+
         body {
             font-family: system-ui, -apple-system, sans-serif;
-            background-color: var(--background);
-            color: var(--text);
+            background-color: var(--bg-light);
+            color: var(--text-dark);
             line-height: 1.6;
             margin: 0;
             padding: 0;
         }
+
         header {
-            background: linear-gradient(135deg, var(--primary), #3b82f6);
-            color: white;
-            text-align: center;
-            padding: 2.5rem 1rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            background-color: var(--primary-navy);
+            color: var(--bg-white);
+            padding: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            border-bottom: 5px solid var(--accent-red);
         }
-        .container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-        .module-nav {
+
+        .header-container {
+            max-width: 1000px;
+            margin: 0 auto;
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            background: white;
-            padding: 1rem;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .header-text h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        .header-text p {
+            margin: 0.5rem 0 0 0;
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        .clinic-logo {
+            background-color: var(--bg-white);
+            padding: 0.75rem;
             border-radius: 8px;
-            box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 140px;
+            height: auto;
         }
-        .module-btn {
-            background: #e2e8f0;
-            border: none;
-            padding: 0.6rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s;
-            flex: 1 1 calc(33.333% - 0.5rem);
-            min-width: 140px;
+
+        .container {
+            max-width: 1000px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
         }
-        .module-btn.active {
-            background: var(--secondary);
-            color: white;
-        }
-        .gateway-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 4px rgb(0 0 0 / 0.05);
-            border-left: 5px solid var(--primary);
-        }
-        .quiz-view {
-            display: none;
-        }
-        .quiz-view.active {
-            display: block;
-        }
-        .quiz-card {
-            background: var(--card-bg);
+
+        /* Registration Card Box */
+        .reg-card {
+            background: var(--bg-white);
             border-radius: 12px;
             padding: 2rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 2px solid var(--primary-navy);
+            margin-bottom: 2.5rem;
         }
+
+        .reg-card h2 {
+            margin-top: 0;
+            color: var(--primary-navy);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+        }
+
         .user-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1rem;
+            gap: 1.5rem;
         }
+
+        .user-info-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .user-info-field label {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--primary-navy);
+        }
+
         .user-info input {
-            padding: 0.75rem;
-            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1rem;
+            border: 2px solid #cbd5e1;
             border-radius: 6px;
             font-size: 1rem;
-            background: #f8fafc;
+            outline: none;
+            transition: border-color 0.2s;
         }
-        .question {
-            margin-bottom: 2rem;
-            padding: 1rem;
-            border-radius: 8px;
-            transition: background 0.2s;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
+
+        .user-info input:focus {
+            border-color: var(--primary-navy);
         }
-        .question p {
-            font-weight: 600;
-            margin-top: 0;
+
+        /* 6-Topic Layout Navigation Row Grid */
+        .module-nav {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2.5rem;
         }
-        .options label {
-            display: block;
-            background: #f1f5f9;
-            padding: 0.75rem 1rem;
-            margin: 0.5rem 0;
+
+        .module-btn {
+            background-color: var(--bg-white);
+            border: 2px solid var(--primary-navy);
+            color: var(--primary-navy);
+            padding: 0.8rem 1rem;
             border-radius: 6px;
             cursor: pointer;
-            transition: background 0.2s;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-align: center;
+            transition: all 0.2s ease;
         }
+
+        .module-btn.active {
+            background-color: var(--accent-red);
+            border-color: var(--accent-red);
+            color: var(--bg-white);
+        }
+
+        .module-btn:hover:not(.active) {
+            background-color: #f1f5f9;
+        }
+
+        /* Interactive Quiz Card Blocks */
+        .quiz-view {
+            display: none; 
+        }
+
+        .quiz-view.active {
+            display: block; 
+        }
+
+        .quiz-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .quiz-card h2 {
+            margin-top: 0;
+            color: var(--primary-navy);
+            font-size: 1.6rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Topic Specific Timer Module Box Placement */
+        .topic-timer-box {
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1.2rem;
+            border-radius: 6px;
+            font-weight: 800;
+            color: var(--primary-navy);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .topic-timer-box.urgent {
+            background-color: #fee2e2;
+            border-color: #fca5a5;
+            color: #991b1b;
+            animation: pulse 1.5s infinite;
+        }
+
+        .question {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            background-color: #fafafa;
+            border: 1px solid var(--border-color);
+        }
+
+        .question p {
+            font-weight: 700;
+            margin-top: 0;
+            color: var(--primary-navy);
+            font-size: 1.05rem;
+        }
+
+        /* Flexbox table styling for mathematical questions layout columns */
+        .math-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0 1.5rem 0;
+            background: var(--bg-white);
+        }
+
+        .math-table th, .math-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+
+        .math-table th {
+            background-color: #f1f5f9;
+            color: var(--primary-navy);
+        }
+
+        .options label {
+            display: flex;
+            align-items: center;
+            background: var(--bg-white);
+            padding: 0.85rem 1.2rem;
+            margin: 0.6rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.15s ease;
+        }
+
         .options label:hover {
-            background: #e2e8f0;
+            background: #f1f5f9;
+            border-color: #cbd5e1;
         }
+
         .options input {
-            margin-right: 0.7rem;
+            margin-right: 1rem;
+            transform: scale(1.15);
+            accent-color: var(--primary-navy);
         }
+
         button.submit-btn {
-            background: var(--primary);
-            color: white;
+            background-color: var(--accent-red);
+            color: var(--bg-white);
             border: none;
-            padding: 1rem 2rem;
+            padding: 1.2rem 2rem;
             font-size: 1.1rem;
-            font-weight: bold;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
             border-radius: 6px;
             cursor: pointer;
             width: 100%;
-            transition: background 0.2s;
+            transition: background-color 0.2s;
+            box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);
         }
-        button.submit-btn:hover {
-            background: #1d4ed8;
-        }
+
+        button.submit-btn:hover { background-color: var(--accent-red-hover); }
+        button.submit-btn:disabled { background-color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
+
+        /* Success Screen Container layout matches image_f93a68.png specification */
         .results-box {
             display: none;
-            margin-top: 2rem;
-            padding: 2rem;
+            margin-top: 2.5rem;
+            padding: 3rem 2rem;
             border-radius: 8px;
             text-align: center;
+            border: 2px solid #bbf7d0;
+            background-color: #e6f4ea; 
+            color: #13522b;
         }
-        .success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
-        .correct-ans { background: #dcfce7 !important; border: 1px solid #bbf7d0; border-left: 5px solid #22c55e !important; }
-        .wrong-ans { background: #fee2e2 !important; border: 1px solid #fca5a5; border-left: 5px solid #ef4444 !important; }
+
+        .results-box h3 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
+            color: #13522b;
+        }
+
+        .results-box p.score-line {
+            font-size: 42px !important;
+            font-weight: 800;
+            margin-bottom: 25px;
+            color: #13522b;
+        }
+
+        .results-box p.desc-line {
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 1.5;
+            color: #13522b;
+        }
+
+        .correct-ans { border-left: 6px solid #22c55e !important; background-color: #f0fdf4 !important; }
+        .wrong-ans { border-left: 6px solid #ef4444 !important; background-color: #fef2f2 !important; }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.85; }
+            100% { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .module-nav { grid-template-columns: 1fr; }
+            .user-info { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
-
 <header>
-    <h1>Research Masterclass Portal</h1>
-    <p>Continuous Evaluation & Grading Modules (Topics 1-6)</p>
+    <div class="header-container">
+        <div class="header-text">
+            <h1>RESEARCH MASTERCLASS</h1>
+            <p>Graded Quiz</p>
+        </div>
+        <img class="clinic-logo" src="nc-logo.png" alt="Newlands Clinic Logo">
+    </div>
 </header>
-
 <div class="container">
-    <!-- Top Global Student Registration Gateway Card -->
-    <div class="gateway-card">
-        <h3 style="margin-top:0; margin-bottom:0.5rem; color: var(--primary);">Student Verification Gateway</h3>
-        <p style="margin:0 0 1rem 0; font-size:0.9rem; color:#64748b;">Please enter your credentials once. They apply to all quiz modules submitted below.</p>
+    
+    <!-- Central Registration Component Box Area -->
+    <div class="reg-card">
+        <h2>🔒 Student Verification Gateway</h2>
+        <p style="margin-top:0; color: var(--text-muted); font-size:0.9rem;">Please sign in here first. Your information will link automatically across all six topics.</p>
         <div class="user-info">
-            <input type="text" id="globalName" placeholder="Full Name" required>
-            <input type="email" id="globalEmail" placeholder="Email Address" required>
+            <div class="user-info-field">
+                <label for="globalName">Student Full Name</label>
+                <input type="text" id="globalName" placeholder="e.g., Jane Doe" required oninput="syncStudentData()">
+            </div>
+            <div class="user-info-field">
+                <label for="globalEmail">Email Address</label>
+                <input type="email" id="globalEmail" placeholder="e.g., student@newlandsclinic.org" required oninput="syncStudentData()">
+            </div>
         </div>
     </div>
 
-    <!-- Navigation Hub across Topics -->
+    <!-- 6-Topic Selection Grid System Row Bar -->
     <div class="module-nav">
-        <button class="module-btn active" id="nav-btn-1" onclick="switchTopic(1)">Topic 1</button>
-        <button class="module-btn" id="nav-btn-2" onclick="switchTopic(2)">Topic 2</button>
-        <button class="module-btn" id="nav-btn-3" onclick="switchTopic(3)">Topic 3</button>
-        <button class="module-btn" id="nav-btn-4" onclick="switchTopic(4)">Topic 4</button>
-        <button class="module-btn" id="nav-btn-5" onclick="switchTopic(5)">Topic 5</button>
-        <button class="module-btn" id="nav-btn-6" onclick="switchTopic(6)">Topic 6</button>
+        <button class="module-btn active" id="nav-btn-1" onclick="switchTopic(1)">Topic 1: Introduction to Fundamentals of Epidemiology</button>
+        <button class="module-btn" id="nav-btn-2" onclick="switchTopic(2)">Topic 2: Epidemiological Focus</button>
+        <button class="module-btn" id="nav-btn-3" onclick="switchTopic(3)">Topic 3: Measures of Disease Occurrence</button>
+        <button class="module-btn" id="nav-btn-4" onclick="switchTopic(4)">Topic 4: Using Routine Health Data for Research</button>
+        <button class="module-btn" id="nav-btn-5" onclick="switchTopic(5)">Topic 5: Measures of Effect and Impact</button>
+        <button class="module-btn" id="nav-btn-6" onclick="switchTopic(6)">Topic 6: Study Designs</button>
     </div>
 
-    <!-- Helper Macro Function to Generate 10 Questions For Each Topic -->
-    <!-- Note: Replace question texts and option labels below with your actual database of 60 questions -->
-    
-    <!-- ================== TOPIC 1 VIEW ================== -->
+    <!-- ==================== TOPIC 1 CONTAINER ==================== -->
     <div id="topic1-view" class="quiz-view active">
         <div class="quiz-card">
+            <div class="topic-timer-box">⏱️ TIME REMAINING: <span id="t1-timer-text">20:00</span></div>
             <h2>Topic 1: Introduction to Fundamentals of Epidemiology</h2>
-            <form id="quizForm1">
-                <!-- Generate Questions 1 to 10 for Topic 1 -->
-                <script>
-                    for(let q=1; q<=10; q++) {
-                        document.write(`
-                            <div class="question">
-                                <p>${q}. [Topic 1] Insert your full evaluation question sentence details here?</p>
-                                <div class="options">
-                                    <label><input type="radio" name="t1-q${q}" value="A" required> A. First variant answer selection choice</label>
-                                    <label><input type="radio" name="t1-q${q}" value="B"> B. Second variant answer selection choice</label>
-                                    <label><input type="radio" name="t1-q${q}" value="C"> C. Third variant answer selection choice</label>
-                                    <label><input type="radio" name="t1-q${q}" value="D"> D. Fourth variant answer selection choice</label>
-                                </div>
-                            </div>
-                        `);
-                    }
-                </script>
-                <button type="button" class="submit-btn" onclick="gradeQuiz(1)">Submit Topic 1 Answers</button>
+            <form id="form-t1">
+                <div class="question">
+                    <p>1. A study follows a cohort of HIV-positive patients at Newlands Clinic to see if their ART regimen is associated with new-onset diabetes. What is the exposure and what is the outcome?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t1-q1" value="A" required> A. Exposure: New-onset diabetes; Outcome: ART regimen</label>
+                        <label><input type="radio" name="t1-q1" value="B"> B. Exposure: ART regimen; Outcome: New-onset diabetes</label>
+                        <label><input type="radio" name="t1-q1" value="C"> C. Exposure: New-onset diabetes; Outcome: HIV status</label>
+                        <label><input type="radio" name="t1-q1" value="D"> D. Exposure: HIV status; Outcome: ART regimen</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>2. During the 2023–2024 Zimbabwe cholera outbreak, investigators compared the number of cases in districts with community water-source improvement programs versus those without. This is an example of:</p>
+                    <div class="options">
+                        <label><input type="radio" name="t1-q2" value="A" required> A. Descriptive epidemiology</label>
+                        <label><input type="radio" name="t1-q2" value="B"> B. Analytical (observational) epidemiology</label>
+                        <label><input type="radio" name="t1-q2" value="C"> C. A randomized controlled trial</label>
+                        <label><input type="radio" name="t1-q2" value="D"> D. Purely demographic reporting</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>3. A researcher reports that "Malaria prevalence among children under 5 in a rural district of Manicaland was 8% in April 2026." Which part of the "Person, Place, Time" framework is missing or vague?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t1-q3" value="A" required> A. Person</label>
+                        <label><input type="radio" name="t1-q3" value="B"> B. Place</label>
+                        <label><input type="radio" name="t1-q3" value="C"> C. Time</label>
+                        <label><input type="radio" name="t1-q3" value="D"> D. None; all three are clearly provided.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>4. A study finds that Syphilis rates are higher in urban areas compared to rural areas in Zimbabwe. To determine if area of residence is a true "risk factor" rather than just a distribution pattern, the researchers must move from:</p>
+                    <div class="options">
+                        <label><input type="radio" name="t1-q4" value="A" required> A. Analytical to Descriptive epidemiology</label>
+                        <label><input type="radio" name="t1-q4" value="B"> B. Descriptive to Analytical epidemiology</label>
+                        <label><input type="radio" name="t1-q4" value="C"> C. Interventional to Observational epidemiology</label>
+                        <label><input type="radio" name="t1-q4" value="D"> D. Population to High-risk strategy</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>5. A public health program encourages all adults in Harare to reduce salt intake to lower population-wide blood pressure levels. This is a:</p>
+                    <div class="options">
+                        <label><input type="radio" name="t1-q5" value="A" required> A. High-risk strategy</label>
+                        <label><input type="radio" name="t1-q5" value="B"> B. Population strategy</label>
+                        <label><input type="radio" name="t1-q5" value="C"> C. Case-finding study</label>
+                        <label><input type="radio" name="t1-q5" value="D"> D. Randomized trial</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>6. Why is a "case definition" (e.g., specific fever and bleeding symptoms) essential during an Ebola outbreak?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t1-q6" value="A" required> A. To ensure everyone in the country is tested.</label>
+                        <label><input type="radio" name="t1-q6" value="B"> B. To ensure the numerator (cases) is counted consistently across different provinces.</label>
+                        <label><input type="radio" name="t1-q6" value="C"> C. To determine if the virus is a NCD.</label>
+                        <label><input type="radio" name="t1-q6" value="D"> D. To eliminate the need for a denominator.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>7. A researcher notes that 12 Hantavirus cases occurred in a mountain village of 1,200 people. If they calculate 12 / 1200 = 0.01 (or 1%), what is the 1,200?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t1-q7" value="A" required> A. The incidence</label>
+                        <label><input type="radio" name="t1-q7" value="B"> B. The numerator</label>
+                        <label><input type="radio" name="t1-q7" value="C"> C. The denominator</label>
+                        <label><input type="radio" name="t1-q7" value="D"> D. The distribution</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>8. In a study where researchers randomly assign two different vaccination schedules to two groups of volunteers in Harare, what type of epidemiology is this?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t1-q8" value="A" required> A. Interventional and Analytical</label>
+                        <label><input type="radio" name="t1-q8" value="B"> B. Observational and Descriptive</label>
+                        <label><input type="radio" name="t1-q8" value="C"> C. Descriptive and Analytical</label>
+                        <label><input type="radio" name="t1-q8" value="D"> D. Observational and Interventional</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>9. Which of the following is the best example of a "High-risk strategy" for Malaria control?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t1-q9" value="A" required> A. Installing window screens in every home in the country.</label>
+                        <label><input type="radio" name="t1-q9" value="B"> B. Spraying the entire district with insecticide.</label>
+                        <label><input type="radio" name="t1-q9" value="C"> C. Providing prophylactic medication specifically to pregnant women.</label>
+                        <label><input type="radio" name="t1-q9" value="D"> D. Educating the entire population on malaria symptoms.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>10. A researcher finds an association between owning a smartphone and higher viral suppression rates in HIV patients. They conclude that "smartphones cause viral suppression." Why is this potentially flawed?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t1-q10" value="A" required> A. Because it is an interventional study.</label>
+                        <label><input type="radio" name="t1-q10" value="B"> B. Because association does not prove causation; there may be "confounders" (e.g., higher income).</label>
+                        <label><input type="radio" name="t1-q10" value="C"> C. Because the denominator is too large.</label>
+                        <label><input type="radio" name="t1-q10" value="D"> D. Because smartphones are not a medical exposure.</label>
+                    </div>
+                </div>
+                <button type="button" class="submit-btn" id="t1-submit" onclick="gradeTopicQuiz(1)">Submit Topic 1 Answers</button>
             </form>
-            <div id="t1-results" class="results-box success">
-                <h3>Topic 1 Evaluation Complete!</h3>
-                <p id="t1-score-text" style="font-size: 1.5rem; font-weight: bold;"></p>
-                <p>Your responses have been successfully pushed to the course directors.</p>
+            <div id="t1-results" class="results-box">
+                <h3>Quiz Completed Successfully!</h3>
+                <p id="t1-score-text" class="score-line"></p>
+                <p class="desc-line">Your answers have been successfully recorded.</p>
             </div>
         </div>
     </div>
 
-    <!-- ================== TOPIC 2 VIEW ================== -->
+    <!-- ==================== TOPIC 2 CONTAINER ==================== -->
     <div id="topic2-view" class="quiz-view">
         <div class="quiz-card">
-            <h2>Topic 2: Study Designs in Health Research</h2>
-            <form id="quizForm2">
-                <script>
-                    for(let q=1; q<=10; q++) {
-                        document.write(`
-                            <div class="question">
-                                <p>${q}. [Topic 2] Insert your full evaluation question sentence details here?</p>
-                                <div class="options">
-                                    <label><input type="radio" name="t2-q${q}" value="A" required> A. First option selection</label>
-                                    <label><input type="radio" name="t2-q${q}" value="B"> B. Second option selection</label>
-                                    <label><input type="radio" name="t2-q${q}" value="C"> C. Third option selection</label>
-                                    <label><input type="radio" name="t2-q${q}" value="D"> D. Fourth option selection</label>
-                                </div>
-                            </div>
-                        `);
-                    }
-                </script>
-                <button type="button" class="submit-btn" onclick="gradeQuiz(2)">Submit Topic 2 Answers</button>
+            <div class="topic-timer-box">⏱️ TIME REMAINING: <span id="t2-timer-text">20:00</span></div>
+            <h2>Topic 2: The Epidemiological Focus</h2>
+            <form id="form-t2">
+                <div class="question">
+                    <p>1. During a COVID-19 pandemic wave, a hospital system decides to report both "PCR-confirmed cases" and "clinically-diagnosed cases (based on symptoms and imaging)." Why is this distinction vital for epidemiological reporting?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t2-q1" value="A" required> A. Because laboratory tests are always less accurate than clinical symptoms.</label>
+                        <label><input type="radio" name="t2-q1" value="B"> B. Because the two numerators are built on different case definitions and cannot be aggregated as one without creating a reporting artifact.</label>
+                        <label><input type="radio" name="t2-q1" value="C"> C. Because confirmed cases are only for research, while suspected cases are for patient care.</label>
+                        <label><input type="radio" name="t2-q1" value="D"> D. Because the population at risk for COVID-19 changes based on the test type.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>2. A researcher is studying "New-Onset Type 2 Diabetes" in an HIV cohort. Which of the following would be an appropriate "boundary" for this case definition?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t2-q2" value="A" required> A. Excluding patients who were already diagnosed with Type 2 Diabetes at the time of their HIV diagnosis.</label>
+                        <label><input type="radio" name="t2-q2" value="B"> B. Including any patient who visited the clinic once, regardless of their blood glucose level.</label>
+                        <label><input type="radio" name="t2-q2" value="C"> C. Counting every single blood glucose measurement as a separate case.</label>
+                        <label><input type="radio" name="t2-q2" value="D"> D. Including all patients with a history of hypertension.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>3. In the 2014–2016 West African Ebola outbreak, the case definition was updated multiple times to include "probable cases" in rural areas where laboratory testing was unavailable. What was the primary risk of this broader definition?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t2-q3" value="A" required> A. It would lead to an underestimation of the true mortality rate.</label>
+                        <label><input type="radio" name="t2-q3" value="B"> B. It would lead to an over-counting of cases (inflating the incidence estimate).</label>
+                        <label><input type="radio" name="t2-q3" value="C"> C. It would make it impossible to use person-time denominators.</label>
+                        <label><input type="radio" name="t2-q3" value="D"> D. It would change the geographic place of the outbreak.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>4. When studying cervical cancer incidence in Zimbabwe, you use the "total resident female population" as the denominator. Why is this an "imperfect proxy" for the population at risk?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t2-q4" value="A" required> A. Because it includes women who have had a hysterectomy and are no longer at risk for cervical cancer.</label>
+                        <label><input type="radio" name="t2-q4" value="B"> B. Because cancer registry data is always 100% accurate.</label>
+                        <label><input type="radio" name="t2-q4" value="C"> C. Because cancer incidence is not a health-related event.</label>
+                        <label><input type="radio" name="t2-q4" value="D"> D. Because the denominator must be smaller than the numerator.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>5. You are tracking recurrent Malaria episodes in a community. If you define your "unit of analysis" as the person rather than the episode, what will your study measure?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t2-q5" value="A" required> A. The total burden of malaria transmission in the region.</label>
+                        <label><input type="radio" name="t2-q5" value="B"> B. The number of people who have ever had malaria, regardless of how many times they were re-infected.</label>
+                        <label><input type="radio" name="t2-q5" value="C"> C. The incidence rate of malaria per person-year.</label>
+                        <label><input type="radio" name="t2-q5" value="D"> D. The clinical severity of malaria cases.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>6. Which of the following best describes the "epidemiological population" (as opposed to a demographic one) for a study of drug resistance in an HIV clinic?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t2-q6" value="A" required> A. All residents of the city where the clinic is located.</label>
+                        <label><input type="radio" name="t2-q6" value="B"> B. All patients currently enrolled in the clinic’s ART program who meet the study’s inclusion criteria.</label>
+                        <label><input type="radio" name="t2-q6" value="C"> C. The total number of people in the country living with HIV.</label>
+                        <label><input type="radio" name="t2-q6" value="D"> D. The registered voters in the clinic's district.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>7. In Snow’s 1854 cholera study, what was the "Exposure" and what was the "Outcome"?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t2-q7" value="A" required> A. Exposure: Drinking water from the Broad Street pump; Outcome: Cholera death.</label>
+                        <label><input type="radio" name="t2-q7" value="B"> B. Exposure: Cholera death; Outcome: Drinking water from the Broad Street pump.</label>
+                        <label><input type="radio" name="t2-q7" value="C"> C. Exposure: Living in London; Outcome: Being a physician.</label>
+                        <label><input type="radio" name="t2-q7" value="D"> D. Exposure: The Broad Street pump; Outcome: The Soho district.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>8. An HIV study reports a "10% increase in cases" over 6 months but fails to define if the unit is "new patients" or "visits." Why is this a pitfall?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t2-q8" value="A" required> A. Because "visits" conflates frequency with prevalence; the same person can have multiple visits.</label>
+                        <label><input type="radio" name="t2-q8" value="B"> B. Because HIV cases can only be measured in episodes.</label>
+                        <label><input type="radio" name="t2-q8" value="C"> C. Because "visits" is not a valid epidemiological term.</label>
+                        <label><input type="radio" name="t2-q8" value="D"> D. Because HIV cases cannot increase over 6 months.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>9. When defining the "Time" element in a person-place-time description for a chronic condition like Cancer, why is a specific calendar period required?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t2-q9" value="A" required> A. Because cancer can only be diagnosed on certain days of the week.</label>
+                        <label><input type="radio" name="t2-q9" value="B"> B. Because cancer registry coverage and diagnostic technology improve over time, affecting case detection rates.</label>
+                        <label><input type="radio" name="t2-q9" value="C"> C. Because cancer is a contagious disease that spreads like cholera.</label>
+                        <label><input type="radio" name="t2-q9" value="D"> D. Time is irrelevant to chronic disease studies.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>10. If you are comparing breast cancer rates between two different provinces, what must you ensure regarding the "Case Definition"?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t2-q10" value="A" required> A. That both provinces use the exact same diagnostic rules (e.g. using biopsy).</label>
+                        <label><input type="radio" name="t2-q10" value="B"> B. That both provinces have the same exact number of hospitals.</label>
+                        <label><input type="radio" name="t2-q10" value="C"> C. That both provinces have the same average temperature.</label>
+                        <label><input type="radio" name="t2-q10" value="D"> D. That the study only counts women who have never had children.</label>
+                    </div>
+                </div>
+                <button type="button" class="submit-btn" id="t2-submit" onclick="gradeTopicQuiz(2)">Submit Topic 2 Answers</button>
             </form>
-            <div id="t2-results" class="results-box success">
-                <h3>Topic 2 Evaluation Complete!</h3>
-                <p id="t2-score-text" style="font-size: 1.5rem; font-weight: bold;"></p>
-                <p>Your responses have been successfully pushed to the course directors.</p>
+            <div id="t2-results" class="results-box">
+                <h3>Quiz Completed Successfully!</h3>
+                <p id="t2-score-text" class="score-line"></p>
+                <p class="desc-line">Your answers have been successfully recorded.</p>
             </div>
         </div>
     </div>
 
-    <!-- ================== TOPIC 3 VIEW ================== -->
+    <!-- ==================== TOPIC 3 CONTAINER ==================== -->
     <div id="topic3-view" class="quiz-view">
         <div class="quiz-card">
-            <h2>Topic 3: Measures of Disease Frequency</h2>
-            <form id="quizForm3">
-                <script>
-                    for(let q=1; q<=10; q++) {
-                        document.write(`
-                            <div class="question">
-                                <p>${q}. [Topic 3] Insert your full evaluation question sentence details here?</p>
-                                <div class="options">
-                                    <label><input type="radio" name="t3-q${q}" value="A" required> A. Choice option selection</label>
-                                    <label><input type="radio" name="t3-q${q}" value="B"> B. Choice option selection</label>
-                                    <label><input type="radio" name="t3-q${q}" value="C"> C. Choice option selection</label>
-                                    <label><input type="radio" name="t3-q${q}" value="D"> D. Choice option selection</label>
-                                </div>
-                            </div>
-                        `);
-                    }
-                </script>
-                <button type="button" class="submit-btn" onclick="gradeQuiz(3)">Submit Topic 3 Answers</button>
+            <div class="topic-timer-box">⏱️ TIME REMAINING: <span id="t3-timer-text">20:00</span></div>
+            <h2>Topic 3: Measures of Disease Occurrence</h2>
+            <form id="form-t3">
+                <div class="question">
+                    <p>1. A researcher at a Harare clinic conducts a cross-sectional study on HIV-positive patients. They find that 120 out of 600 patients currently have a detectable viral load. What is the correct measure of this occurrence?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t3-q1" value="A" required> A. Incidence rate of viral non-suppression.</label>
+                        <label><input type="radio" name="t3-q1" value="B"> B. Point prevalence of detectable viral load.</label>
+                        <label><input type="radio" name="t3-q1" value="C"> C. Cumulative incidence density.</label>
+                        <label><input type="radio" name="t3-q1" value="D"> D. Attack rate of treatment failure.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>2. Over a 5-year longitudinal follow-up study of 1,000 baseline hypertension-free adults in Zimbabwe, 150 individuals develop hypertension. What is the cumulative incidence of hypertension in this cohort?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t3-q2" value="A" required> A. 15% over 5 years</label>
+                        <label><input type="radio" name="t3-q2" value="B"> B. 3% per year fixed</label>
+                        <label><input type="radio" name="t3-q2" value="C"> C. 150 person-years</label>
+                        <label><input type="radio" name="t3-q2" value="D"> D. 85% survival density</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>3. If a new, highly effective drug extends the life expectancy of patients living with HIV but does not cure the infection, how will this affect the prevalence and incidence of HIV?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t3-q3" value="A" required> A. Prevalence decreases; Incidence increases</label>
+                        <label><input type="radio" name="t3-q3" value="B"> B. Prevalence increases; Incidence remains unchanged</label>
+                        <label><input type="radio" name="t3-q3" value="C"> C. Both prevalence and incidence decrease</label>
+                        <label><input type="radio" name="t3-q3" value="D"> D. Both prevalence and incidence increase simultaneously</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>4. Consider a dynamic clinic cohort tracked across a calendar year. Calculate the exact total person-years observed using the structural distribution table below:</p>
+                    <table class="math-table">
+                        <thead>
+                            <tr><th>Patient Cohort Group</th><th>Number of Individuals</th><th>Follow-up Duration per Individual</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Group A (Stable Follow-up)</td><td>200 patients</td><td>1.0 Year</td></tr>
+                            <tr><td>Group B (Late Enrollment)</td><td>100 patients</td><td>0.5 Years</td></tr>
+                            <tr><td>Group C (Early Loss-to-Follow-up)</td><td>50 patients</td><td>0.2 Years</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="options">
+                        <label><input type="radio" name="t3-q4" value="A" required> A. 350 person-years</label>
+                        <label><input type="radio" name="t3-q4" value="B"> B. 260 person-years</label>
+                        <label><input type="radio" name="t3-q4" value="C"> C. 200 person-years</label>
+                        <label><input type="radio" name="t3-q4" value="D"> D. 300 person-years</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>5. An incidence rate density of a specific infectious condition is calculated as 5 cases per 100 person-years. How is this properly interpreted?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t3-q5" value="A" required> A. Exactly 5% of the initial population becomes ill every single month.</label>
+                        <label><input type="radio" name="t3-q5" value="B"> B. We expect roughly 5 cases to occur if we observe 100 people for exactly 1 full year.</label>
+                        <label><input type="radio" name="t3-q5" value="C"> C. The probability of an individual surviving without infection is exactly 95% over a century.</label>
+                        <label><input type="radio" name="t3-q5" value="D"> D. The condition takes exactly 20 calendar years to spread to 5 individual patients.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>6. Which measure of occurrence is highly preferred when the population under observation is dynamic, with frequent entry, dropouts, and varying periods of risk exposure?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t3-q6" value="A" required> A. Point Prevalence Ratio</label>
+                        <label><input type="radio" name="t3-q6" value="B"> B. Cumulative Incidence (Attack Rate)</label>
+                        <label><input type="radio" name="t3-q6" value="C"> C. Incidence Rate (Person-Time Denominator)</label>
+                        <label><input type="radio" name="t3-q6" value="D"> D. Period Prevalence Rate</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>7. A community survey in a district identifies 40 cases of active tuberculosis within a total surveyed group of 10,000 residents on October 1st. What epidemiological metric does 40 / 10,000 represent?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t3-q7" value="A" required> A. Point Prevalence</label>
+                        <label><input type="radio" name="t3-q7" value="B"> B. Incidence Density</label>
+                        <label><input type="radio" name="t3-q7" value="C"> C. Crude Cumulative Risk</label>
+                        <label><input type="radio" name="t3-q7" value="D"> D. Case Fatality Proportion</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>8. Why is a person no longer counted in the denominator of a "population at risk" for incidence tracking after they develop the target outcome?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t3-q8" value="A" required> A. To artificially inflate the clinical significance of the mathematical model.</label>
+                        <label><input type="radio" name="t3-q8" value="B"> B. Because they are no longer at risk of developing that specific primary initial event again during that observation path.</label>
+                        <label><input type="radio" name="t3-q8" value="C"> C. Because historical record tracking systems drop infected profiles automatically to maximize storage space.</label>
+                        <label><input type="radio" name="t3-q8" value="D"> D. To align point metrics with standard demographic registry guidelines.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>9. If 30 individuals out of a stable community of 300 gather at a local function and develop food poisoning within 24 hours, what specific variation of incidence is calculated?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t3-q9" value="A" required> A. Point Prevalence Index</label>
+                        <label><input type="radio" name="t3-q9" value="B"> B. Attack Rate (a form of Cumulative Incidence)</label>
+                        <label><input type="radio" name="t3-q9" value="C"> C. Mortality Density Proportion</label>
+                        <label><input type="radio" name="t3-q9" value="D"> D. Longitudinal Hazard Ratio</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>10. If the incidence of a chronic non-communicable disease remains stable over a decade but a massive migration wave introduces thousands of healthy individuals into the denominator district, what immediate mathematical shift occurs?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t3-q10" value="A" required> A. Calculated point prevalence artificially decreases.</label>
+                        <label><input type="radio" name="t3-q10" value="B"> B. The absolute incidence density spikes sharply.</label>
+                        <label><input type="radio" name="t3-q10" value="C"> C. True patient exposure status reverses automatically.</label>
+                        <label><input type="radio" name="t3-q10" value="D"> D. Observed cumulative mortality shifts to match the point incidence profile.</label>
+                    </div>
+                </div>
+                <button type="button" class="submit-btn" id="t3-submit" onclick="gradeTopicQuiz(3)">Submit Topic 3 Answers</button>
             </form>
-            <div id="t3-results" class="results-box success">
-                <h3>Topic 3 Evaluation Complete!</h3>
-                <p id="t3-score-text" style="font-size: 1.5rem; font-weight: bold;"></p>
-                <p>Your responses have been successfully pushed to the course directors.</p>
+            <div id="t3-results" class="results-box">
+                <h3>Quiz Completed Successfully!</h3>
+                <p id="t3-score-text" class="score-line"></p>
+                <p class="desc-line">Your answers have been successfully recorded.</p>
             </div>
         </div>
     </div>
 
-    <!-- ================== TOPIC 4 VIEW ================== -->
+    <!-- ==================== TOPIC 4 CONTAINER ==================== -->
     <div id="topic4-view" class="quiz-view">
         <div class="quiz-card">
-            <h2>Topic 4: Measures of Association & Biostatistics</h2>
-            <form id="quizForm4">
-                <script>
-                    for(let q=1; q<=10; q++) {
-                        document.write(`
-                            <div class="question">
-                                <p>${q}. [Topic 4] Insert your full evaluation question sentence details here?</p>
-                                <div class="options">
-                                    <label><input type="radio" name="t4-q${q}" value="A" required> A. Answer setup field selection</label>
-                                    <label><input type="radio" name="t4-q${q}" value="B"> B. Answer setup field selection</label>
-                                    <label><input type="radio" name="t4-q${q}" value="C"> C. Answer setup field selection</label>
-                                    <label><input type="radio" name="t4-q${q}" value="D"> D. Answer setup field selection</label>
-                                </div>
-                            </div>
-                        `);
-                    }
-                </script>
-                <button type="button" class="submit-btn" onclick="gradeQuiz(4)">Submit Topic 4 Answers</button>
+            <div class="topic-timer-box">⏱️ TIME REMAINING: <span id="t4-timer-text">20:00</span></div>
+            <h2>Topic 4: Using Routine Health Data for Research</h2>
+            <form id="form-t4">
+                <div class="question">
+                    <p>1. When extracting patient variables from an Electronic Health Record (EHR) registry like ePMS or OpenMRS for secondary analysis, what constitutes a primary operational data quality limitation?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t4-q1" value="A" required> A. Complete structural standardization across fields.</label>
+                        <label><input type="radio" name="t4-q1" value="B"> B. Missing clinical indicators due to data entry gaps during routine workflows.</label>
+                        <label><input type="radio" name="t4-q1" value="C"> C. High frequencies of automated real-time internal validation flags.</label>
+                        <label><input type="radio" name="t4-q1" value="D"> D. Excessive data collection overhead preventing simple random selection paths.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>2. A retrospective clinical analysis discovers that a massive cluster of patient files are missing specific 24-month viral load entries because a specific regional laboratory analyzer went down. This data missing mechanism is classified as:</p>
+                    <div class="options">
+                        <label><input type="radio" name="t4-q2" value="A" required> A. Missing Completely at Random (MCAR)</label>
+                        <label><input type="radio" name="t4-q2" value="B"> B. Missing at Random (MAR, conditionally linked to system metadata)</label>
+                        <label><input type="radio" name="t4-q2" value="C"> C. Missing Not at Random (MNAR, missing because value is uniquely high)</label>
+                        <label><input type="radio" name="t4-q2" value="D"> D. Fully Ignorable Internal Structural Discontinuity</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>3. What does "Deterministic Data Linkage" explicitly require when integrating an independent laboratory tracking registry with a national clinical outcomes platform?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t4-q3" value="A" required> A. A complex combination of fuzzy matching weights on common surnames.</label>
+                        <label><input type="radio" name="t4-q3" value="B"> B. An exact match on a unique identifier variable, such as a National ID or unique Clinic Art Registration Number.</label>
+                        <label><input type="radio" name="t4-q3" value="C"> C. A manual baseline probabilistic review of demographic variables.</label>
+                        <label><input type="radio" name="t4-q3" value="D"> D. A spatial approximation mapping cluster centroid variables within 50 meters.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>4. Which of the following defines a key analytical benefit of utilizing routinely collected national aggregate health data frameworks like DHIS2 for epidemiological monitoring?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t4-q4" value="A" required> A. Deep granular visibility into individual patient-level clinical trajectories.</label>
+                        <label><input type="radio" name="t4-q4" value="B"> B. Elimination of all forms of record duplication across provincial boundaries.</label>
+                        <label><input type="radio" name="t4-q4" value="C"> C. Rapid macro-level tracking of geographic disease distributions and public facility reporting trends.</label>
+                        <label><input type="radio" name="t4-q4" value="D"> D. Complete internal control over specific baseline experimental variable distributions.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>5. An analyst runs a structural query check across a multi-clinic dataset and finds 15 records where the "Date of ART Initiation" is recorded as occurring 3 years *after* the patient's recorded "Date of Death". This represents a severe violation of:</p>
+                    <div class="options">
+                        <label><input type="radio" name="t4-q5" value="A" required> A. Internal Data Completeness</label>
+                        <label><input type="radio" name="t4-q5" value="B"> B. Internal Logical Consistency Checks</label>
+                        <label><input type="radio" name="t4-q5" value="C"> C. Secondary Coding Concordance</label>
+                        <label><input type="radio" name="t4-q5" value="D"> D. External Representativeness Bounds</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>6. If you link an electronic prescription portal dataset with a separate diagnostic platform dataset based on partial string variables (e.g., matching "Varaidzo Moyo" with "Varaidzo S. Moyo"), what methodology class are you applying?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t4-q6" value="A" required> A. Pure Deterministic Indexing</label>
+                        <label><input type="radio" name="t4-q6" value="B"> B. Probabilistic (or Fuzzy) Data Linkage</label>
+                        <label><input type="radio" name="t4-q6" value="C"> C. Linear Coordinate Regression Structuring</label>
+                        <label><input type="radio" name="t4-q6" value="D"> D. Blind System Aggregation</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>7. Why is the "Ecological Fallacy" a constant structural concern when designing health systems research projects that utilize aggregate routine facility data dashboards?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t4-q7" value="A" required> A. Individual patient records are too secure to allow direct database queries.</label>
+                        <label><input type="radio" name="t4-q7" value="B"> B. Inferences made about group-level correlations do not necessarily hold true for specific individuals within those groups.</label>
+                        <label><input type="radio" name="t4-q7" value="C"> C. System software can only process spatial configurations rather than true population numerators.</label>
+                        <label><input type="radio" name="t4-q7" value="D"> D. Environmental factors are typically poorly coded within routine clinical platforms.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>8. What is the standard operational term used to describe routine health platform data fields that are systematically left unpopulated because clinicians find the software forms too time-consuming during peak outpatient hours?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t4-q8" value="A" required> A. Informational Variable Redundancy</label>
+                        <label><input type="radio" name="t4-q8" value="B"> B. Missingness due to Administrative Burden / Non-compliance</label>
+                        <label><input type="radio" name="t4-q8" value="C"> C. System Random Drift Variance</label>
+                        <label><input type="radio" name="t4-q8" value="D"> D. Non-differential Coding Attrition</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>9. When analyzing routine data, a researcher notices a massive, sudden 300% spike in recorded cases of "Peripheral Neuropathy" at a clinic within a single month. Upon review, they find the clinic updated its screening tool that exact month. This artificial change is a shift in:</p>
+                    <div class="options">
+                        <label><input type="radio" name="t4-q9" value="A" required> A. True population incidence underlying biological pathways.</label>
+                        <label><input type="radio" name="t4-q9" value="B"> B. Ascertainment/Measurement Practice (Artifactual Change).</label>
+                        <label><input type="radio" name="t4-q9" value="C"> C. External validation representativeness margins.</label>
+                        <label><input type="radio" name="t4-q9" value="D"> D. Deterministic linkage matching accuracy indexes.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>10. Which operational strategy is highly recommended to protect patient privacy during secondary analysis of routine clinical datasets while retaining the ability to map long-term structural outcomes across multiple distinct facilities?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t4-q10" value="A" required> A. Publishing complete demographic text files online for collaborative open-source review.</label>
+                        <label><input type="radio" name="t4-q10" value="B"> B. Generating pseudo-anonymized encrypted link hashes instead of extracting explicit identifier text strings.</label>
+                        <label><input type="radio" name="t4-q10" value="C"> C. Restricting all analytical exploration paths strictly to aggregate country-level totals.</label>
+                        <label><input type="radio" name="t4-q10" value="D"> D. Deleting all date timestamps and tracking indicators from the underlying raw tables.</label>
+                    </div>
+                </div>
+                <button type="button" class="submit-btn" id="t4-submit" onclick="gradeTopicQuiz(4)">Submit Topic 4 Answers</button>
             </form>
-            <div id="t4-results" class="results-box success">
-                <h3>Topic 4 Evaluation Complete!</h3>
-                <p id="t4-score-text" style="font-size: 1.5rem; font-weight: bold;"></p>
-                <p>Your responses have been successfully pushed to the course directors.</p>
+            <div id="t4-results" class="results-box">
+                <h3>Quiz Completed Successfully!</h3>
+                <p id="t4-score-text" class="score-line"></p>
+                <p class="desc-line">Your answers have been successfully recorded.</p>
             </div>
         </div>
     </div>
 
-    <!-- ================== TOPIC 5 VIEW ================== -->
+    <!-- ==================== TOPIC 5 CONTAINER ==================== -->
     <div id="topic5-view" class="quiz-view">
         <div class="quiz-card">
-            <h2>Topic 5: Public Health Surveillance Systems</h2>
-            <form id="quizForm5">
-                <script>
-                    for(let q=1; q<=10; q++) {
-                        document.write(`
-                            <div class="question">
-                                <p>${q}. [Topic 5] Insert your full evaluation question sentence details here?</p>
-                                <div class="options">
-                                    <label><input type="radio" name="t5-q${q}" value="A" required> A. Field option checkbox selection</label>
-                                    <label><input type="radio" name="t5-q${q}" value="B"> B. Field option checkbox selection</label>
-                                    <label><input type="radio" name="t5-q${q}" value="C"> C. Field option checkbox selection</label>
-                                    <label><input type="radio" name="t5-q${q}" value="D"> D. Field option checkbox selection</label>
-                                </div>
-                            </div>
-                        `);
-                    }
-                </script>
-                <button type="button" class="submit-btn" onclick="gradeQuiz(5)">Submit Topic 5 Answers</button>
+            <div class="topic-timer-box">⏱️ TIME REMAINING: <span id="t5-timer-text">20:00</span></div>
+            <h2>Topic 5: Measures of Effect and Impact</h2>
+            <form id="form-t5">
+                <div class="question">
+                    <p>1. In a retrospective cohort study evaluating virologic outcomes of patients on dolutegravir-based second-line ART, the 5-year risk of virologic failure is 4% in the exposed group and 2% in the unexposed comparison group. Calculate the Risk Ratio (Relative Risk).</p>
+                    <div class="options">
+                        <label><input type="radio" name="t5-q1" value="A" required> A. RR = 0.5</label>
+                        <label><input type="radio" name="t5-q1" value="B"> B. RR = 2.0</label>
+                        <label><input type="radio" name="t5-q1" value="C"> C. RR = 6.0</label>
+                        <label><input type="radio" name="t5-q1" value="D"> D. RR = 0.02</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>2. A case-control study investigating an outbreak of an unmapped opportunistic infection calculates an Odds Ratio (OR) of 4.5 for a specific environmental exposure. What does this value explicitly indicate?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t5-q2" value="A" required> A. The exposure causes the infection in exactly 45% of patients.</label>
+                        <label><input type="radio" name="t5-q2" value="B"> B. The odds of exposure among cases are 4.5 times higher than the odds of exposure among controls.</label>
+                        <label><input type="radio" name="t5-q2" value="C"> C. The absolute incidence rate is increased by a flat margin of 4.5 person-years.</label>
+                        <label><input type="radio" name="t5-q2" value="D"> D. The primary baseline population attribution risk is exactly 4.5%.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>3. If the Risk Ratio for developing a cardiovascular event comparing smokers to non-smokers in a clinic cohort is exactly 3.0, what is the calculated Relative Risk Increase (RRI)?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t5-q3" value="A" required> A. 300% increased risk</label>
+                        <label><input type="radio" name="t5-q3" value="B"> B. 200% increased risk</label>
+                        <label><input type="radio" name="t5-q3" value="C"> C. 30% increased risk</label>
+                        <label><input type="radio" name="t5-q3" value="D"> D. 100% flat risk uniformity</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>4. Review the standard $2 \times 2$ contingency table structural breakdown below:</p>
+                    <table class="math-table">
+                        <thead>
+                            <tr><th>Exposure Status</th><th>Developed Outcome (Cases)</th><th>Remained Healthy (Controls)</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Exposed Group</td><td>40 individuals (a)</td><td>60 individuals (b)</td></tr>
+                            <tr><td>Unexposed Group</td><td>10 individuals (c)</td><td>90 individuals (d)</td></tr>
+                        </tbody>
+                    </table>
+                    <p>Calculate the exact cohort Risk Ratio (RR) using the standard formula $RR = \frac{a / (a+b)}{c / (c+d)}$:</p>
+                    <div class="options">
+                        <label><input type="radio" name="t5-q4" value="A" required> A. RR = 4.0</label>
+                        <label><input type="radio" name="t5-q4" value="B"> B. RR = 6.0</label>
+                        <label><input type="radio" name="t5-q4" value="C"> C. RR = 2.5</label>
+                        <label><input type="radio" name="t5-q4" value="D"> D. RR = 0.25</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>5. Using the exact same contingency table data structure from Question 4, compute the standard case-control cross-product Odds Ratio ($OR = \frac{a \times d}{b \times c}$):</p>
+                    <div class="options">
+                        <label><input type="radio" name="t5-q5" value="A" required> A. OR = 4.0</label>
+                        <label><input type="radio" name="t5-q5" value="B"> B. OR = 6.0</label>
+                        <label><input type="radio" name="t5-q5" value="C"> C. OR = 9.0</label>
+                        <label><input type="radio" name="t5-q5" value="D"> D. OR = 1.5</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>6. Which measure of effect represents the absolute excess risk of disease attributable to an exposure, calculated by subtracting the incidence of the unexposed from the incidence of the exposed ($I_e - I_u$)?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t5-q6" value="A" required> A. Relative Risk Ratio</label>
+                        <label><input type="radio" name="t5-q6" value="B"> B. Attributable Risk (Risk Difference)</label>
+                        <label><input type="radio" name="t5-q6" value="C"> C. Population Odds Metric</label>
+                        <label><input type="radio" name="t5-q6" value="D"> D. Hazard Ratio Density</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>7. If an Attributable Risk calculation reveals a Risk Difference of 0.05 (or 5%) for treatment failure linked to poor adherence, what does this translate to clinically?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t5-q7" value="A" required> A. Out of 100 poorly adherent patients, 5 excess cases of treatment failure occur due to their poor adherence status.</label>
+                        <label><input type="radio" name="t5-q7" value="B"> B. A poorly adherent patient is exactly 5 times more likely to fail treatment than an adherent one.</label>
+                        <label><input type="radio" name="t5-q7" value="C"> C. The intervention will fail to function across exactly 5% of the general historical population.</label>
+                        <label><input type="radio" name="t5-q7" value="D"> D. Exactly 5 individuals require testing to identify a single baseline case entry.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>8. Under which specific scenario does a calculated Odds Ratio (OR) approximate the true underlying Risk Ratio (RR) of a baseline observation population?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t5-q8" value="A" required> A. When the disease outcome is highly common in the target population (Prevalence > 50%).</label>
+                        <label><input type="radio" name="t5-q8" value="B"> B. When the disease outcome is rare in the population under study (The "Rare Disease Assumption", typically < 10%).</label>
+                        <label><input type="radio" name="t5-q8" value="C"> C. When the total duration of the observation follow-up exceeds 24 months.</label>
+                        <label><input type="radio" name="t5-q8" value="D"> D. When the deterministic linkage match rate drops down below half.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>9. A public health intervention reports a Population Attributable Fraction (PAF) of 40% for a localized hypertension program targeting high sodium intake. What is the explicit policy implication?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t5-q9" value="A" required> A. Exactly 40% of the entire population will comply with the sodium reduction program guidelines.</label>
+                        <label><input type="radio" name="t5-q9" value="B"> B. If high sodium intake were completely eliminated from this population, we would expect a 40% reduction in the total number of hypertension cases.</label>
+                        <label><input type="radio" name="t5-q9" value="C"> C. Individual risk drops down by exactly 40% immediately upon launching the screening field tools.</label>
+                        <label><input type="radio" name="t5-q9" value="D"> D. The program will require a flat 40% funding overhead buffer to manage administrative error missingness.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>10. If an evaluation finds a structural Risk Ratio of exactly 1.00 for a new diagnostic testing algorithm compared to the standard laboratory procedure, what does this state?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t5-q10" value="A" required> A. The new strategy is highly superior to the historical standard setup.</label>
+                        <label><input type="radio" name="t5-q10" value="B"> B. There is no association between the choice of diagnostic testing algorithm and the detection outcome (Null Value).</label>
+                        <label><input type="radio" name="t5-q10" value="C"> C. The mathematical configuration has encountered an internal coding consistency check logic block breakdown.</label>
+                        <label><input type="radio" name="t5-q10" value="D"> D. The cumulative incidence rates cannot be validated using fuzzy probabilistic linkages.</label>
+                    </div>
+                </div>
+                <button type="button" class="submit-btn" id="t5-submit" onclick="gradeTopicQuiz(5)">Submit Topic 5 Answers</button>
             </form>
-            <div id="t5-results" class="results-box success">
-                <h3>Topic 5 Evaluation Complete!</h3>
-                <p id="t5-score-text" style="font-size: 1.5rem; font-weight: bold;"></p>
-                <p>Your responses have been successfully pushed to the course directors.</p>
+            <div id="t5-results" class="results-box">
+                <h3>Quiz Completed Successfully!</h3>
+                <p id="t5-score-text" class="score-line"></p>
+                <p class="desc-line">Your answers have been successfully recorded.</p>
             </div>
         </div>
     </div>
 
-    <!-- ================== TOPIC 6 VIEW ================== -->
+    <!-- ==================== TOPIC 6 CONTAINER ==================== -->
     <div id="topic6-view" class="quiz-view">
         <div class="quiz-card">
-            <h2>Topic 6: Outbreak Investigation Methods</h2>
-            <form id="quizForm6">
-                <script>
-                    for(let q=1; q<=10; q++) {
-                        document.write(`
-                            <div class="question">
-                                <p>${q}. [Topic 6] Insert your full evaluation question sentence details here?</p>
-                                <div class="options">
-                                    <label><input type="radio" name="t6-q${q}" value="A" required> A. Target multiple choice value choice</label>
-                                    <label><input type="radio" name="t6-q${q}" value="B"> B. Target multiple choice value choice</label>
-                                    <label><input type="radio" name="t6-q${q}" value="C"> C. Target multiple choice value choice</label>
-                                    <label><input type="radio" name="t6-q${q}" value="D"> D. Target multiple choice value choice</label>
-                                </div>
-                            </div>
-                        `);
-                    }
-                </script>
-                <button type="button" class="submit-btn" onclick="gradeQuiz(6)">Submit Topic 6 Answers</button>
+            <div class="topic-timer-box">⏱️ TIME REMAINING: <span id="t6-timer-text">20:00</span></div>
+            <h2>Topic 6: Overview of Study Designs</h2>
+            <form id="form-t6">
+                <div class="question">
+                    <p>1. A clinical researcher samples 500 patients currently attending an outpatient clinic on a single day, measuring both their current Body Mass Index (BMI) and their concurrent blood pressure levels simultaneously. What type of study design is this?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t6-q1" value="A" required> A. Prospective Cohort Tracking Matrix</label>
+                        <label><input type="radio" name="t6-q1" value="B"> B. Cross-Sectional Study Design</label>
+                        <label><input type="radio" name="t6-q1" value="C"> C. Retrospective Case-Control Protocol</label>
+                        <label><input type="radio" name="t6-q1" value="D"> D. Cluster Randomized Interventional Trial</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>2. What constitutes a primary methodologic limitation of a Cross-Sectional study design regarding establishing disease causation?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t6-q2" value="A" required> A. Extreme logistical costs stemming from long follow-up periods.</label>
+                        <label><input type="radio" name="t6-q2" value="B"> B. High rates of attrition/loss-to-follow-up across calendar years.</label>
+                        <label><input type="radio" name="t6-q2" value="C"> C. Temporal Ambiguity (Inability to definitively confirm whether the exposure preceded the development of the outcome).</label>
+                        <label><input type="radio" name="t6-q2" value="D"> D. Lack of structural external demographic representativeness.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>3. A research officer selects 100 patients with confirmed chronic kidney disease (cases) and 200 patients without kidney disease from the same facility (controls), looking back into their historical medical records to compare past exposures. This design is classified as a:</p>
+                    <div class="options">
+                        <label><input type="radio" name="t6-q3" value="A" required> A. Retrospective Cohort Study</label>
+                        <label><input type="radio" name="t6-q3" value="B"> B. Case-Control Study</label>
+                        <label><input type="radio" name="t6-q3" value="C"> C. Ecological Correlation Survey</label>
+                        <label><input type="radio" name="t6-q3" value="D"> D. Randomized Allocation Assessment Matrix</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>4. When tracking a rare exposure (e.g., a specific rare occupational toxin), which observational study design strategy is highly optimal and efficient?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t6-q4" value="A" required> A. Case-Control Study</label>
+                        <label><input type="radio" name="t6-q4" value="B"> B. Cohort Study (selecting an explicitly exposed cohort assembly)</label>
+                        <label><input type="radio" name="t6-q4" value="C"> C. Repeated National Cross-Sectional Audits</label>
+                        <label><input type="radio" name="t6-q4" value="D"> D. Pure Decentralized Clinical Case Series logs</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>5. Conversely, if the target disease outcome under investigation is highly rare within the population (e.g., a rare form of bone sarcoma), which study configuration is most practical and structurally efficient?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t6-q5" value="A" required> A. Case-Control Study (selecting cases based on disease status)</label>
+                        <label><input type="radio" name="t6-q5" value="B"> B. Large-scale Prospective Cohort Study</label>
+                        <label><input type="radio" name="t6-q5" value="C"> C. Community-wide Interventional Population Trial</label>
+                        <label><input type="radio" name="t6-q5" value="D"> D. Aggregate Country-level Ecological Analysis</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>6. What defines a primary operational difference between a Retrospective Cohort study and a Case-Control study?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t6-q6" value="A" required> A. Case-control studies only collect data from digital electronic health registers.</label>
+                        <label><input type="radio" name="t6-q6" value="B"> B. Retrospective cohort studies select individuals based on exposure status, whereas case-control studies select individuals based on disease outcome status.</label>
+                        <label><input type="radio" name="t6-q6" value="C"> C. Case-control setups avoid utilizing standard statistical odds ratios entirely.</label>
+                        <label><input type="radio" name="t6-q6" value="D"> D. Retrospective cohort designs eliminate all potential structural forms of recall bias completely.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>7. An investigator plots provincial-level average rainfall data alongside provincial-level malaria counts to show a correlation, without possessing individual patient-level clinical variables. What class of study design is this?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t6-q7" value="A" required> A. Nested Case-Control Trial</label>
+                        <label><input type="radio" name="t6-q7" value="B"> B. Ecological (or Correlational) Study</label>
+                        <label><input type="radio" name="t6-q7" value="C"> C. Closed Population Inception Cohort</label>
+                        <label><input type="radio" name="t6-q7" value="D"> D. Individual-level Cross-Sectional Poll</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>8. What structural methodology element is uniquely introduced within a Randomized Controlled Trial (RCT) to balance both known and unmeasured confounding variables across study arms at baseline?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t6-q8" value="A" required> A. Extending data capture over multi-year timelines.</label>
+                        <label><input type="radio" name="t6-q8" value="B"> B. Utilizing exact string matching probabilistic data linkages.</label>
+                        <label><input type="radio" name="t6-q8" value="C"> C. Randomization (Random Allocation of Exposure/Intervention)</label>
+                        <label><input type="radio" name="t6-q8" value="D"> D. Introducing strict administrative entry logic blocks.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>9. A study follows an inception cohort of 1,200 healthy individuals for 10 years to observe incident cases of cardiovascular disease. This is a:</p>
+                    <div class="options">
+                        <label><input type="radio" name="t6-q9" value="A" required> A. Prospective Cohort Study</label>
+                        <label><input type="radio" name="t6-q9" value="B"> B. Cross-Sectional Prevalence Poll</label>
+                        <label><input type="radio" name="t6-q9" value="C"> C. Retrospective Historical Chart Audit</label>
+                        <label><input type="radio" name="t6-q9" value="D"> D. Community-wide Non-randomized Cross-over Trial</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>10. What specific form of observational bias is a major threat within Case-Control studies because patients with a severe disease outcome are more likely to carefully rethink and over-report past historical exposures compared to healthy controls?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t6-q10" value="A" required> A. Temporal Selection Attrition</label>
+                        <label><input type="radio" name="t6-q10" value="B"> B. Recall Bias</label>
+                        <label><input type="radio" name="t6-q10" value="C"> C. Non-differential Misclassification</label>
+                        <label><input type="radio" name="t6-q10" value="D"> D. Administrative Logical Entry Distortion</label>
+                    </div>
+                </div>
+                <button type="button" class="submit-btn" id="t6-submit" onclick="gradeTopicQuiz(6)">Submit Topic 6 Answers</button>
             </form>
-            <div id="t6-results" class="results-box success">
-                <h3>Topic 6 Evaluation Complete!</h3>
-                <p id="t6-score-text" style="font-size: 1.5rem; font-weight: bold;"></p>
-                <p>Your responses have been successfully pushed to the course directors.</p>
+            <div id="t6-results" class="results-box">
+                <h3>Quiz Completed Successfully!</h3>
+                <p id="t6-score-text" class="score-line"></p>
+                <p class="desc-line">Your answers have been successfully recorded.</p>
             </div>
         </div>
     </div>
 
 </div>
 
+Here is your updated JavaScript code with the newly provided Google Form IDs and entry ID codes cleanly integrated into the portalConfig block. The answer keys have been fully preserved from your original configuration template.
+HTML
+<!-- SILENT BACKGROUND SUBMISSION IFRAME TARGET -->
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+ 
 <script>
-    let currentActiveTopic = 1;
-
-    // 1. Unified 6-Topic Mapping Master Configurations
-    // Replace the placeholders inside 'entries' with your extracted Google Form Entry Numbers!
-    const masterConfig = {
+    // 1. Centralized Routing and Identification Configuration Block Map
+    const portalConfig = {
         1: {
-            formId: "1FAIpQLSc73LAdSXamCN8fNnflvmsE61CY1LqKpyzFe4zt_rzEO8bcGg",
-            nameEntry: "entry.331201977", emailEntry: "entry.1706692994", scoreEntry: "entry.1118749870",
-            questions: ["t1-q1", "t1-q2", "t1-q3", "t1-q4", "t1-q5", "t1-q6", "t1-q7", "t1-q8", "t1-q9", "t1-q10"],
-            entries: ["entry.1801781895", "entry.884515740", "entry.334207621", "entry.1016544568", "entry.656783905", "entry.565293679", "entry.1543297465", "entry.1515290739", "entry.589365507", "entry.1874149091"],
-            answers: { "t1-q1": "B", "t1-q2": "B", "t1-q3": "D", "t1-q4": "B", "t1-q5": "B", "t1-q6": "B", "t1-q7": "C", "t1-q8": "A", "t1-q9": "C", "t1-q10": "B" }
+            formId: "1wx1E8-TXt44XxIDbG_Ytw4l_GFgZoqgnydOoG2OTODo",
+            entryIds: { 
+                name: "entry.1053876046", email: "entry.1832709224", score: "entry.2145907894",
+                "t1-q1": "entry.1894854075", "t1-q2": "entry.1947999794", "t1-q3": "entry.1865562775",
+                "t1-q4": "entry.1163845932", "t1-q5": "entry.2111197503", "t1-q6": "entry.758192090",
+                "t1-q7": "entry.1380532355", "t1-q8": "entry.427290541", "t1-q9": "entry.767533116",
+                "t1-q10": "entry.1387099004"
+            }, 
+            answerKey: { "t1-q1": "B", "t1-q2": "B", "t1-q3": "D", "t1-q4": "B", "t1-q5": "B", "t1-q6": "B", "t1-q7": "C", "t1-q8": "A", "t1-q9": "C", "t1-q10": "B" }
         },
         2: {
-            formId: "1FAIpQLSdBhIduHUOf8TSCjts2_Eexjx_IiBwVDc0BRuuUZnmHIYzbVQ",
-            nameEntry: "entry.25413162", emailEntry: "entry.722513220", scoreEntry: "entry.2064972174",
-            questions: ["t2-q1", "t2-q2", "t2-q3", "t2-q4", "t2-q5", "t2-q6", "t2-q7", "t2-q8", "t2-q9", "t2-q10"],
-            entries: ["entry.1228585448", "entry.101908200", "entry.1481198516", "entry.872740700", "entry.1121175657", "entry.1769865003", "entry.888566495", "entry.595462705", "entry.1691216390", "entry.1264353457"],
-            answers: { "t2-q1": "B", "t2-q2": "A", "t2-q3": "B", "t2-q4": "A", "t2-q5": "B", "t2-q6": "B", "t2-q7": "A", "t2-q8": "A", "t2-q9": "B", "t2-q10": "A" }
+            formId: "1CIp96A7bAa3m1MJYcIQK6xh9Hnk6Nsm0tNi3jBbt3qc",
+            entryIds: { 
+                name: "entry.1320488607", email: "entry.2082596010", score: "entry.1278129340",
+                "t2-q1": "entry.2100564425", "t2-q2": "entry.1121362798", "t2-q3": "entry.1490126048",
+                "t2-q4": "entry.727829416", "t2-q5": "entry.1690002379", "t2-q6": "entry.1723342081",
+                "t2-q7": "entry.1581389519", "t2-q8": "entry.1938246988", "t2-q9": "entry.783148805",
+                "t2-q10": "entry.454741731"
+            },
+            answerKey: { "t2-q1": "B", "t2-q2": "A", "t2-q3": "B", "t2-q4": "A", "t2-q5": "B", "t2-q6": "B", "t2-q7": "A", "t2-q8": "A", "t2-q9": "B", "t2-q10": "A" }
         },
         3: {
-            formId: "1FAIpQLSdYNBB-uxwrcRSB3i2jdUus5eEIewSeFSeoz6XMf4yVt294LA",
-            nameEntry: "entry.1023963473", emailEntry: "entry.279612300", scoreEntry: "entry.2078652613",
-            questions: ["t3-q1", "t3-q2", "t3-q3", "t3-q4", "t3-q5", "t3-q6", "t3-q7", "t3-q8", "t3-q9", "t3-q10"],
-            entries: ["entry.1610484557", "entry.1197609278", "entry.821102928", "entry.162235948", "entry.674971255", "entry.1983058866", "entry.1472504781", "entry.1690029864", "entry.371302488", "entry.36224376"],
-            answers: { "t3-q1": "B", "t3-q2": "A", "t3-q3": "B", "t3-q4": "B", "t3-q5": "B", "t3-q6": "C", "t3-q7": "A", "t3-q8": "B", "t3-q9": "B", "t3-q10": "A" }
+            formId: "1JiQ24Y_MUB-UDP7eBM-31xkK8RSGUQKhU7HlGd8Z3EY",
+            entryIds: { 
+                name: "entry.881431377", email: "entry.1370637854", score: "entry.1023299273",
+                "t3-q1": "entry.520563084", "t3-q2": "entry.2111734136", "t3-q3": "entry.1808475134",
+                "t3-q4": "entry.680900617", "t3-q5": "entry.551082442", "t3-q6": "entry.901339687",
+                "t3-q7": "entry.226011529", "t3-q8": "entry.901784990", "t3-q9": "entry.1474844167",
+                "t3-q10": "entry.405180263"
+            },
+            answerKey: { "t3-q1": "B", "t3-q2": "A", "t3-q3": "B", "t3-q4": "B", "t3-q5": "B", "t3-q6": "C", "t3-q7": "A", "t3-q8": "B", "t3-q9": "B", "t3-q10": "A" }
         },
         4: {
-            formId: "1FAIpQLSfeVNra8ePCurnGV54KIobxqL2mFycvn7-s8SlcOKQn1cUMCA",
-            nameEntry: "entry.1801781895", emailEntry: "entry.884515740", scoreEntry: "entry.334207621",
-            questions: ["t4-q1", "t4-q2", "t4-q3", "t4-q4", "t4-q5", "t4-q6", "t4-q7", "t4-q8", "t4-q9", "t4-q10"],
-            entries: ["entry.1016544568", "entry.656783905", "entry.565293679", "entry.1543297465", "entry.1515290739", "entry.589365507", "entry.1874149091", "entry.296423191", "entry.118915032", "entry.1857509370"],
-            answers: { "t4-q1": "B", "t4-q2": "B", "t4-q3": "B", "t4-q4": "C", "t4-q5": "B", "t4-q6": "B", "t4-q7": "B", "t4-q8": "B", "t4-q9": "B", "t4-q10": "B" }
+            formId: "1sNRN2S2h_mnXdhxP7kPZ-y1_lqpJzOFxh4QpGQ-Ao9g",
+            entryIds: { 
+                name: "entry.490572499", email: "entry.1928669941", score: "entry.2025903777", 
+                "t4-q1": "entry.1830641705", "t4-q2": "entry.1605407898", "t4-q3": "entry.1162549984",
+                "t4-q4": "entry.1074827912", "t4-q5": "entry.29567012", "t4-q6": "entry.1354034793",
+                "t4-q7": "entry.740783081", "t4-q8": "entry.554065458", "t4-q9": "entry.1059598965",
+                "t4-q10": "entry.1893842463"
+            },
+            answerKey: { "t4-q1": "B", "t4-q2": "B", "t4-q3": "B", "t4-q4": "C", "t4-q5": "B", "t4-q6": "B", "t4-q7": "B", "t4-q8": "B", "t4-q9": "B", "t4-q10": "B" }
         },
         5: {
-            formId: "1FAIpQLSfgqRQqBjW8f6z80aTXJm1EuvTRZR3y4wRYNcKokCymDux8OA",
-            nameEntry: "entry.1801781895", emailEntry: "entry.884515740", scoreEntry: "entry.334207621",
-            questions: ["t5-q1", "t5-q2", "t5-q3", "t4-q4", "t5-q5", "t5-q6", "t5-q7", "t5-q8", "t5-q9", "t5-q10"],
-            entries: ["entry.1016544568", "entry.656783905", "entry.565293679", "entry.1543297465", "entry.1515290739", "entry.589365507", "entry.1874149091", "entry.296423191", "entry.118915032", "entry.1857509370"],
-            answers: { "t5-q1": "B", "t5-q2": "B", "t5-q3": "B", "t5-q4": "A", "t5-q5": "B", "t5-q6": "B", "t5-q7": "A", "t5-q8": "B", "t5-q9": "B", "t5-q10": "B" }
+            formId: "1j1CTQ4AFuQkRUE0AWVBCvZJLMbiRcxAcowOopROa59M",
+            entryIds: { 
+                name: "entry.468845755", email: "entry.75754022", score: "entry.930798735", 
+                "t5-q1": "entry.1702721832", "t5-q2": "entry.1801829789", "t5-q3": "entry.2119757439",
+                "t5-q4": "entry.874711411", "t5-q5": "entry.1144532063", "t5-q6": "entry.1117455685",
+                "t5-q7": "entry.411600184", "t5-q8": "entry.2019059688", "t5-q9": "entry.395643240",
+                "t5-q10": "entry.1057885359"
+            },
+            answerKey: { "t5-q1": "B", "t5-q2": "B", "t5-q3": "B", "t5-q4": "A", "t5-q5": "B", "t5-q6": "B", "t5-q7": "A", "t5-q8": "B", "t5-q9": "B", "t5-q10": "B" }
         },
         6: {
-            formId: "1FAIpQLSeJxMP3d2ZizVUWNrqp99NvcHhF7WihwGmukiDLFljZXwJajQ",
-            nameEntry: "entry.1801781895", emailEntry: "entry.884515740", scoreEntry: "entry.334207621",
-            questions: ["t6-q1", "t6-q2", "t6-q3", "t6-q4", "t6-q5", "t6-q6", "t6-q7", "t6-q8", "t6-q9", "t6-q10"],
-            entries: ["entry.1016544568", "entry.656783905", "entry.565293679", "entry.1543297465", "entry.1515290739", "entry.589365507", "entry.1874149091", "entry.296423191", "entry.118915032", "entry.1857509370"],
-            answers: { "t6-q1": "B", "t6-q2": "C", "t6-q3": "B", "t6-q4": "B", "t6-q5": "A", "t6-q6": "B", "t6-q7": "B", "t6-q8": "C", "t6-q9": "A", "t6-q10": "B" }
+            formId: "1idJcCNoQ5nxILbk7YTT5vKOeYlouWWca_7ZG-Vrbx9w",
+            entryIds: { 
+                name: "entry.827796056", email: "entry.1793482633", score: "entry.928963578", 
+                "t6-q1": "entry.1849735354", "t6-q2": "entry.1835656439", "t6-q3": "entry.1067125300",
+                "t6-q4": "entry.1947182718", "t6-q5": "entry.107405790", "t6-q6": "entry.2041825337",
+                "t6-q7": "entry.1192572934", "t6-q8": "entry.404403541", "t6-q9": "entry.575637293",
+                "t6-q10": "entry.1580530553"
+            },
+            answerKey: { "t6-q1": "B", "t6-q2": "C", "t6-q3": "B", "t6-q4": "B", "t6-q5": "A", "t6-q6": "B", "t6-q7": "B", "t6-q8": "C", "t6-q9": "A", "t6-q10": "B" }
         }
     };
-
-    // 2. Tab Navigation Hub Engine
-    function switchTopic(topicNum) {
-        if(topicNum === currentActiveTopic) return;
+ 
+    let studentName = "";
+    let studentEmail = "";
+    let activeTopic = 1;
+    
+    const timers = {
+        1: { timeRemaining: 1200, interval: null, completed: false },
+        2: { timeRemaining: 1200, interval: null, completed: false },
+        3: { timeRemaining: 1200, interval: null, completed: false },
+        4: { timeRemaining: 1200, interval: null, completed: false },
+        5: { timeRemaining: 1200, interval: null, completed: false },
+        6: { timeRemaining: 1200, interval: null, completed: false }
+    };
+ 
+    window.onload = function() {
+        startTimer(1);
+    };
+ 
+    function syncStudentData() {
+        const nameInput = document.getElementById("globalName") || document.querySelector('input[placeholder*="Name"]');
+        const emailInput = document.getElementById("globalEmail") || document.querySelector('input[type="email"]');
         
-        document.getElementById(`topic${currentActiveTopic}-view`).classList.remove("active");
-        document.getElementById(`nav-btn-${currentActiveTopic}`).classList.remove("active");
-
-        currentActiveTopic = topicNum;
-
-        document.getElementById(`topic${currentActiveTopic}-view`).classList.add("active");
-        document.getElementById(`nav-btn-${currentActiveTopic}`).classList.add("active");
+        studentName = nameInput ? nameInput.value.trim() : "";
+        studentEmail = emailInput ? emailInput.value.trim() : "";
     }
-
-    // 3. Validation, Native Loop Grading & Visual Feedback Generator
-    function gradeQuiz(topicNum) {
-        const studentName = document.getElementById('globalName').value.trim();
-        const studentEmail = document.getElementById('globalEmail').value.trim();
-
+ 
+    function switchTopic(topicNum) {
+        if(topicNum === activeTopic) return;
+ 
+        if (!timers[activeTopic].completed && timers[activeTopic].interval) {
+           clearInterval(timers[activeTopic].interval);
+           timers[activeTopic].interval = null;
+        }
+ 
+        document.getElementById(`topic${activeTopic}-view`).classList.remove("active");
+        document.getElementById(`nav-btn-${activeTopic}`).classList.remove("active");
+ 
+        activeTopic = topicNum;
+ 
+        document.getElementById(`topic${activeTopic}-view`).classList.add("active");
+        document.getElementById(`nav-btn-${activeTopic}`).classList.add("active");
+ 
+        if (!timers[activeTopic].completed) {
+           startTimer(activeTopic);
+        }
+    }
+ 
+    function startTimer(topicNum) {
+        if (timers[topicNum].completed) return;
+ 
+        const timerTextSpan = document.getElementById(`t${topicNum}-timer-text`);
+        if(!timerTextSpan) return;
+        
+        timers[topicNum].interval = setInterval(() => {
+           timers[topicNum].timeRemaining--;
+ 
+            let mins = Math.floor(timers[topicNum].timeRemaining / 60);
+            let secs = timers[topicNum].timeRemaining % 60;
+ 
+           timerTextSpan.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+ 
+            if (timers[topicNum].timeRemaining <= 300) {
+               timerTextSpan.parentElement.classList.add("urgent");
+            }
+ 
+            if (timers[topicNum].timeRemaining <= 0) {
+               clearInterval(timers[topicNum].interval);
+               autoSubmitQuiz(topicNum);
+            }
+        }, 1000);
+    }
+ 
+    function gradeTopicQuiz(topicNum) {
+        syncStudentData();
+        
         if (!studentName || !studentEmail) {
-            alert("⚠️ Submission Blocked: Please complete your Full Name and Email inside the Student Verification Gateway at the top before submitting answers.");
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            return;
+           alert("⚠️ Submission Blocked: Please verify that your Name and Email address fields are filled completely before submitting.");
+           window.scrollTo({ top: 0, behavior: 'smooth' });
+           return;
         }
-
-        const currentForm = document.getElementById(`quizForm${topicNum}`);
-        if (!currentForm.checkValidity()) {
-            currentForm.reportValidity();
-            return;
+ 
+        const config = portalConfig[topicNum];
+        const activeForm = document.querySelector(`#topic${topicNum}-view form`);
+        if(!activeForm) return;
+        
+        const formData = new FormData(activeForm);
+ 
+        if (timers[topicNum].interval) {
+           clearInterval(timers[topicNum].interval);
         }
-
-        const config = masterConfig[topicNum];
+        timers[topicNum].completed = true;
+ 
         let score = 0;
-        let totalQuestions = config.questions.length;
-        let userResponses = {};
-
-        // Loop through all 10 questions using dynamic fields
-        for (let i = 0; i < totalQuestions; i++) {
-            const fieldName = config.questions[i];
-            const selectedVal = currentForm.elements[fieldName].value;
-            userResponses[fieldName] = selectedVal;
-
-            const targetRadio = currentForm.querySelector(`input[name="${fieldName}"]`);
-            const questionContainer = targetRadio.closest('.question');
-
-            if (selectedVal === config.answers[fieldName]) {
-                score++;
-                questionContainer.classList.add('correct-ans');
-                questionContainer.classList.remove('wrong-ans');
-            } else {
-                questionContainer.classList.add('wrong-ans');
-                questionContainer.classList.remove('correct-ans');
+        let totalQuestions = Object.keys(config.answerKey).length;
+ 
+        for (let key in config.answerKey) {
+            const rawOpt = formData.get(key);
+            const selectedOpt = rawOpt ? rawOpt.trim().toUpperCase() : "";
+            const questionsOptionsBlock = activeForm.querySelector(`input[name="${key}"]`);
+            
+           if(questionsOptionsBlock) {
+                const questionContainer = questionsOptionsBlock.closest('.question');
+                if (questionContainer) {
+                    if (selectedOpt === config.answerKey[key].toUpperCase()) {
+                       score++;
+                       questionContainer.classList.add("correct-ans");
+                    } else {
+                       questionContainer.classList.add("wrong-ans");
+                    }
+                }
             }
         }
-
-        // Output results visualization to user card
-        document.getElementById(`t${topicNum}-score-text`).innerText = `You Scored: ${score} / ${totalQuestions}`;
-        document.getElementById(`t${topicNum}-results`).style.display = 'block';
+ 
+        let calculatedPercent = Math.round((score / totalQuestions) * 100);
+        activeForm.style.display = "none";
         
-        // Execute back-end write transmission pipeline
-        sendDataToGoogleForm(topicNum, studentName, studentEmail, `${score}/${totalQuestions}`, userResponses);
+        const resultsDiv = document.getElementById(`t${topicNum}-results`);
+        const scoreTextSpan = document.getElementById(`t${topicNum}-score-text`);
+        if(scoreTextSpan) scoreTextSpan.innerText = `Score: ${score} / ${totalQuestions} (${calculatedPercent}%)`;
+        if(resultsDiv) resultsDiv.style.display = "block";
+ 
+        executeFormTransmission(topicNum, score, totalQuestions, activeForm);
     }
-
-    // 4. Clean Native Cross-Origin Data Transporter Pipe
-    function sendDataToGoogleForm(topicNum, name, email, scoreString, answersMap) {
-        const config = masterConfig[topicNum];
-        const formData = new URLSearchParams();
-
-        // Map core profile entries
-        formData.append(config.nameEntry, name);
-        formData.append(config.emailEntry, email);
-        formData.append(config.scoreEntry, scoreString);
-
-        // Map all 10 question responses to their allocated form parameters
-        for (let i = 0; i < config.questions.length; i++) {
-            const questionName = config.questions[i];
-            const entryId = config.entries[i];
-            const chosenAnswer = answersMap[questionName];
-            const rightAnswer = config.answers[questionName];
-
-            formData.append(entryId, `Chosen: ${chosenAnswer} (Correct: ${rightAnswer})`);
+ 
+    function autoSubmitQuiz(topicNum) {
+        alert(`⏱️ Time has expired for Topic ${topicNum}! Processing your selected selections now...`);
+        gradeTopicQuiz(topicNum);
+    }
+ 
+    function executeFormTransmission(topicNum, score, total, activeForm) {
+        const config = portalConfig[topicNum];
+        const baseURL = `https://docs.google.com/forms/d/e/${config.formId}/formResponse`;
+        const formData = new FormData(activeForm);
+ 
+        const hiddenForm = document.createElement('form');
+        hiddenForm.method = 'POST';
+        hiddenForm.action = baseURL;
+        hiddenForm.target = 'hidden_iframe';
+ 
+        const payload = {
+           [config.entryIds.name]: studentName,
+           [config.entryIds.email]: studentEmail,
+           [config.entryIds.score]: `${score} / ${total}`
+        };
+ 
+        for (let key in config.answerKey) {
+            if (config.entryIds[key]) {
+                const googleFormFieldId = config.entryIds[key];
+                const rawVal = formData.get(key);
+               payload[googleFormFieldId] = rawVal ? rawVal.trim().toUpperCase() : "";
+            }
         }
-
-        // Fire request to the endpoint
-        fetch(`https://docs.google.com/forms/d/e/${config.formId}/formResponse`, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: formData.toString()
-        })
-        .then(() => {
-            console.log(`Topic ${topicNum} responses successfully sent.`);
-        })
-        .catch(err => console.error(`Topic ${topicNum} submission error:`, err));
+ 
+        for (let entryKey in payload) {
+            const latentInput = document.createElement('input');
+           latentInput.type = 'hidden';
+           latentInput.name = entryKey;
+           latentInput.value = payload[entryKey];
+           hiddenForm.appendChild(latentInput);
+        }
+ 
+        document.body.appendChild(hiddenForm);
+        hiddenForm.submit();
+        
+        setTimeout(() => {
+           if(document.body.contains(hiddenForm)){
+               document.body.removeChild(hiddenForm);
+            }
+        }, 500);
     }
 </script>
 
-</body>
-</html>
-
-```
