@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Research Masterclass Graded Quiz</title>
+    <title>Research Masterclass Evaluation Portal</title>
     <style>
         :root {
             --primary-navy: #0f172a;       /* Deep Navy */
@@ -62,33 +62,40 @@
             margin: 2.5rem auto;
             padding: 0 1.5rem;
         }
+        /* Top Layout Dual Split Panel */
+        .gateway-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        /* Registration Card Box */
         .reg-card {
             background: var(--bg-white);
             border-radius: 12px;
-            padding: 2rem;
+            padding: 1.75rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             border: 2px solid var(--primary-navy);
-            margin-bottom: 2.5rem;
         }
         .reg-card h2 {
             margin-top: 0;
             color: var(--primary-navy);
             font-size: 1.3rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
         .user-info {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+            grid-template-columns: 1fr;
+            gap: 1rem;
         }
         .user-info-field {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
         .user-info-field label {
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--primary-navy);
         }
         .user-info input {
@@ -102,6 +109,34 @@
         .user-info input:focus {
             border-color: var(--primary-navy);
         }
+        /* Policy and Deadline Notice Card */
+        .policy-card {
+            background: #fffbeb;
+            border: 2px dashed #d97706;
+            border-radius: 12px;
+            padding: 1.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            color: #78350f;
+        }
+        .policy-card h2 {
+            margin-top: 0;
+            color: #b45309;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .policy-card ul {
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+        .policy-card li {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        /* 6-Topic Layout Navigation Row Grid */
         .module-nav {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -128,6 +163,7 @@
         .module-btn:hover:not(.active) {
             background-color: #f1f5f9;
         }
+        /* Interactive Quiz Card Blocks */
         .quiz-view {
             display: none; 
         }
@@ -149,6 +185,7 @@
             padding-bottom: 1rem;
             margin-bottom: 2rem;
         }
+        /* Topic Specific Timer Module Box Placement */
         .topic-timer-box {
             background-color: #f1f5f9;
             border: 1px solid #cbd5e1;
@@ -181,6 +218,7 @@
             color: var(--primary-navy);
             font-size: 1.05rem;
         }
+        /* Flexbox table styling for mathematical questions layout columns */
         .math-table {
             width: 100%;
             border-collapse: collapse;
@@ -234,6 +272,8 @@
         }
         button.submit-btn:hover { background-color: var(--accent-red-hover); }
         button.submit-btn:disabled { background-color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
+        
+        /* Success Screen Container layout */
         .results-box {
             display: none;
             margin-top: 2.5rem;
@@ -271,8 +311,8 @@
             100% { opacity: 1; }
         }
         @media (max-width: 768px) {
+            .gateway-grid { grid-template-columns: 1fr; }
             .module-nav { grid-template-columns: 1fr; }
-            .user-info { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -281,34 +321,49 @@
     <div class="header-container">
         <div class="header-text">
             <h1>RESEARCH MASTERCLASS</h1>
-            <p>Graded Quiz Portal</p>
+            <p>Epidemiology Portal & Weekly Continuous Evaluations</p>
         </div>
         <img class="clinic-logo" src="nc-logo.png" alt="Newlands Clinic Logo">
     </div>
 </header>
 <div class="container">
     
-    <div class="reg-card">
-        <h2>🔒 Student Verification Gateway</h2>
-        <p style="margin-top:0; color: var(--text-muted); font-size:0.9rem;">Please verify your identity details. These metrics will automatically cross-populate responses across all six active curriculum topics.</p>
-        <div class="user-info">
-            <div class="user-info-field">
-                <label for="globalName">Student Full Name</label>
-                <input type="text" id="globalName" placeholder="e.g., Jane Doe" required oninput="syncStudentData()">
+    <!-- Top Gateway Grid Split Area -->
+    <div class="gateway-grid">
+        <!-- Central Registration Component Box Area -->
+        <div class="reg-card">
+            <h2>🔒 Student Verification Gateway</h2>
+            <p style="margin-top:0; color: var(--text-muted); font-size:0.9rem;">Please login below first. Your identity will connect automatically across all six topics.</p>
+            <div class="user-info">
+                <div class="user-info-field">
+                    <label for="globalName">Student Full Name</label>
+                    <input type="text" id="globalName" placeholder="e.g., Rumbidzai Moyo" required oninput="syncStudentData()">
+                </div>
+                <div class="user-info-field">
+                    <label for="globalEmail">Email Address</label>
+                    <input type="email" id="globalEmail" placeholder="e.g., rumbimoyo@domain.com" required oninput="syncStudentData()">
+                </div>
             </div>
-            <div class="user-info-field">
-                <label for="globalEmail">Email Address</label>
-                <input type="email" id="globalEmail" placeholder="e.g., student@newlandsclinic.org" required oninput="syncStudentData()">
-            </div>
+        </div>
+
+        <!-- Course Policy Notice Box Area -->
+        <div class="policy-card">
+            <h2>⚠️ Assessment & Grading Policy</h2>
+            <ul>
+                <li>Quizzes must be completed by <strong>Sunday after the lecture at 23:59</strong>.</li>
+                <li>Failure to complete the quiz on time is registered as a score of <strong>0</strong>.</li>
+                <li>The required passing rate for certificate validation is <strong>70%</strong>.</li>
+            </ul>
         </div>
     </div>
 
+    <!-- 6-Topic Selection Grid System Row Bar -->
     <div class="module-nav">
-        <button class="module-btn active" id="nav-btn-1" onclick="switchTopic(1)">Topic 1: Fundamentals of Epidemiology</button>
+        <button class="module-btn active" id="nav-btn-1" onclick="switchTopic(1)">Topic 1: Introduction to Fundamentals of Epidemiology</button>
         <button class="module-btn" id="nav-btn-2" onclick="switchTopic(2)">Topic 2: Epidemiological Focus</button>
         <button class="module-btn" id="nav-btn-3" onclick="switchTopic(3)">Topic 3: Measures of Occurrence</button>
         <button class="module-btn" id="nav-btn-4" onclick="switchTopic(4)">Topic 4: Using Routine Health Data</button>
-        <button class="module-btn" id="nav-btn-5" onclick="switchTopic(5)">Topic 5: Effect and Impact</button>
+        <button class="module-btn" id="nav-btn-5" onclick="switchTopic(5)">Topic 5: Effect & Impact</button>
         <button class="module-btn" id="nav-btn-6" onclick="switchTopic(6)">Topic 6: Study Designs</button>
     </div>
 
@@ -413,7 +468,7 @@
             <div id="t1-results" class="results-box">
                 <h3>Quiz Completed Successfully!</h3>
                 <p id="t1-score-text" class="score-line"></p>
-                <p class="desc-line">Your answers have been successfully recorded.</p>
+                <p class="desc-line">Your answers have been recorded.</p>
             </div>
         </div>
     </div>
@@ -519,7 +574,7 @@
             <div id="t2-results" class="results-box">
                 <h3>Quiz Completed Successfully!</h3>
                 <p id="t2-score-text" class="score-line"></p>
-                <p class="desc-line">Your answers have been successfully recorded.</p>
+                <p class="desc-line">Your answers have been recorded.</p>
             </div>
         </div>
     </div>
@@ -535,89 +590,99 @@
                     <div class="options">
                         <label><input type="radio" name="t3-q1" value="A" required> A. Incidence rate of viral non-suppression.</label>
                         <label><input type="radio" name="t3-q1" value="B"> B. Point prevalence of detectable viral load.</label>
-                        <label><input type="radio" name="t3-q1" value="C"> C. 12-month incidence risk of treatment failure.</label>
-                        <label><input type="radio" name="t3-q1" value="D"> D. Odds ratio of viral suppression.</label>
+                        <label><input type="radio" name="t3-q1" value="C"> C. Cumulative incidence density.</label>
+                        <label><input type="radio" name="t3-q1" value="D"> D. Attack rate of treatment failure.</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>2. In an Ebola outbreak, 50 people were initially exposed. Over 21 days, 15 developed symptoms. Assuming all 50 were followed for the entire period, what measure is most appropriate?</p>
+                    <p>2. Over a 5-year longitudinal follow-up study of 1,000 baseline hypertension-free adults in Zimbabwe, 150 individuals develop hypertension. What is the cumulative incidence of hypertension in this cohort?</p>
                     <div class="options">
-                        <label><input type="radio" name="t3-q2" value="A" required> A. Point prevalence.</label>
-                        <label><input type="radio" name="t3-q2" value="B"> B. Incidence rate (person-time).</label>
-                        <label><input type="radio" name="t3-q2" value="C"> C. Incidence risk (cumulative incidence).</label>
-                        <label><input type="radio" name="t3-q2" value="D"> D. Odds of exposure.</label>
+                        <label><input type="radio" name="t3-q2" value="A" required> A. 15% over 5 years</label>
+                        <label><input type="radio" name="t3-q2" value="B"> B. 3% per year fixed</label>
+                        <label><input type="radio" name="t3-q2" value="C"> C. 150 person-years</label>
+                        <label><input type="radio" name="t3-q2" value="D"> D. 85% survival density</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>3. When calculating the mortality rate of a dynamic HIV cohort at Parirenyatwa OI, why is a person-time denominator (e.g., deaths per 1,000 person-years) used instead of a simple proportion of deaths divided by total patients enrolled?</p>
+                    <p>3. If a new, highly effective drug extends the life expectancy of patients living with HIV but does not cure the infection, how will this affect the prevalence and incidence of HIV?</p>
                     <div class="options">
-                        <label><input type="radio" name="t3-q3" value="A" required> A. Because deaths are rare events and need to be scaled up.</label>
-                        <label><input type="radio" name="t3-q3" value="B"> B. Because patients enrolled at different times and had variable lengths of follow-up.</label>
-                        <label><input type="radio" name="t3-q3" value="C"> C. Because the study is a case-control design, which requires person-time.</label>
-                        <label><input type="radio" name="t3-q3" value="D"> D. Because simple proportions cannot be converted into percentages.</label>
+                        <label><input type="radio" name="t3-q3" value="A" required> A. Prevalence decreases; Incidence increases</label>
+                        <label><input type="radio" name="t3-q3" value="B"> B. Prevalence increases; Incidence remains unchanged</label>
+                        <label><input type="radio" name="t3-q3" value="C"> C. Both prevalence and incidence decrease</label>
+                        <label><input type="radio" name="t3-q3" value="D"> D. Both prevalence and incidence increase simultaneously</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>4. A study finds the prevalence of metabolic syndrome in a Zimbabwean clinic is 22%. A researcher uses logistic regression to analyse this and reports an Odds Ratio (OR) of 4.5. Why is it important to note the high prevalence in this study?</p>
+                    <p>4. Consider a dynamic clinic cohort tracked across a calendar year. Calculate the exact total person-years observed using the structural distribution table below:</p>
+                    <table class="math-table">
+                        <thead>
+                            <tr><th>Patient Cohort Group</th><th>Number of Individuals</th><th>Follow-up Duration per Individual</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Group A (Stable Follow-up)</td><td>200 patients</td><td>1.0 Year</td></tr>
+                            <tr><td>Group B (Late Enrollment)</td><td>100 patients</td><td>0.5 Years</td></tr>
+                            <tr><td>Group C (Early Loss-to-Follow-up)</td><td>50 patients</td><td>0.2 Years</td></tr>
+                        </tbody>
+                    </table>
                     <div class="options">
-                        <label><input type="radio" name="t3-q4" value="A" required> A. High prevalence means the odds ratio is likely an identical estimate to the risk ratio.</label>
-                        <label><input type="radio" name="t3-q4" value="B"> B. Logistic regression cannot be used if prevalence is above 10%.</label>
-                        <label><input type="radio" name="t3-q4" value="C"> C. Because prevalence is high, the OR will significantly overestimate the risk ratio (the rare-disease approximation does not apply).</label>
-                        <label><input type="radio" name="t3-q4" value="D"> D. Odds ratios are only valid when prevalence is exactly 50%.</label>
+                        <label><input type="radio" name="t3-q4" value="A" required> A. 350 person-years</label>
+                        <label><input type="radio" name="t3-q4" value="B"> B. 260 person-years</label>
+                        <label><input type="radio" name="t3-q4" value="C"> C. 200 person-years</label>
+                        <label><input type="radio" name="t3-q4" value="D"> D. 300 person-years</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>5. During a cholera outbreak in Zimbabwe, an epidemiologist calculates the attack rate as 228 per 100,000. Which of the following best describes this measure?</p>
+                    <p>5. An incidence rate density of a specific infectious condition is calculated as 5 cases per 100 person-years. How is this properly interpreted?</p>
                     <div class="options">
-                        <label><input type="radio" name="t3-q5" value="A" required> A. A point prevalence snapshot.</label>
-                        <label><input type="radio" name="t3-q5" value="B"> B. A true rate with time in the denominator.</label>
-                        <label><input type="radio" name="t3-q5" value="C"> C. A period measure of cumulative incidence (incidence risk).</label>
-                        <label><input type="radio" name="t3-q5" value="D"> D. An odds ratio of infection.</label>
+                        <label><input type="radio" name="t3-q5" value="A" required> A. Exactly 5% of the initial population becomes ill every single month.</label>
+                        <label><input type="radio" name="t3-q5" value="B"> B. We expect roughly 5 cases to occur if we observe 100 people for exactly 1 full year.</label>
+                        <label><input type="radio" name="t3-q5" value="C"> C. The probability of an individual surviving without infection is exactly 95% over a century.</label>
+                        <label><input type="radio" name="t3-q5" value="D"> D. The condition takes exactly 20 calendar years to spread to 5 individual patients.</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>6. A study in Zambia follows a cohort of 500 patients at high risk for STIs. Because some patients are lost to follow-up at different times, the researchers use a person-time denominator to report 15 new infections over 1,200 person-years. What is the incidence rate?</p>
+                    <p>6. Which measure of occurrence is highly preferred when the population under observation is dynamic, with frequent entry, dropouts, and varying periods of risk exposure?</p>
                     <div class="options">
-                        <label><input type="radio" name="t3-q6" value="A" required> A. 1.25 per 100 person-years.</label>
-                        <label><input type="radio" name="t3-q6" value="B"> B. 3.0 per 100 person-years.</label>
-                        <label><input type="radio" name="t3-q6" value="C"> C. 12.5 per 1,000 person-years.</label>
-                        <label><input type="radio" name="t3-q6" value="D"> D. 0.015 per person-year.</label>
+                        <label><input type="radio" name="t3-q6" value="A" required> A. Point Prevalence Ratio</label>
+                        <label><input type="radio" name="t3-q6" value="B"> B. Cumulative Incidence (Attack Rate)</label>
+                        <label><input type="radio" name="t3-q6" value="C"> C. Incidence Rate (Person-Time Denominator)</label>
+                        <label><input type="radio" name="t3-q6" value="D"> D. Period Prevalence Rate</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>7. According to the "Bathtub Principle" ($P \approx I \times D$), what is the most likely reason why HIV prevalence in Zimbabwe remains high even though the annual incidence (new cases) has decreased?</p>
+                    <p>7. A community survey in a district identifies 40 cases of active tuberculosis within a total surveyed group of 10,000 residents on October 1st. What epidemiological metric does 40 / 10,000 represent?</p>
                     <div class="options">
-                        <label><input type="radio" name="t3-q7" value="A" required> A. The drain (deaths/cures) has become faster.</label>
-                        <label><input type="radio" name="t3-q7" value="B"> B. Incidence has increased drastically.</label>
-                        <label><input type="radio" name="t3-q7" value="C"> C. ART has significantly increased the average duration ($D$) of the disease.</label>
-                        <label><input type="radio" name="t3-q7" value="D"> D. The bathtub principle does not apply to viral infections.</label>
+                        <label><input type="radio" name="t3-q7" value="A" required> A. Point Prevalence</label>
+                        <label><input type="radio" name="t3-q7" value="B"> B. Incidence Density</label>
+                        <label><input type="radio" name="t3-q7" value="C"> C. Crude Cumulative Risk</label>
+                        <label><input type="radio" name="t3-q7" value="D"> D. Case Fatality Proportion</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>8. In a study comparing NCD prevalence (e.g., hypertension) between two urban populations with very different age structures, why should researchers use standardized rates?</p>
+                    <p>8. Why is a person no longer counted in the denominator of a "population at risk" for incidence tracking after they develop the target outcome?</p>
                     <div class="options">
-                        <label><input type="radio" name="t3-q8" value="A" required> A. Because raw crude rates can be misleading due to the confounding effect of age.</label>
-                        <label><input type="radio" name="t3-q8" value="B"> B. Because standardized rates are always higher than crude rates.</label>
-                        <label><input type="radio" name="t3-q8" value="C"> C. Because standardized rates do not require a denominator.</label>
-                        <label><input type="radio" name="t3-q8" value="D"> D. Because age does not influence hypertension.</label>
+                        <label><input type="radio" name="t3-q8" value="A" required> A. To artificially inflate the clinical significance of the mathematical model.</label>
+                        <label><input type="radio" name="t3-q8" value="B"> B. Because they are no longer at risk of developing that specific primary initial event again during that observation path.</label>
+                        <label><input type="radio" name="t3-q8" value="C"> C. Because historical record tracking systems drop infected profiles automatically to maximize storage space.</label>
+                        <label><input type="radio" name="t3-q8" value="D"> D. To align point metrics with standard demographic registry guidelines.</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>9. When reporting the results of an STI study, a researcher writes, "The prevalence rate was 15%." Why is this technically incorrect?</p>
+                    <p>9. If 30 individuals out of a stable community of 300 gather at a local function and develop food poisoning within 24 hours, what specific variation of incidence is calculated?</p>
                     <div class="options">
-                        <label><input type="radio" name="t3-q9" value="A" required> A. Prevalence should be expressed as an odds ratio.</label>
-                        <label><input type="radio" name="t3-q9" value="B"> B. Prevalence is a proportion (0–1), whereas a true rate has time in the denominator.</label>
-                        <label><input type="radio" name="t3-q9" value="C"> C. Rates must always be expressed as decimals, not percentages.</label>
-                        <label><input type="radio" name="t3-q9" value="D"> D. Prevalence is only applicable to non-communicable diseases.</label>
+                        <label><input type="radio" name="t3-q9" value="A" required> A. Point Prevalence Index</label>
+                        <label><input type="radio" name="t3-q9" value="B"> B. Attack Rate (a form of Cumulative Incidence)</label>
+                        <label><input type="radio" name="t3-q9" value="C"> C. Mortality Density Proportion</label>
+                        <label><input type="radio" name="t3-q9" value="D"> D. Longitudinal Hazard Ratio</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>10. You are investigating a new, rare neurological condition in a clinical cohort. You have 10,000 disease-free people at baseline. After 5 years of fixed follow-up with no losses, 5 people develop the condition. What is the best measure to report?</p>
+                    <p>10. If the incidence of a chronic non-communicable disease remains stable over a decade but a massive migration wave introduces thousands of healthy individuals into the denominator district, what immediate mathematical shift occurs?</p>
                     <div class="options">
-                        <label><input type="radio" name="t3-q10" value="A" required> A. Incidence rate of 0.0005 per person-year.</label>
-                        <label><input type="radio" name="t3-q10" value="B"> B. Incidence risk (cumulative incidence) of 0.05%.</label>
-                        <label><input type="radio" name="t3-q10" value="C"> C. Point prevalence of 0.05%.</label>
-                        <label><input type="radio" name="t3-q10" value="D"> D. The odds of having the condition at baseline.</label>
+                        <label><input type="radio" name="t3-q10" value="A" required> A. Calculated point prevalence artificially decreases.</label>
+                        <label><input type="radio" name="t3-q10" value="B"> B. The absolute incidence density spikes sharply.</label>
+                        <label><input type="radio" name="t3-q10" value="C"> C. True patient exposure status reverses automatically.</label>
+                        <label><input type="radio" name="t3-q10" value="D"> D. Observed cumulative mortality shifts to match the point incidence profile.</label>
                     </div>
                 </div>
                 <button type="button" class="submit-btn" id="t3-submit" onclick="gradeTopicQuiz(3)">Submit Topic 3 Answers</button>
@@ -625,7 +690,7 @@
             <div id="t3-results" class="results-box">
                 <h3>Quiz Completed Successfully!</h3>
                 <p id="t3-score-text" class="score-line"></p>
-                <p class="desc-line">Your answers have been successfully recorded.</p>
+                <p class="desc-line">Your answers have been recorded.</p>
             </div>
         </div>
     </div>
@@ -637,93 +702,93 @@
             <h2>Topic 4: Using Routine Health Data for Research</h2>
             <form id="form-t4">
                 <div class="question">
-                    <p>1. Which of the following is a primary limitation when using routine health data compared to purpose-built data collection?</p>
+                    <p>1. When extracting patient variables from an Electronic Health Record (EHR) registry like ePMS or OpenMRS for secondary analysis, what constitutes a primary operational data quality limitation?</p>
                     <div class="options">
-                        <label><input type="radio" name="t4-q1" value="A" required> A. Routine data are usually more expensive to access than conducting a bespoke survey.</label>
-                        <label><input type="radio" name="t4-q1" value="B"> B. The researcher has no control over what variables were measured or how they were defined.</label>
-                        <label><input type="radio" name="t4-q1" value="C"> C. Routine data systems cannot be used for analytical research, only descriptive.</label>
-                        <label><input type="radio" name="t4-q1" value="D"> D. Routine data lack demographic information entirely.</label>
+                        <label><input type="radio" name="t4-q1" value="A" required> A. Complete structural standardization across fields.</label>
+                        <label><input type="radio" name="t4-q1" value="B"> B. Missing clinical indicators due to data entry gaps during routine workflows.</label>
+                        <label><input type="radio" name="t4-q1" value="C"> C. High frequencies of automated real-time internal validation flags.</label>
+                        <label><input type="radio" name="t4-q1" value="D"> D. Excessive data collection overhead preventing simple random selection paths.</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>2. In the context of calculating incidence rates using routine data, what does the 'person-time at risk' approximation represent?</p>
+                    <p>2. A retrospective clinical analysis discovers that a massive cluster of patient files are missing specific 24-month viral load entries because a specific regional laboratory analyzer went down. This data missing mechanism is classified as:</p>
                     <div class="options">
-                        <label><input type="radio" name="t4-q2" value="A" required> A. An estimate of the population at risk over the study duration, assuming a stable population.</label>
-                        <label><input type="radio" name="t4-q2" value="B"> B. The population at the end of the study period.</label>
-                        <label><input type="radio" name="t4-q2" value="C"> C. The total number of new cases identified during the period.</label>
-                        <label><input type="radio" name="t4-q2" value="D"> D. The exact number of days each participant contributed to the study.</label>
+                        <label><input type="radio" name="t4-q2" value="A" required> A. Missing Completely at Random (MCAR)</label>
+                        <label><input type="radio" name="t4-q2" value="B"> B. Missing at Random (MAR, conditionally linked to system metadata)</label>
+                        <label><input type="radio" name="t4-q2" value="C"> C. Missing Not at Random (MNAR, missing because value is uniquely high)</label>
+                        <label><input type="radio" name="t4-q2" value="D"> D. Fully Ignorable Internal Structural Discontinuity</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>3. Why is record linkage often necessary for studies involving populations living with HIV and cancer?</p>
+                    <p>3. What does "Deterministic Data Linkage" explicitly require when integrating an independent laboratory tracking registry with a national clinical outcomes platform?</p>
                     <div class="options">
-                        <label><input type="radio" name="t4-q3" value="A" required> A. HIV clinics and cancer registries are usually located in the same building.</label>
-                        <label><input type="radio" name="t4-q3" value="B"> B. Cancer registries are not allowed to collect data unless it is linked to an HIV database.</label>
-                        <label><input type="radio" name="t4-q3" value="C"> C. Record linkage is required by law for all HIV patients.</label>
-                        <label><input type="radio" name="t4-q3" value="D"> D. Clinical ART records often lack information about cancer diagnoses made at different facilities.</label>
+                        <label><input type="radio" name="t4-q3" value="A" required> A. A complex combination of fuzzy matching weights on common surnames.</label>
+                        <label><input type="radio" name="t4-q3" value="B"> B. An exact match on a unique identifier variable, such as a National ID or unique Clinic Art Registration Number.</label>
+                        <label><input type="radio" name="t4-q3" value="C"> C. A manual baseline probabilistic review of demographic variables.</label>
+                        <label><input type="radio" name="t4-q3" value="D"> D. A spatial approximation mapping cluster centroid variables within 50 meters.</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>4. When comparing rates between two populations with different age structures, why is it recommended to use standardised rates?</p>
+                    <p>4. Which of the following defines a key analytical benefit of utilizing routinely collected national aggregate health data frameworks like DHIS2 for epidemiological monitoring?</p>
                     <div class="options">
-                        <label><input type="radio" name="t4-q4" value="A" required> A. Because raw crude rates can be misleading if the population age distributions differ.</label>
-                        <label><input type="radio" name="t4-q4" value="B"> B. To eliminate the need for a numerator.</label>
-                        <label><input type="radio" name="t4-q4" value="C"> C. Standardised rates are always higher than crude rates.</label>
-                        <label><input type="radio" name="t4-q4" value="D"> D. Standardised rates are required only when the study is purpose-built.</label>
+                        <label><input type="radio" name="t4-q4" value="A" required> A. Deep granular visibility into individual patient-level clinical trajectories.</label>
+                        <label><input type="radio" name="t4-q4" value="B"> B. Elimination of all forms of record duplication across provincial boundaries.</label>
+                        <label><input type="radio" name="t4-q4" value="C"> C. Rapid macro-level tracking of geographic disease distributions and public facility reporting trends.</label>
+                        <label><input type="radio" name="t4-q4" value="D"> D. Complete internal control over specific baseline experimental variable distributions.</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>5. Which of the following is a primary challenge when performing record linkage?</p>
+                    <p>5. An analyst runs a structural query check across a multi-clinic dataset and finds 15 records where the "Date of ART Initiation" is recorded as occurring 3 years *after* the patient's recorded "Date of Death". This represents a severe violation of:</p>
                     <div class="options">
-                        <label><input type="radio" name="t4-q5" value="A" required> A. The inability to use identifiers to link records.</label>
-                        <label><input type="radio" name="t4-q5" value="B"> B. Ensuring that the study is performed only on purpose-built datasets.</label>
-                        <label><input type="radio" name="t4-q5" value="C"> C. Managing discordance where the same variable is recorded differently in separate sources.</label>
-                        <label><input type="radio" name="t4-q5" value="D"> D. The requirement for an exact, 100% match on all demographic fields.</label>
+                        <label><input type="radio" name="t4-q5" value="A" required> A. Internal Data Completeness</label>
+                        <label><input type="radio" name="t4-q5" value="B"> B. Internal Logical Consistency Checks</label>
+                        <label><input type="radio" name="t4-q5" value="C"> C. Secondary Coding Concordance</label>
+                        <label><input type="radio" name="t4-q5" value="D"> D. External Representativeness Bounds</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>6. Why is 'completeness' a critical interpretation question when evaluating a routine data source?</p>
+                    <p>6. If you link an electronic prescription portal dataset with a separate diagnostic platform dataset based on partial string variables (e.g., matching "Varaidzo Moyo" with "Varaidzo S. Moyo"), what methodology class are you applying?</p>
                     <div class="options">
-                        <label><input type="radio" name="t4-q6" value="A" required> A. It determines whether the data capture all intended cases or events in the population.</label>
-                        <label><input type="radio" name="t4-q6" value="B"> B. It prevents the need for manual clerical review in linkage projects.</label>
-                        <label><input type="radio" name="t4-q6" value="C"> C. It ensures that the confidentiality of the patients is maintained.</label>
-                        <label><input type="radio" name="t4-q6" value="D"> D. It measures how quickly the data can be updated during an outbreak.</label>
+                        <label><input type="radio" name="t4-q6" value="A" required> A. Pure Deterministic Indexing</label>
+                        <label><input type="radio" name="t4-q6" value="B"> B. Probabilistic (or Fuzzy) Data Linkage</label>
+                        <label><input type="radio" name="t4-q6" value="C"> C. Linear Coordinate Regression Structuring</label>
+                        <label><input type="radio" name="t4-q6" value="D"> D. Blind System Aggregation</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>7. Why is 'case definition' considered a risk for consistency in routine data?</p>
+                    <p>7. Why is the "Ecological Fallacy" a constant structural concern when designing health systems research projects that utilize aggregate routine facility data dashboards?</p>
                     <div class="options">
-                        <label><input type="radio" name="t4-q7" value="A" required> A. Because routine data only allows for one case definition per disease.</label>
-                        <label><input type="radio" name="t4-q7" value="B"> B. Because cases are always defined by the researchers themselves.</label>
-                        <label><input type="radio" name="t4-q7" value="C"> C. Because clinical definitions change over time, which can alter case counts.</label>
-                        <label><input type="radio" name="t4-q7" value="D"> D. Because case definitions must be the same for all types of diseases.</label>
+                        <label><input type="radio" name="t4-q7" value="A" required> A. Individual patient records are too secure to allow direct database queries.</label>
+                        <label><input type="radio" name="t4-q7" value="B"> B. Inferences made about group-level correlations do not necessarily hold true for specific individuals within those groups.</label>
+                        <label><input type="radio" name="t4-q7" value="C"> C. System software can only process spatial configurations rather than true population numerators.</label>
+                        <label><input type="radio" name="t4-q7" value="D"> D. Environmental factors are typically poorly coded within routine clinical platforms.</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>8. If the MoHCC updates the case definition for "suspected cholera" to include broader, milder symptoms, what is the most likely impact on reported data?</p>
+                    <p>8. What is the standard operational term used to describe routine health platform data fields that are systematically left unpopulated because clinicians find the software forms too time-consuming during peak outpatient hours?</p>
                     <div class="options">
-                        <label><input type="radio" name="t4-q8" value="A" required> A. The reported incidence will likely rise due to the change in definition (reporting artifact).</label>
-                        <label><input type="radio" name="t4-q8" value="B"> B. The reported incidence will decrease because fewer people will be tested.</label>
-                        <label><input type="radio" name="t4-q8" value="C"> C. The case definition has no impact on reported incidence rates.</label>
-                        <label><input type="radio" name="t4-q8" value="D"> D. The mortality rate will artificially spike to 100%.</label>
+                        <label><input type="radio" name="t4-q8" value="A" required> A. Informational Variable Redundancy</label>
+                        <label><input type="radio" name="t4-q8" value="B"> B. Missingness due to Administrative Burden / Non-compliance</label>
+                        <label><input type="radio" name="t4-q8" value="C"> C. System Random Drift Variance</label>
+                        <label><input type="radio" name="t4-q8" value="D"> D. Non-differential Coding Attrition</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>9. What is the primary technical obstacle to linking a patient’s public ART record (in DHIS2) with their private oncology treatment record?</p>
+                    <p>9. When analyzing routine data, a researcher notices a massive, sudden 300% spike in recorded cases of "Peripheral Neuropathy" at a clinic within a single month. Upon review, they find the clinic updated its screening tool that exact month. This artificial change is a shift in:</p>
                     <div class="options">
-                        <label><input type="radio" name="t4-q9" value="A" required> A. The lack of a universal, unique national health identifier across the public and private sectors.</label>
-                        <label><input type="radio" name="t4-q9" value="B"> B. The public and private sectors use different programming languages for their websites.</label>
-                        <label><input type="radio" name="t4-q9" value="C"> C. Cancer records are classified as "top secret" by the Ministry of Health.</label>
-                        <label><input type="radio" name="t4-q9" value="D"> D. Private doctors are legally forbidden from using computers for patient records.</label>
+                        <label><input type="radio" name="t4-q9" value="A" required> A. True population incidence underlying biological pathways.</label>
+                        <label><input type="radio" name="t4-q9" value="B"> B. Ascertainment/Measurement Practice (Artifactual Change).</label>
+                        <label><input type="radio" name="t4-q9" value="C"> C. External validation representativeness margins.</label>
+                        <label><input type="radio" name="t4-q9" value="D"> D. Deterministic linkage matching accuracy indexes.</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>10. When a health manager observes a sudden, implausible spike in a specific facility's report within DHIS2, what is the best first step in the data validation process?</p>
+                    <p>10. Which operational strategy is highly recommended to protect patient privacy during secondary analysis of routine clinical datasets while retaining the ability to map long-term structural outcomes across multiple distinct facilities?</p>
                     <div class="options">
-                        <label><input type="radio" name="t4-q10" value="A" required> A. Automatically adjust the data to the national average.</label>
-                        <label><input type="radio" name="t4-q10" value="B"> B. Flag the facility for a formal, large-scale audit.</label>
-                        <label><input type="radio" name="t4-q10" value="C"> C. Verify the digital input against the source paper-based facility register.</label>
-                        <label><input type="radio" name="t4-q10" value="D"> D. Discard the report and exclude that facility from the national dataset.</label>
+                        <label><input type="radio" name="t4-q10" value="A" required> A. Publishing complete demographic text files online for collaborative open-source review.</label>
+                        <label><input type="radio" name="t4-q10" value="B"> B. Generating pseudo-anonymized encrypted link hashes instead of extracting explicit identifier text strings.</label>
+                        <label><input type="radio" name="t4-q10" value="C"> C. Restricting all analytical exploration paths strictly to aggregate country-level totals.</label>
+                        <label><input type="radio" name="t4-q10" value="D"> D. Deleting all date timestamps and tracking indicators from the underlying raw tables.</label>
                     </div>
                 </div>
                 <button type="button" class="submit-btn" id="t4-submit" onclick="gradeTopicQuiz(4)">Submit Topic 4 Answers</button>
@@ -731,7 +796,7 @@
             <div id="t4-results" class="results-box">
                 <h3>Quiz Completed Successfully!</h3>
                 <p id="t4-score-text" class="score-line"></p>
-                <p class="desc-line">Your answers have been successfully recorded.</p>
+                <p class="desc-line">Your answers have been recorded.</p>
             </div>
         </div>
     </div>
@@ -743,108 +808,103 @@
             <h2>Topic 5: Measures of Effect and Impact</h2>
             <form id="form-t5">
                 <div class="question">
-                    <p>1. A PrEP program in Bulawayo followed two groups of women for one year: PrEP users (18 cases out of 600) and Non-PrEP users (45 cases out of 500). What is the calculated Risk Ratio (RR)?</p>
+                    <p>1. In a retrospective cohort study evaluating virologic outcomes of patients on dolutegravir-based second-line ART, the 5-year risk of virologic failure is 4% in the exposed group and 2% in the unexposed comparison group. Calculate the Risk Ratio (Relative Risk).</p>
+                    <div class="options">
+                        <label><input type="radio" name="t5-q1" value="A" required> A. RR = 0.5</label>
+                        <label><input type="radio" name="t5-q1" value="B"> B. RR = 2.0</label>
+                        <label><input type="radio" name="t5-q1" value="C"> C. RR = 6.0</label>
+                        <label><input type="radio" name="t5-q1" value="D"> D. RR = 0.02</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>2. A case-control study investigating an outbreak of an unmapped opportunistic infection calculates an Odds Ratio (OR) of 4.5 for a specific environmental exposure. What does this value explicitly indicate?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t5-q2" value="A" required> A. The exposure causes the infection in exactly 45% of patients.</label>
+                        <label><input type="radio" name="t5-q2" value="B"> B. The odds of exposure among cases are 4.5 times higher than the odds of exposure among controls.</label>
+                        <label><input type="radio" name="t5-q2" value="C"> C. The absolute incidence rate is increased by a flat margin of 4.5 person-years.</label>
+                        <label><input type="radio" name="t5-q2" value="D"> D. The primary baseline population attribution risk is exactly 4.5%.</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>3. If the Risk Ratio for developing a cardiovascular event comparing smokers to non-smokers in a clinic cohort is exactly 3.0, what is the calculated Relative Risk Increase (RRI)?</p>
+                    <div class="options">
+                        <label><input type="radio" name="t5-q3" value="A" required> A. 300% increased risk</label>
+                        <label><input type="radio" name="t5-q3" value="B"> B. 200% increased risk</label>
+                        <label><input type="radio" name="t5-q3" value="C"> C. 30% increased risk</label>
+                        <label><input type="radio" name="t5-q3" value="D"> D. 100% flat risk uniformity</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>4. Review the standard $2 \times 2$ contingency table structural breakdown below:</p>
                     <table class="math-table">
-                        <tr><th>Cohort Group</th><th>New HIV Infections</th><th>Total Followed</th></tr>
-                        <tr><td>PrEP Users</td><td>18</td><td>600</td></tr>
-                        <tr><td>No PrEP</td><td>45</td><td>500</td></tr>
+                        <thead>
+                            <tr><th>Exposure Status</th><th>Developed Outcome (Cases)</th><th>Remained Healthy (Controls)</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Exposed Group</td><td>40 individuals (a)</td><td>60 individuals (b)</td></tr>
+                            <tr><td>Unexposed Group</td><td>10 individuals (c)</td><td>90 individuals (d)</td></tr>
+                        </tbody>
                     </table>
+                    <p>Calculate the exact cohort Risk Ratio (RR) using the standard formula $RR = \frac{a / (a+b)}{c / (c+d)}$:</p>
                     <div class="options">
-                        <label><input type="radio" name="t5-q1" value="A" required> A. RR = 0.50</label>
-                        <label><input type="radio" name="t5-q1" value="B"> B. RR = 0.33 (PrEP users experienced 33% of the risk of non-users)</label>
-                        <label><input type="radio" name="t5-q1" value="C"> C. RR = 2.67</label>
-                        <label><input type="radio" name="t5-q1" value="D"> D. RR = 1.25</label>
+                        <label><input type="radio" name="t5-q4" value="A" required> A. RR = 4.0</label>
+                        <label><input type="radio" name="t5-q4" value="B"> B. RR = 6.0</label>
+                        <label><input type="radio" name="t5-q4" value="C"> C. RR = 2.5</label>
+                        <label><input type="radio" name="t5-q4" value="D"> D. RR = 0.25</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>2. During a cholera outbreak in Harare, 120 new cases occurred during 6,000 person-days of observation. What is the incidence rate expressed per 1,000 person-days?</p>
+                    <p>5. Using the exact same contingency table data structure from Question 4, compute the standard case-control cross-product Odds Ratio ($OR = \frac{a \times d}{b \times c}$):</p>
                     <div class="options">
-                        <label><input type="radio" name="t5-q2" value="A" required> A. 12 cases per 1,000 person-days</label>
-                        <label><input type="radio" name="t5-q2" value="B"> B. 20 cases per 1,000 person-days</label>
-                        <label><input type="radio" name="t5-q2" value="C"> C. 5 cases per 1,000 person-days</label>
-                        <label><input type="radio" name="t5-q2" value="D"> D. 2 cases per 1,000 person-days</label>
+                        <label><input type="radio" name="t5-q5" value="A" required> A. OR = 4.0</label>
+                        <label><input type="radio" name="t5-q5" value="B"> B. OR = 6.0</label>
+                        <label><input type="radio" name="t5-q5" value="C"> C. OR = 9.0</label>
+                        <label><input type="radio" name="t5-q5" value="D"> D. OR = 1.5</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>3. A screening campaign in Zimbabwe examined 2,500 adults. 350 participants already had diabetes at the baseline examination. What measure is calculated here and what is its value?</p>
+                    <p>6. Which measure of effect represents the absolute excess risk of disease attributable to an exposure, calculated by subtracting the incidence of the unexposed from the incidence of the exposed ($I_e - I_u$)?</p>
                     <div class="options">
-                        <label><input type="radio" name="t5-q3" value="A" required> A. Incidence Risk = 14%</label>
-                        <label><input type="radio" name="t5-q3" value="B"> B. Prevalence = 14%</label>
-                        <label><input type="radio" name="t5-q3" value="C"> C. Incidence Rate = 14 per 1,000 person-years</label>
-                        <label><input type="radio" name="t5-q3" value="D"> D. Odds Ratio = 1.14</label>
+                        <label><input type="radio" name="t5-q6" value="A" required> A. Relative Risk Ratio</label>
+                        <label><input type="radio" name="t5-q6" value="B"> B. Attributable Risk (Risk Difference)</label>
+                        <label><input type="radio" name="t5-q6" value="C"> C. Population Odds Metric</label>
+                        <label><input type="radio" name="t5-q6" value="D"> D. Hazard Ratio Density</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>4. In an Ebola outbreak tracking cohort mortality parameters, the vaccinated risk is 20% and the unvaccinated risk is 48%. What is the correct Risk Difference (RD)?</p>
-                    <table class="math-table">
-                        <tr><th>Group Exposure</th><th>Deaths</th><th>Total Patients</th></tr>
-                        <tr><td>Vaccinated</td><td>30</td><td>150</td></tr>
-                        <tr><td>Unvaccinated</td><td>96</td><td>200</td></tr>
-                    </table>
+                    <p>7. If an Attributable Risk calculation reveals a Risk Difference of 0.05 (or 5%) for treatment failure linked to poor adherence, what does this translate to clinically?</p>
                     <div class="options">
-                        <label><input type="radio" name="t5-q4" value="A" required> A. RD = 28 percentage points (28 fewer deaths per 100 patients treated)</label>
-                        <label><input type="radio" name="t5-q4" value="B"> B. RD = 12 percentage points</label>
-                        <label><input type="radio" name="t5-q4" value="C"> C. RD = 42 percentage points</label>
-                        <label><input type="radio" name="t5-q4" value="D"> D. RD = 68 percentage points</label>
+                        <label><input type="radio" name="t5-q7" value="A" required> A. Out of 100 poorly adherent patients, 5 excess cases of treatment failure occur due to their poor adherence status.</label>
+                        <label><input type="radio" name="t5-q7" value="B"> B. A poorly adherent patient is exactly 5 times more likely to fail treatment than an adherent one.</label>
+                        <label><input type="radio" name="t5-q7" value="C"> C. The intervention will fail to function across exactly 5% of the general historical population.</label>
+                        <label><input type="radio" name="t5-q7" value="D"> D. Exactly 5 individuals require testing to identify a single baseline case entry.</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>5. A case-control study investigated multiple sexual partners and syphilis status. What is the calculated cross-product Odds Ratio (OR)?</p>
-                    <table class="math-table">
-                        <tr><th>Exposure History</th><th>Syphilis Cases</th><th>No Syphilis Controls</th></tr>
-                        <tr><td>Multiple partners</td><td>80</td><td>120</td></tr>
-                        <tr><td>One partner</td><td>40</td><td>160</td></tr>
-                    </table>
+                    <p>8. Under which specific scenario does a calculated Odds Ratio (OR) approximate the true underlying Risk Ratio (RR) of a baseline observation population?</p>
                     <div class="options">
-                        <label><input type="radio" name="t5-q5" value="A" required> A. OR = 1.50</label>
-                        <label><input type="radio" name="t5-q5" value="B"> B. OR = 2.67</label>
-                        <label><input type="radio" name="t5-q5" value="C"> C. OR = 4.00</label>
-                        <label><input type="radio" name="t5-q5" value="D"> D. OR = 0.42</label>
+                        <label><input type="radio" name="t5-q8" value="A" required> A. When the disease outcome is highly common in the target population (Prevalence > 50%).</label>
+                        <label><input type="radio" name="t5-q8" value="B"> B. When the disease outcome is rare in the population under study (The "Rare Disease Assumption", typically &lt; 10%).</label>
+                        <label><input type="radio" name="t5-q8" value="C"> C. When the total duration of the observation follow-up exceeds 24 months.</label>
+                        <label><input type="radio" name="t5-q8" value="D"> D. When the deterministic linkage match rate drops down below half.</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>6. A clinic in Lusaka reports: Risk of stroke without treatment = 10%; Risk of stroke with treatment = 5%. What is the calculated Number Needed to Treat (NNT)?</p>
+                    <p>9. A public health intervention reports a Population Attributable Fraction (PAF) of 40% for a localized hypertension program targeting high sodium intake. What is the explicit policy implication?</p>
                     <div class="options">
-                        <label><input type="radio" name="t5-q6" value="A" required> A. NNT = 10</label>
-                        <label><input type="radio" name="t5-q6" value="B"> B. NNT = 20</label>
-                        <label><input type="radio" name="t5-q6" value="C"> C. NNT = 5</label>
-                        <label><input type="radio" name="t5-q6" value="D"> D. NNT = 50</label>
+                        <label><input type="radio" name="t5-q9" value="A" required> A. Exactly 40% of the entire population will comply with the sodium reduction program guidelines.</label>
+                        <label><input type="radio" name="t5-q9" value="B"> B. If high sodium intake were completely eliminated from this population, we would expect a 40% reduction in the total number of hypertension cases.</label>
+                        <label><input type="radio" name="t5-q9" value="C"> C. Individual risk drops down by exactly 40% immediately upon launching the screening field tools.</label>
+                        <label><input type="radio" name="t5-q9" value="D"> D. The program will require a flat 40% funding overhead buffer to manage administrative error missingness.</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>7. A district surveillance platform dashboard records Cholera prevalence = 4% and Cholera incidence = 1.5 cases per 1,000 person-weeks. Which statement accurately separates these indicators?</p>
+                    <p>10. If an evaluation finds a structural Risk Ratio of exactly 1.00 for a new diagnostic testing algorithm compared to the standard laboratory procedure, what does this state?</p>
                     <div class="options">
-                        <label><input type="radio" name="t5-q7" value="A" required> A. Prevalence measures new cases while incidence captures baseline ones.</label>
-                        <label><input type="radio" name="t5-q7" value="B"> B. Incidence measures current burden and risk has absolute units of person-time.</label>
-                        <label><input type="radio" name="t5-q7" value="C"> C. Prevalence provides a cross-sectional snapshot of existing disease at a specific point in time.</label>
-                        <label><input type="radio" name="t5-q7" value="D"> D. Both metrics use the identical person-time denominator rules.</label>
-                    </div>
-                </div>
-                <div class="question">
-                    <p>8. A health sector report shows HIV prevalence = 20% and TB Risk Ratio among people living with HIV = 15. Which metric estimates the proportion of TB cases in the total population attributable to HIV exposure?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t5-q8" value="A" required> A. Risk Ratio</label>
-                        <label><input type="radio" name="t5-q8" value="B"> B. Population Attributable Fraction (PAF)</label>
-                        <label><input type="radio" name="t5-q8" value="C"> C. Odds Ratio</label>
-                        <label><input type="radio" name="t5-q8" value="D"> D. Crude Incident Density Difference</label>
-                    </div>
-                </div>
-                <div class="question">
-                    <p>9. Researchers report a Risk Ratio = 1.6 and an Odds Ratio = 1.9 for a common condition occurring in 30% of participants. Why is the Odds Ratio notably larger than the Risk Ratio?</p>
-                    <div class="options">
-                        <label><input type="radio" name="t5-q9" value="A" required> A. The outcome is rare, causing math contraction.</label>
-                        <label><input type="radio" name="t5-q9" value="B"> B. The outcome is common (non-rare), so the OR overestimates the RR (the rare-disease assumption does not hold).</label>
-                        <label><input type="radio" name="t5-q9" value="C"> C. The denominator was compiled via crude person-years formatting metrics.</label>
-                        <label><input type="radio" name="t5-q9" value="D"> D. Odds Ratios are mathematically bound to always double Risk Ratio indicators.</label>
-                    </div>
-                </div>
-                <div class="question">
-                    <p>10. Match the evaluation scenarios below with their best match metric: (1) Existing diabetes cases today, (2) New HIV infections over 1 year, (3) Cholera cases per 1,000 person-days.</p>
-                    <div class="options">
-                        <label><input type="radio" name="t5-q10" value="A" required> A. (1) Risk, (2) Prevalence, (3) Incidence Rate</label>
-                        <label><input type="radio" name="t5-q10" value="B"> B. (1) Prevalence, (2) Risk (Cumulative Incidence), (3) Incidence Rate</label>
-                        <label><input type="radio" name="t5-q10" value="C"> C. (1) Incidence Rate, (2) Prevalence, (3) PAF</label>
-                        <label><input type="radio" name="t5-q10" value="D"> D. (1) Prevalence, (2) PAF, (3) Odds Ratio</label>
+                        <label><input type="radio" name="t5-q10" value="A" required> A. The new strategy is highly superior to the historical standard setup.</label>
+                        <label><input type="radio" name="t5-q10" value="B"> B. There is no association between the choice of diagnostic testing algorithm and the detection outcome (Null Value).</label>
+                        <label><input type="radio" name="t5-q10" value="C"> C. The mathematical configuration has encountered an internal coding consistency check logic block breakdown.</label>
+                        <label><input type="radio" name="t5-q10" value="D"> D. The cumulative incidence rates cannot be validated using fuzzy probabilistic linkages.</label>
                     </div>
                 </div>
                 <button type="button" class="submit-btn" id="t5-submit" onclick="gradeTopicQuiz(5)">Submit Topic 5 Answers</button>
@@ -852,7 +912,7 @@
             <div id="t5-results" class="results-box">
                 <h3>Quiz Completed Successfully!</h3>
                 <p id="t5-score-text" class="score-line"></p>
-                <p class="desc-line">Your answers have been successfully recorded.</p>
+                <p class="desc-line">Your answers have been recorded.</p>
             </div>
         </div>
     </div>
@@ -864,83 +924,93 @@
             <h2>Topic 6: Overview of Study Designs</h2>
             <form id="form-t6">
                 <div class="question">
-                    <p>1. At Parirenyatwa Hospital in Harare, researchers follow adults newly started on ART for five years to record viral suppression parameters, retention in care, and mortality metrics. What study design is this?</p>
+                    <p>1. A clinical researcher samples 500 patients currently attending an outpatient clinic on a single day, measuring both their current Body Mass Index (BMI) and their concurrent blood pressure levels simultaneously. What type of study design is this?</p>
                     <div class="options">
-                        <label><input type="radio" name="t6-q1" value="A" required> A. Cross-sectional study</label>
-                        <label><input type="radio" name="t6-q1" value="B"> B. Cohort study</label>
-                        <label><input type="radio" name="t6-q1" value="C"> C. Case report</label>
-                        <label><input type="radio" name="t6-q1" value="D"> D. Ecological study</label>
+                        <label><input type="radio" name="t6-q1" value="A" required> A. Prospective Cohort Tracking Matrix</label>
+                        <label><input type="radio" name="t6-q1" value="B"> B. Cross-Sectional Study Design</label>
+                        <label><input type="radio" name="t6-q1" value="C"> C. Retrospective Case-Control Protocol</label>
+                        <label><input type="radio" name="t6-q1" value="D"> D. Cluster Randomized Interventional Trial</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>2. In Mbandaka, DRC, teams describe the first 25 Ebola cases by age, sex, symptoms, and date of onset during an outbreak. Because there is no comparison group, this is correctly classified as a descriptive case series or outbreak report.</p>
+                    <p>2. What constitutes a primary methodologic limitation of a Cross-Sectional study design regarding establishing disease causation?</p>
                     <div class="options">
-                        <label><input type="radio" name="t6-q2" value="A" required> A. False</label>
-                        <label><input type="radio" name="t6-q2" value="B"> B. True</label>
+                        <label><input type="radio" name="t6-q2" value="A" required> A. Extreme logistical costs stemming from long follow-up periods.</label>
+                        <label><input type="radio" name="t6-q2" value="B"> B. High rates of attrition/loss-to-follow-up across calendar years.</label>
+                        <label><input type="radio" name="t6-q2" value="C"> C. Temporal Ambiguity (Inability to definitively confirm whether the exposure preceded the development of the outcome).</label>
+                        <label><input type="radio" name="t6-q2" value="D"> D. Lack of structural external demographic representativeness.</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>3. At Mpilo Central Hospital, researchers compare patients who test positive for COVID-19 with patients who test negative at the same testing site, then evaluate previous vaccination history. What study design is this?</p>
+                    <p>3. A research officer selects 100 patients with confirmed kidney disease (cases) and 200 patients without kidney disease from the same facility (controls), looking back into their historical medical records to compare past exposures. This design is classified as a:</p>
                     <div class="options">
-                        <label><input type="radio" name="t6-q3" value="A" required> A. Cohort study</label>
-                        <label><input type="radio" name="t6-q3" value="B"> B. Test-negative case-control study</label>
-                        <label><input type="radio" name="t6-q3" value="C"> C. Ecological study</label>
-                        <label><input type="radio" name="t6-q3" value="D"> D. Cross-sectional study</label>
+                        <label><input type="radio" name="t6-q3" value="A" required> A. Retrospective Cohort Study</label>
+                        <label><input type="radio" name="t6-q3" value="B"> B. Case-Control Study</label>
+                        <label><input type="radio" name="t6-q3" value="C"> C. Ecological Correlation Survey</label>
+                        <label><input type="radio" name="t6-q3" value="D"> D. Randomized Allocation Assessment Matrix</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>4. At Chitungwiza Central Hospital, researchers identify pregnant women diagnosed with syphilis and pregnant women without syphilis, then look back at partner treatment, previous symptoms, and clinic attendance. This is a case-control study.</p>
+                    <p>4. When tracking a rare exposure (e.g., a specific rare occupational toxin), which observational study design strategy is highly optimal and efficient?</p>
                     <div class="options">
-                        <label><input type="radio" name="t6-q4" value="A" required> A. False</label>
-                        <label><input type="radio" name="t6-q4" value="B"> B. True</label>
+                        <label><input type="radio" name="t6-q4" value="A" required> A. Case-Control Study</label>
+                        <label><input type="radio" name="t6-q4" value="B"> B. Cohort Study (selecting an explicitly exposed cohort assembly)</label>
+                        <label><input type="radio" name="t6-q4" value="C"> C. Repeated National Cross-Sectional Audits</label>
+                        <label><input type="radio" name="t6-q4" value="D"> D. Pure Decentralized Clinical Case Series logs</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>5. During Zimbabwe’s 2008 cholera outbreak, investigators describe suspected cholera cases by province, age group, and deaths using routine surveillance records, without selecting controls. What study design is this?</p>
+                    <p>5. Conversely, if the target disease outcome under investigation is highly rare within the population (e.g., a rare form of bone sarcoma), which study configuration is most practical and structurally efficient?</p>
                     <div class="options">
-                        <label><input type="radio" name="t6-q5" value="A" required> A. Case series / descriptive outbreak report</label>
-                        <label><input type="radio" name="t6-q5" value="B"> B. Case-control study</label>
-                        <label><input type="radio" name="t6-q5" value="C"> C. Cohort study</label>
-                        <label><input type="radio" name="t6-q5" value="D"> D. Randomised controlled trial</label>
+                        <label><input type="radio" name="t6-q5" value="A" required> A. Case-Control Study (selecting cases based on disease status)</label>
+                        <label><input type="radio" name="t6-q5" value="B"> B. Large-scale Prospective Cohort Study</label>
+                        <label><input type="radio" name="t6-q5" value="C"> C. Community-wide Interventional Population Trial</label>
+                        <label><input type="radio" name="t6-q5" value="D"> D. Aggregate Country-level Ecological Analysis</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>6. Clinicians at Marondera Hospital describe the first five admitted COVID-19 patients with severe pneumonia, including symptoms, oxygen needs, and outcomes, but include no comparison group. This is a case series.</p>
+                    <p>6. What defines a primary operational difference between a Retrospective Cohort study and a Case-Control study?</p>
                     <div class="options">
-                        <label><input type="radio" name="t6-q6" value="A" required> A. False</label>
-                        <label><input type="radio" name="t6-q6" value="B"> B. True</label>
+                        <label><input type="radio" name="t6-q6" value="A" required> A. Case-control studies only collect data from digital electronic health registers.</label>
+                        <label><input type="radio" name="t6-q6" value="B"> B. Retrospective cohort studies select individuals based on exposure status, whereas case-control studies select individuals based on disease outcome status.</label>
+                        <label><input type="radio" name="t6-q6" value="C"> C. Case-control setups avoid utilizing standard statistical odds ratios entirely.</label>
+                        <label><input type="radio" name="t6-q6" value="D"> D. Retrospective cohort designs eliminate all potential structural forms of recall bias completely.</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>7. During an Ebola outbreak in Beni, North Kivu, DRC, investigators compare confirmed Ebola cases with patients who tested negative for Ebola at the same treatment centres, then compare prior rVSV-ZEBOV vaccination. What study design is this?</p>
+                    <p>7. An investigator plots provincial-level average rainfall data alongside provincial-level malaria counts to show a correlation, without possessing individual patient-level clinical variables. What class of study design is this?</p>
                     <div class="options">
-                        <label><input type="radio" name="t6-q7" value="A" required> A. Cross-sectional study</label>
-                        <label><input type="radio" name="t6-q7" value="B"> B. Test-negative case-control study</label>
-                        <label><input type="radio" name="t6-q7" value="C"> C. Cluster-randomised trial</label>
-                        <label><input type="radio" name="t6-q7" value="D"> D. Ecological study</label>
+                        <label><input type="radio" name="t6-q7" value="A" required> A. Nested Case-Control Trial</label>
+                        <label><input type="radio" name="t6-q7" value="B"> B. Ecological (or Correlational) Study</label>
+                        <label><input type="radio" name="t6-q7" value="C"> C. Closed Population Inception Cohort</label>
+                        <label><input type="radio" name="t6-q7" value="D"> D. Individual-level Cross-Sectional Poll</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>8. At Chitungwiza Central Hospital, researchers identify infants who became HIV-positive despite PMTCT services and compare them with HIV-negative infants to look back at maternal ART use and infant-feeding history. This is a cohort study.</p>
+                    <p>8. What structural methodology element is uniquely introduced within a Randomized Controlled Trial (RCT) to balance both known and unmeasured confounding variables across study arms at baseline?</p>
                     <div class="options">
-                        <label><input type="radio" name="t6-q8" value="A" required> A. True</label>
-                        <label><input type="radio" name="t6-q8" value="B"> B. False (It looks back from outcome to exposure, making it a Case-Control design)</label>
+                        <label><input type="radio" name="t6-q8" value="A" required> A. Extending data capture over multi-year timelines.</label>
+                        <label><input type="radio" name="t6-q8" value="B"> B. Utilizing exact string matching probabilistic data linkages.</label>
+                        <label><input type="radio" name="t6-q8" value="C"> C. Randomization (Random Allocation of Exposure/Intervention)</label>
+                        <label><input type="radio" name="t6-q8" value="D"> D. Introducing strict administrative entry logic blocks.</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>9. At Sally Mugabe Central Hospital, researchers test antenatal clinic attendees for syphilis and collect information on age, marital status, and condom use during the same visit. What study design is this?</p>
+                    <p>9. A study follows an inception cohort of 1,200 healthy individuals for 10 years to observe incident cases of cardiovascular disease. This is a:</p>
                     <div class="options">
-                        <label><input type="radio" name="t6-q9" value="A" required> A. Cross-sectional study</label>
-                        <label><input type="radio" name="t6-q9" value="B"> B. Cohort study</label>
-                        <label><input type="radio" name="t6-q9" value="C"> C. Case report</label>
-                        <label><input type="radio" name="t6-q9" value="D"> D. Cluster-randomised trial</label>
+                        <label><input type="radio" name="t6-q9" value="A" required> A. Prospective Cohort Study</label>
+                        <label><input type="radio" name="t6-q9" value="B"> B. Cross-Sectional Prevalence Poll</label>
+                        <label><input type="radio" name="t6-q9" value="C"> C. Retrospective Historical Chart Audit</label>
+                        <label><input type="radio" name="t6-q9" value="D"> D. Community-wide Non-randomized Cross-over Trial</label>
                     </div>
                 </div>
                 <div class="question">
-                    <p>10. During a 2017 cholera investigation in Zimbabwe, researchers compare people with confirmed cholera to neighbours without cholera and look back at drinking-water source and handwashing practices. This is a case-control study.</p>
+                    <p>10. What specific form of observational bias is a major threat within Case-Control studies because patients with a severe disease outcome are more likely to carefully rethink and over-report past historical exposures compared to healthy controls?</p>
                     <div class="options">
-                        <label><input type="radio" name="t6-q10" value="A" required> A. False</label>
-                        <label><input type="radio" name="t6-q10" value="B"> B. True</label>
+                        <label><input type="radio" name="t6-q10" value="A" required> A. Temporal Selection Attrition</label>
+                        <label><input type="radio" name="t6-q10" value="B"> B. Recall Bias</label>
+                        <label><input type="radio" name="t6-q10" value="C"> C. Non-differential Misclassification</label>
+                        <label><input type="radio" name="t6-q10" value="D"> D. Administrative Logical Entry Distortion</label>
                     </div>
                 </div>
                 <button type="button" class="submit-btn" id="t6-submit" onclick="gradeTopicQuiz(6)">Submit Topic 6 Answers</button>
@@ -948,14 +1018,27 @@
             <div id="t6-results" class="results-box">
                 <h3>Quiz Completed Successfully!</h3>
                 <p id="t6-score-text" class="score-line"></p>
-                <p class="desc-line">Your answers have been successfully recorded.</p>
+                <p class="desc-line">Your answers have been recorded.</p>
             </div>
         </div>
     </div>
-
 </div>
+
+<!-- ==================== CUSTOM MODAL SYSTEM ==================== -->
+<div id="custom-alert-modal" style="display:none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.65); align-items: center; justify-content: center; backdrop-filter: blur(4px); transition: all 0.3s ease;">
+    <div style="background-color: white; border-radius: 12px; padding: 2.25rem; max-width: 500px; width: 90%; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.1); border: 4px solid var(--accent-red); text-align: center;">
+        <span id="custom-alert-icon" style="font-size: 3rem; display: block; margin-bottom: 0.75rem;">⚠️</span>
+        <h3 id="custom-alert-title" style="margin-top: 0; color: var(--primary-navy); font-size: 1.45rem; font-weight: 800;">Notice</h3>
+        <p id="custom-alert-message" style="color: var(--text-dark); font-size: 1.05rem; line-height: 1.6; margin-bottom: 1.75rem; font-weight: 500;"></p>
+        <button onclick="closeCustomAlert()" style="background-color: var(--primary-navy); color: white; border: none; padding: 0.8rem 2.5rem; font-size: 1rem; font-weight: 700; border-radius: 6px; cursor: pointer; transition: background-color 0.2s;">OK</button>
+    </div>
+</div>
+
+<!-- SILENT BACKGROUND SUBMISSION IFRAME TARGET -->
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
  
 <script>
+    // 1. Centralized Routing and Identification Configuration Block Map
     const portalConfig = {
         1: {
             formId: "1wx1E8-TXt44XxIDbG_Ytw4l_GFgZoqgnydOoG2OTODo",
@@ -988,7 +1071,7 @@
                 "t3-q7": "entry.226011529", "t3-q8": "entry.901784990", "t3-q9": "entry.1474844167",
                 "t3-q10": "entry.405180263"
             },
-            answerKey: { "t3-q1": "B", "t3-q2": "C", "t3-q3": "B", "t3-q4": "C", "t3-q5": "C", "t3-q6": "A", "t3-q7": "C", "t3-q8": "A", "t3-q9": "B", "t3-q10": "B" }
+            answerKey: { "t3-q1": "B", "t3-q2": "A", "t3-q3": "B", "t3-q4": "B", "t3-q5": "B", "t3-q6": "C", "t3-q7": "A", "t3-q8": "B", "t3-q9": "B", "t3-q10": "A" }
         },
         4: {
             formId: "1sNRN2S2h_mnXdhxP7kPZ-y1_lqpJzOFxh4QpGQ-Ao9g",
@@ -999,7 +1082,7 @@
                 "t4-q7": "entry.740783081", "t4-q8": "entry.554065458", "t4-q9": "entry.1059598965",
                 "t4-q10": "entry.1893842463"
             },
-            answerKey: { "t4-q1": "B", "t4-q2": "A", "t4-q3": "D", "t4-q4": "A", "t4-q5": "C", "t4-q6": "A", "t4-q7": "C", "t4-q8": "A", "t4-q9": "A", "t4-q10": "C" }
+            answerKey: { "t4-q1": "B", "t4-q2": "B", "t4-q3": "B", "t4-q4": "C", "t4-q5": "B", "t4-q6": "B", "t4-q7": "B", "t4-q8": "B", "t4-q9": "B", "t4-q10": "B" }
         },
         5: {
             formId: "1j1CTQ4AFuQkRUE0AWVBCvZJLMbiRcxAcowOopROa59M",
@@ -1010,7 +1093,7 @@
                 "t5-q7": "entry.411600184", "t5-q8": "entry.2019059688", "t5-q9": "entry.395643240",
                 "t5-q10": "entry.1057885359"
             },
-            answerKey: { "t5-q1": "B", "t5-q2": "B", "t5-q3": "B", "t5-q4": "A", "t5-q5": "B", "t5-q6": "B", "t5-q7": "C", "t5-q8": "B", "t5-q9": "B", "t5-q10": "B" }
+            answerKey: { "t5-q1": "B", "t5-q2": "B", "t5-q3": "B", "t5-q4": "A", "t5-q5": "B", "t5-q6": "B", "t5-q7": "A", "t5-q8": "B", "t5-q9": "B", "t5-q10": "B" }
         },
         6: {
             formId: "1idJcCNoQ5nxILbk7YTT5vKOeYlouWWca_7ZG-Vrbx9w",
@@ -1021,10 +1104,11 @@
                 "t6-q7": "entry.1192572934", "t6-q8": "entry.404403541", "t6-q9": "entry.575637293",
                 "t6-q10": "entry.1580530553"
             },
-            answerKey: { "t6-q1": "B", "t6-q2": "B", "t6-q3": "B", "t6-q4": "B", "t6-q5": "A", "t6-q6": "B", "t6-q7": "B", "t6-q8": "B", "t6-q9": "A", "t6-q10": "B" }
+            answerKey: { "t6-q1": "B", "t6-q2": "C", "t6-q3": "B", "t6-q4": "B", "t6-q5": "A", "t6-q6": "B", "t6-q7": "B", "t6-q8": "C", "t6-q9": "A", "t6-q10": "B" }
         }
     };
- 
+    
+    // Tracking States for Separate Timers
     let studentName = "";
     let studentEmail = "";
     let activeTopic = 1;
@@ -1037,136 +1121,185 @@
         5: { timeRemaining: 1200, interval: null, completed: false },
         6: { timeRemaining: 1200, interval: null, completed: false }
     };
- 
+    
+    // Initialize Tracker State on View Boot
     window.onload = function() {
         startTimer(1);
     };
- 
+
     function syncStudentData() {
-        const nameInput = document.getElementById("globalName");
-        const emailInput = document.getElementById("globalEmail");
-        studentName = nameInput ? nameInput.value.trim() : "";
-        studentEmail = emailInput ? emailInput.value.trim() : "";
+        studentName = document.getElementById("globalName").value.trim();
+        studentEmail = document.getElementById("globalEmail").value.trim();
     }
- 
+
+    // Custom non-blocking modal replacement for native alerts
+    function showCustomAlert(title, message, icon = "⚠️") {
+        document.getElementById("custom-alert-title").innerText = title;
+        document.getElementById("custom-alert-message").innerText = message;
+        document.getElementById("custom-alert-icon").innerText = icon;
+        document.getElementById("custom-alert-modal").style.display = "flex";
+    }
+
+    function closeCustomAlert() {
+        document.getElementById("custom-alert-modal").style.display = "none";
+    }
+
+    // UI Tab Switching Engine
     function switchTopic(topicNum) {
         if(topicNum === activeTopic) return;
- 
+        // Pause Current Timer context if not completed
         if (!timers[activeTopic].completed && timers[activeTopic].interval) {
-           clearInterval(timers[activeTopic].interval);
-           timers[activeTopic].interval = null;
+            clearInterval(timers[activeTopic].interval);
+            timers[activeTopic].interval = null;
         }
- 
+        // Toggle Active Classes across panels
         document.getElementById(`topic${activeTopic}-view`).classList.remove("active");
         document.getElementById(`nav-btn-${activeTopic}`).classList.remove("active");
- 
         activeTopic = topicNum;
- 
         document.getElementById(`topic${activeTopic}-view`).classList.add("active");
         document.getElementById(`nav-btn-${activeTopic}`).classList.add("active");
- 
+        // Start or Resume Chosen Timer channel
         if (!timers[activeTopic].completed) {
-           startTimer(activeTopic);
+            startTimer(activeTopic);
         }
     }
- 
+
+    // Independent Topic Timer Thread Allocation
     function startTimer(topicNum) {
         if (timers[topicNum].completed) return;
         const timerTextSpan = document.getElementById(`t${topicNum}-timer-text`);
-        if(!timerTextSpan) return;
         
         timers[topicNum].interval = setInterval(() => {
             timers[topicNum].timeRemaining--;
             let mins = Math.floor(timers[topicNum].timeRemaining / 60);
             let secs = timers[topicNum].timeRemaining % 60;
             timerTextSpan.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
- 
+            // Visual flag highlighting urgency state
             if (timers[topicNum].timeRemaining <= 300) {
-               timerTextSpan.parentElement.classList.add("urgent");
+                timerTextSpan.parentElement.classList.add("urgent");
             }
+            // Time Expired trigger loop execution
             if (timers[topicNum].timeRemaining <= 0) {
-               clearInterval(timers[topicNum].interval);
-               autoSubmitQuiz(topicNum);
+                clearInterval(timers[topicNum].interval);
+                autoSubmitQuiz(topicNum);
             }
         }, 1000);
     }
- 
+
+    // Verification Grading & Secure Background Push Routine
     function gradeTopicQuiz(topicNum) {
+        // Enforce identification parameters strictly at submission runtime
         syncStudentData();
         if (!studentName || !studentEmail) {
-           alert("⚠️ Submission Blocked: Please provide your Full Name and Email address at the top verification card before submitting answers.");
-           window.scrollTo({ top: 0, behavior: 'smooth' });
-           return;
+            showCustomAlert("Submission Blocked", "You must enter your Student Full Name and Email Address in the Verification Gateway card at the top before submitting evaluations.", "🔒");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
         }
- 
         const config = portalConfig[topicNum];
         const activeForm = document.querySelector(`#topic${topicNum}-view form`);
-        if(!activeForm) return;
         const formData = new FormData(activeForm);
- 
-        if (timers[topicNum].interval) clearInterval(timers[topicNum].interval);
+        
+        // Terminate associated counting loops
+        if (timers[topicNum].interval) {
+            clearInterval(timers[topicNum].interval);
+        }
         timers[topicNum].completed = true;
- 
+        
         let score = 0;
         let totalQuestions = Object.keys(config.answerKey).length;
- 
+        
+        // Structural Grading loop evaluation path checking
         for (let key in config.answerKey) {
-            const rawOpt = formData.get(key);
-            const selectedOpt = rawOpt ? rawOpt.trim().toUpperCase() : "";
-            const optionsInput = activeForm.querySelector(`input[name="${key}"]`);
+            const selectedOpt = formData.get(key);
+            const questionsOptionsBlock = activeForm.querySelector(`input[name="${key}"]`);
             
-            if(optionsInput) {
-                const questionContainer = optionsInput.closest('.question');
-                if (questionContainer) {
-                    if (selectedOpt === config.answerKey[key].toUpperCase()) {
-                       score++;
-                       questionContainer.classList.add("correct-ans");
-                    } else {
-                       questionContainer.classList.add("wrong-ans");
-                    }
+            if(questionsOptionsBlock) {
+                const questionContainer = questionsOptionsBlock.closest('.question');
+                if (selectedOpt === config.answerKey[key]) {
+                    score++;
+                    questionContainer.classList.add("correct-ans");
+                } else {
+                    questionContainer.classList.add("wrong-ans");
                 }
             }
         }
- 
         let calculatedPercent = Math.round((score / totalQuestions) * 100);
-        activeForm.querySelector('.submit-btn').style.display = "none";
         
+        // Disable the form options so they are lock-selected
+        activeForm.querySelectorAll("input[type='radio']").forEach(input => {
+            input.disabled = true;
+        });
+        document.getElementById(`t${topicNum}-submit`).style.display = "none";
+        
+        // Display result card
         const resultsDiv = document.getElementById(`t${topicNum}-results`);
-        const scoreTextSpan = document.getElementById(`t${topicNum}-score-text`);
-        if(scoreTextSpan) scoreTextSpan.innerText = `Score: ${score} / ${totalQuestions} (${calculatedPercent}%)`;
-        if(resultsDiv) resultsDiv.style.display = "block";
- 
-        executeFormTransmission(topicNum, score, totalQuestions, activeForm);
+        document.getElementById(`t${topicNum}-score-text`).innerText = `Score: ${score} / ${totalQuestions} (${calculatedPercent}%)`;
+        resultsDiv.style.display = "block";
+        
+        // Dispatch detailed background delivery thread tracking tasks
+        executeFormTransmission(topicNum, score, totalQuestions, calculatedPercent, formData);
     }
- 
+
     function autoSubmitQuiz(topicNum) {
-        alert(`⏱️ Time expired for Topic ${topicNum}. Running automated grading...`);
+        showCustomAlert("Time Expired", `Time has expired for Topic ${topicNum}! Your selected answers have been captured and processed automatically.`, "⏱️");
         gradeTopicQuiz(topicNum);
     }
- 
-    function executeFormTransmission(topicNum, score, total, activeForm) {
+
+    // Robust Endpoint Router determining whether to use '/e/[ID]' or direct '/[ID]' structural paths
+    function getFormActionURL(formId) {
+        if (formId.startsWith("1FAIpQL")) {
+            return `https://docs.google.com/forms/d/e/${formId}/formResponse`;
+        } else {
+            return `https://docs.google.com/forms/d/${formId}/formResponse`;
+        }
+    }
+
+    // Silent Background Multi-Stream Iframe Form Injector
+    function executeFormTransmission(topicNum, score, total, percent, formData) {
         const config = portalConfig[topicNum];
-        const baseURL = `https://docs.google.com/forms/d/e/${config.formId}/formResponse`;
-        const formData = new FormData(activeForm);
-        const urlParams = new URLSearchParams();
+        const baseURL = getFormActionURL(config.formId);
         
-        urlParams.append(config.entryIds.name, studentName);
-        urlParams.append(config.entryIds.email, studentEmail);
-        urlParams.append(config.entryIds.score, `${score} / ${total}`);
- 
-        for (let key in config.answerKey) {
-            if (config.entryIds[key]) {
-                const rawVal = formData.get(key);
-                urlParams.append(config.entryIds[key], rawVal ? rawVal.trim().toUpperCase() : "");
+        const hiddenForm = document.createElement('form');
+        hiddenForm.method = 'POST';
+        hiddenForm.action = baseURL;
+        hiddenForm.target = 'hidden_iframe'; // Links with hidden landing frame channel to block redirect behaviors
+        
+        const payload = {};
+        
+        // Set standard credentials metadata parameters
+        if (config.entryIds.name) payload[config.entryIds.name] = studentName;
+        if (config.entryIds.email) payload[config.entryIds.email] = studentEmail;
+        if (config.entryIds.score) payload[config.entryIds.score] = `${score} / ${total} (${percent}%)`;
+        
+        // Map and append the individual question responses in "Chosen: X (Correct: Y)" format
+        for (let qNum = 1; qNum <= 10; qNum++) {
+            const key = `t${topicNum}-q${qNum}`;
+            const selectedOpt = formData.get(key) || "[skipped]";
+            const correctAnswer = config.answerKey[key];
+            const entryId = config.entryIds[key];
+            
+            if (entryId) {
+                payload[entryId] = `Chosen: ${selectedOpt} (Correct: ${correctAnswer})`;
             }
         }
- 
-        fetch(baseURL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: urlParams.toString()
-        })
-        .then(() => console.log(`Topic ${topicNum} packet synchronized.`))
-        .catch(err => console.error("Network sync issue: ", err));
+        
+        // Append all payload properties as hidden form inputs
+        for (let entryKey in payload) {
+            const latentInput = document.createElement('input');
+            latentInput.type = 'hidden';
+            latentInput.name = entryKey;
+            latentInput.value = payload[entryKey];
+            hiddenForm.appendChild(latentInput);
+        }
+        
+        document.body.appendChild(hiddenForm);
+        hiddenForm.submit();
+        
+        // Clean up DOM tree
+        setTimeout(() => {
+            document.body.removeChild(hiddenForm);
+        }, 500);
     }
+</script>
+</body>
+</html>
