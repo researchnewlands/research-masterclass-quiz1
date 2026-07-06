@@ -1024,7 +1024,6 @@
 
 <script>
     // 1. Centralized Routing and Identification Configuration Block Map
-    // Contains extracted true unique Entry IDs for Forms 1-6
     const portalConfig = {
         1: {
             formId: "1FAIpQLSc73LAdSXamCN8fNnflvmsE61CY1LqKpyzFe4zt_rzEO8bcGg",
@@ -1082,7 +1081,6 @@
         }
     };
 
-    // Tracking States for Separate Timers
     let studentName = "";
     let studentEmail = "";
     let activeTopic = 1;
@@ -1096,27 +1094,27 @@
         6: { timeRemaining: 1200, interval: null, completed: false }
     };
 
-    // Initialize Tracker State on View Boot
     window.onload = function() {
         startTimer(1);
     };
 
     function syncStudentData() {
-        studentName = document.getElementById("globalName").value.trim();
-        studentEmail = document.getElementById("globalEmail").value.trim();
+        // Fallback checks to find fields wherever they reside on layout template wrappers
+        const nameInput = document.getElementById("globalName") || document.querySelector('input[placeholder*="Name"]');
+        const emailInput = document.getElementById("globalEmail") || document.querySelector('input[type="email"]');
+        
+        studentName = nameInput ? nameInput.value.trim() : "";
+        studentEmail = emailInput ? emailInput.value.trim() : "";
     }
 
-    // 2. UI Tab Switching Engine
     function switchTopic(topicNum) {
         if(topicNum === activeTopic) return;
 
-        // Pause Current Timer context if not completed
         if (!timers[activeTopic].completed && timers[activeTopic].interval) {
             clearInterval(timers[activeTopic].interval);
             timers[activeTopic].interval = null;
         }
 
-        // Toggle Active Classes across panels
         document.getElementById(`topic${activeTopic}-view`).classList.remove("active");
         document.getElementById(`nav-btn-${activeTopic}`).classList.remove("active");
 
@@ -1125,17 +1123,16 @@
         document.getElementById(`topic${activeTopic}-view`).classList.add("active");
         document.getElementById(`nav-btn-${activeTopic}`).classList.add("active");
 
-        // Start or Resume Chosen Timer channel
         if (!timers[activeTopic].completed) {
             startTimer(activeTopic);
         }
     }
 
-    // 3. Independent Topic Timer Thread Allocation
     function startTimer(topicNum) {
         if (timers[topicNum].completed) return;
 
         const timerTextSpan = document.getElementById(`t${topicNum}-timer-text`);
+        if(!timerTextSpan) return;
         
         timers[topicNum].interval = setInterval(() => {
             timers[topicNum].timeRemaining--;
@@ -1145,12 +1142,10 @@
 
             timerTextSpan.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 
-            // Visual flag highlighting urgency state
             if (timers[topicNum].timeRemaining <= 300) {
                 timerTextSpan.parentElement.classList.add("urgent");
             }
 
-            // Time Expired trigger loop execution
             if (timers[topicNum].timeRemaining <= 0) {
                 clearInterval(timers[topicNum].interval);
                 autoSubmitQuiz(topicNum);
@@ -1158,22 +1153,21 @@
         }, 1000);
     }
 
-    // 4. Verification Grading & Secure Background Push Routine
     function gradeTopicQuiz(topicNum) {
-        // Enforce identification gate profile validation parameters before processing paths
         syncStudentData();
         
         if (!studentName || !studentEmail) {
-            alert("⚠️ Submission Blocked: You must enter your Student Full Name and Email Address in the Verification Gateway card at the top before submitting evaluations.");
+            alert("⚠️ Submission Blocked: Please verify that your Name and Email address fields are filled completely before submitting.");
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
 
         const config = portalConfig[topicNum];
         const activeForm = document.querySelector(`#topic${topicNum}-view form`);
+        if(!activeForm) return;
+        
         const formData = new FormData(activeForm);
 
-        // Terminate associated counting loops
         if (timers[topicNum].interval) {
             clearInterval(timers[topicNum].interval);
         }
@@ -1182,42 +1176,40 @@
         let score = 0;
         let totalQuestions = Object.keys(config.answerKey).length;
 
-        // Structural Grading loop evaluation path checking
         for (let key in config.answerKey) {
-            const selectedOpt = formData.get(key);
+            const rawOpt = formData.get(key);
+            const selectedOpt = rawOpt ? rawOpt.trim().toUpperCase() : "";
             const questionsOptionsBlock = activeForm.querySelector(`input[name="${key}"]`);
             
             if(questionsOptionsBlock) {
-                // Find containing block
                 const questionContainer = questionsOptionsBlock.closest('.question');
-                if (selectedOpt === config.answerKey[key]) {
-                    score++;
-                    questionContainer.classList.add("correct-ans");
-                } else {
-                    questionContainer.classList.add("wrong-ans");
+                if (questionContainer) {
+                    if (selectedOpt === config.answerKey[key].toUpperCase()) {
+                        score++;
+                        questionContainer.classList.add("correct-ans");
+                    } else {
+                        questionContainer.classList.add("wrong-ans");
+                    }
                 }
             }
         }
 
         let calculatedPercent = Math.round((score / totalQuestions) * 100);
-
-        // Hide standard Form Questionnaire elements, leaving active navigation paths open
         activeForm.style.display = "none";
         
         const resultsDiv = document.getElementById(`t${topicNum}-results`);
-        document.getElementById(`t${topicNum}-score-text`).innerText = `Score: ${score} / ${totalQuestions} (${calculatedPercent}%)`;
-        resultsDiv.style.display = "block";
+        const scoreTextSpan = document.getElementById(`t${topicNum}-score-text`);
+        if(scoreTextSpan) scoreTextSpan.innerText = `Score: ${score} / ${totalQuestions} (${calculatedPercent}%)`;
+        if(resultsDiv) resultsDiv.style.display = "block";
 
-        // Dispatch background delivery thread tracking tasks (Passes activeForm context)
         executeFormTransmission(topicNum, score, totalQuestions, activeForm);
     }
 
     function autoSubmitQuiz(topicNum) {
-        alert(`⏱️ Time has expired for Topic ${topicNum}! Your selected answers are being captured and processed automatically.`);
+        alert(`⏱️ Time has expired for Topic ${topicNum}! Processing your selected selections now...`);
         gradeTopicQuiz(topicNum);
     }
 
-    // 5. Silent Background Multi-Stream Iframe Form Injector
     function executeFormTransmission(topicNum, score, total, activeForm) {
         const config = portalConfig[topicNum];
         const baseURL = `https://docs.google.com/forms/d/e/${config.formId}/formResponse`;
@@ -1226,24 +1218,26 @@
         const hiddenForm = document.createElement('form');
         hiddenForm.method = 'POST';
         hiddenForm.action = baseURL;
-        hiddenForm.target = 'hidden_iframe'; // Links with hidden landing frame channel to block redirect behaviors
+        hiddenForm.target = 'hidden_iframe';
 
-        // Set baseline values inside payload map
+        // Establish strictly validated tracking values
         const payload = {
             [config.entryIds.name]: studentName,
             [config.entryIds.email]: studentEmail,
             [config.entryIds.score]: `${score} / ${total}`
         };
 
-        // Loops through questions and automatically appends selections to form payload
+        // Strict option map loops to avoid custom system text entry blocks crashing Google's regex engine
         for (let key in config.answerKey) {
             if (config.entryIds[key]) {
                 const googleFormFieldId = config.entryIds[key];
-                payload[googleFormFieldId] = formData.get(key) || "No Answer";
+                const rawVal = formData.get(key);
+                // Force true exact option uppercase letter matching, or explicitly pass empty if skipped
+                payload[googleFormFieldId] = rawVal ? rawVal.trim().toUpperCase() : "";
             }
         }
 
-        // Generate actual document node layout elements
+        // Build HTML Node collection trees dynamically
         for (let entryKey in payload) {
             const latentInput = document.createElement('input');
             latentInput.type = 'hidden';
@@ -1254,6 +1248,12 @@
 
         document.body.appendChild(hiddenForm);
         hiddenForm.submit();
-        document.body.removeChild(hiddenForm);
+        
+        // Brief clean micro-timeout delay thread release safely clears out tracking reference leaks 
+        setTimeout(() => {
+            if(document.body.contains(hiddenForm)){
+                document.body.removeChild(hiddenForm);
+            }
+        }, 500);
     }
 </script>
