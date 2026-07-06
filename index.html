@@ -1020,16 +1020,6 @@
 </div>
 
 <!-- SILENT BACKGROUND SUBMISSION IFRAME TARGET -->
-The reason this script is failing to record data across your 6 forms comes down to two major issues:
-
-1. **The Iframe Method is Blocked:** Modern web browsers block hidden iframes from submitting forms across different domains (CORS security policies). This completely stops the `hiddenForm.submit()` command from executing silently.
-2. **String Formatting Mismatch:** Your Google Forms are expecting a formatted string pattern like `"Chosen: A (Correct: B)"` instead of just a raw option letter like `"A"` or `"No Answer"`.
-
-Here is the fully fixed, production-ready `<script>` tag. The iframe trick is replaced with a highly robust native `fetch()` engine using `URLSearchParams` and `mode: 'no-cors'`. It also formats your question response text to exactly match your Google Form requirements.
-
-Replace your old `<script>` element and hidden iframe line entirely with this updated version:
-
-```html
 <script>
     // 1. Centralized Routing and Identification Configuration Block Map
     // Contains extracted true unique Entry IDs for Forms 1-6
